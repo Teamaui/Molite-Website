@@ -1,0 +1,37 @@
+# Mengaktifkan Rewrite Engine
+RewriteEngine On
+
+# Mengarahkan semua permintaan ke file index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
+
+# Blokir akses langsung ke file .htaccess dan file sensitif lainnya
+<Files .htaccess>
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Blokir akses ke file PHP yang sensitif, misalnya konfigurasi
+<FilesMatch "\.(env|ini|sh|bak|sql)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Mengatur Default MIME Type
+AddDefaultCharset UTF-8
+
+# Mengatur tampilan kesalahan
+ErrorDocument 404 /404.php
+ErrorDocument 500 /500.php
+
+# Mengatur cache browser
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/html "access plus 1 week"
+</IfModule>

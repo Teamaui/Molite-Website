@@ -1,0 +1,15 @@
+/* Body styling */
+body {
+    background-image: url(../img/bg_main.png);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+}
+
+h1 {
+    color: #CCAE00;
+}
