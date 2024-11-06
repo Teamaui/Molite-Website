@@ -2,37 +2,37 @@
 <div class="main-content">
     <h1>Tambah Data Anak</h1>
     <div class="main-container">
-        <form action="" method="post">
+        <form action="<?= UrlHelper::route("anak/store"); ?>" method="post">
             <div class="form-container">
                 <div class="form-left">
                     <div>
-                        <label for="nik">Nama Lengkap Anak</label>
-                        <input type="text" id="nik" placeholder="Masukkan NIK..." name="nik" required>
+                        <label for="nama_anak">Nama Lengkap Anak</label>
+                        <input type="text" id="nama_anak" placeholder="Masukkan Nama Anak..." name="nama_anak" required>
                     </div>
                     <div>
-                        <label for="nik">Tanggal Lahir</label>
-                        <input type="date" id="nik" placeholder="Masukkan NIK..." name="nik" required>
+                        <label for="tanggal_lahir">Tanggal Lahir</label>
+                        <input type="date" id="tanggal_lahir" placeholder="Masukkan Tanggal Lahir..." name="tanggal_lahir" required>
                     </div>
                     <div>
-                        <label for="nik">Tempat Lahir</label>
-                        <input type="text" id="nik" placeholder="Masukkan NIK..." name="nik" required>
+                        <label for="tempat_lahir">Tempat Lahir</label>
+                        <input type="text" id="tempat_lahir" placeholder="Masukkan Tempat Lahir..." name="tempat_lahir" required>
                     </div>
                 </div>
                 <div class="form-left">
                     <div>
-                        <label for="nik">Jenis Kelamin</label>
-                        <select name="" id="">
-                            <option value="">Laki-Laki</option>
-                            <option value="">Perempuan</option>
+                        <label for="jenis_kelamin">Jenis Kelamin</label>
+                        <select name="jenis_kelamin" id="jenis_kelamin">
+                            <option value="Laki-Laki">Laki-Laki</option>
+                            <option value="Perempuan">Perempuan</option>
                         </select>
                     </div>
                     <div>
-                        <label for="nik">Orang Tua</label>
-                        <select name="" id="">
-                            <option value="">---Pilih Orang Tua---</option>
-                            <option value="">Adelia Oktavia</option>
-                            <option value="">Kholifatin</option>
-                            <option value="">Alvin Aura</option>
+                        <label for="id_orang_tua">Orang Tua</label>
+                        <select name="id_orang_tua" id="id_orang_tua">
+                            <option value="null">---Pilih Orang Tua---</option>
+                            <?php foreach ($orangTua as $ot) : ?>
+                                <option value="<?= $ot["id_orang_tua"] ?>"><?= $ot["nama_ibu"] ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                 </div>

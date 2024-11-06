@@ -1,11 +1,9 @@
-/* Global Styling */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
 }
 
-/* Topbar Styling */
 .topbar {
     position: fixed;
     top: 0;
@@ -38,7 +36,6 @@ body {
     color: #CCAE00;
 }
 
-/* User section */
 .user-section {
     position: relative;
 }
@@ -50,14 +47,13 @@ body {
     margin-right: 4rem;
 }
 
-/* Dropdown Styling */
 .dropdown {
     display: none;
     position: absolute;
     right: 20;
     background-color: white;
     min-width: 150px;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 8px 16px rgba(9, 141, 179, 0.1);
     z-index: 1;
     border-radius: .3rem;
 }
@@ -76,14 +72,14 @@ body {
 }
 
 .dropdown a:hover {
-    background-color: #f1f1f1;
+    background-color: #ebfbff;
+    cursor: pointer;
 }
 
 .dropdown a i {
     margin-right: .3rem;
 }
 
-/* Sidebar Styling */
 .sidebar {
     position: fixed;
     top: 50px;
@@ -113,8 +109,10 @@ body {
     text-decoration: none;
     display: block;
     background-color: #F7F7F7;
-    padding: .7rem .8rem;
+    padding: .65rem .7rem;
     border-radius: 10px;
+    box-sizing: border-box;
+    border: solid 2px transparent;
 }
 
 .sidebar ul li i {
@@ -123,15 +121,14 @@ body {
 }
 
 .sidebar ul li a:hover {
-    background-color: #098DB3;
-    color: #F7F7F7;
+    border: 2px solid #098DB3;
+    cursor: pointer;
 }
 
-/* Main Content Styling */
 .main-content {
     background-image: url(../img/bg_main.png);
     background-size: cover;
-    height: calc(100vh - 70px);
+    min-height: calc(100vh - 70px);
     width: 100%;
     margin-left: 250px;
     margin-top: 50px;
@@ -148,3 +145,64 @@ body {
     background-color: #098DB3;
     color: #F7F7F7;
 }
+
+/* Styling untuk alert container */
+.alert-container {
+    display: none; /* Alert disembunyikan secara default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Background semi-transparan */
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  /* Styling untuk alert box */
+  .alert-box {
+    background-color: #fff;
+    padding: 20px;
+    padding-bottom: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+  }
+  
+  /* Styling untuk teks dalam alert */
+  .alert-box p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  /* Styling untuk tombol alert */
+  .alert-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 5px;
+    text-decoration: none;
+  }
+  
+  .alert-button.confirm {
+    background-color: #098DB3;
+    color: #fff;
+  }
+  
+  .alert-button.cancel {
+    background-color: #ccc;
+    color: #333;
+  }
+  
+
+  /* Style Dashboard */
+  .card-content {
+    background-color: #F7F7F7;
+    margin-top: 2rem;
+    
+  }

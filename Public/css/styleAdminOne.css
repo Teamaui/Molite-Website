@@ -1,0 +1,366 @@
+.table-container {
+    margin: 0 auto;
+    overflow-x: auto;
+    padding: 1rem;
+    background-color: #F7F7F7;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table-button {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+    padding-top: 0;
+}
+
+.table-button a {
+    display: flex;
+    font-size: 1rem;
+    border: none;
+    padding: .6rem 1.3rem;
+    align-items: center;
+    border-radius: 5px;
+    color: #F7F7F7;
+    background-color: #098DB3;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.table-button a:hover {
+    opacity: .9;
+}
+
+.table-button a i {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+.table-button form {
+    position: relative;
+    width: 200px;
+    max-width: 400px;
+    margin-right: 3.8rem;
+}
+
+.table-button input[type="text"] {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    font-size: 16px;
+    border: 2px solid #9AD0DF;
+    border-radius: 50px;
+    outline: none;
+    transition: all 0.3s ease;
+    color: #9AD0DF;
+}
+
+.table-button form i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #9AD0DF;
+    font-size: 18px;
+}
+
+.table-button input[type="text"]:focus {
+    border-color: #9AD0DF;
+    box-shadow: 0 0 5px rgba(154, 208, 223, 0.3);
+}
+
+.table-button input[type="text"]::placeholder {
+    color: #9AD0DF;
+    font-style: italic;
+}
+
+.table-button form button {
+    display: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: transparent;
+    border: 1px solid #098DB3;
+}
+
+thead th {
+    background-color: #098DB3;
+    color: white;
+    text-align: left;
+    padding: 12px;
+    font-size: 16px;
+}
+
+tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #098DB3;
+    text-align: left;
+    color: #098DB3;
+    vertical-align: middle;
+}
+
+table td a {
+    text-decoration: none;
+    color: white;
+    padding: .5rem .7rem;
+}
+
+table td .edit {
+    border-radius: 5px;
+    background-color: #ffcc00;
+}
+
+table td .hapus {
+    border-radius: 5px;
+    background-color: #ff4d4d;
+}
+
+table td .view {
+    border-radius: 5px;
+    background-color: #17a2b8;
+}
+
+table td .edit:hover {
+    opacity: .8;
+}
+
+table td .hapus:hover {
+    opacity: .8;
+}
+
+tbody tr:hover {
+    background-color: #9AD0DF;
+}
+
+@media (max-width: 600px) {
+    thead {
+        display: none;
+    }
+    tbody tr {
+        display: block;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #ddd;
+    }
+    tbody td {
+        display: block;
+        text-align: right;
+        font-size: 14px;
+        padding: 10px;
+        position: relative;
+    }
+    tbody td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .table-button input[type="text"] {
+        padding: 10px 10px 10px 35px;
+    }
+}
+
+.main-container {
+    margin: 0 auto;
+    overflow-x: auto;
+    padding: 1rem 2rem;
+    background-color: #F7F7F7;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+}
+.form-container .form-left {
+    width: 50%;
+    padding: 1rem;
+}
+.form-container .form-right {
+    width: 50%;
+    padding: 1rem;
+}
+
+.form-container .form-left input, .form-container .form-left select, textarea {
+    width: 100%;
+    height: 2.5rem;
+    background-color: transparent;
+    outline: none;
+    border: 1px solid #098DB3;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #098DB3;
+    letter-spacing: 0.1rem;
+}
+
+.form-container .form-left label {
+    display: block;
+    margin: 0.5rem 0;
+    color: #098DB3;
+    font-size: 1rem;
+}
+
+.form-container .form-left input::placeholder, textarea::placeholder {
+    color: #9AD0DF;
+    font-style: italic;
+}
+
+.form-container .form-left input:-webkit-autofill {
+    color: #9AD0DF;
+    -webkit-box-shadow: 0 0 0px 1000px #F7F7F7 inset;
+}
+
+.form-container .form-left input:-webkit-autofill::first-line {
+    color: #098DB3;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear, 
+input[type="password"]::-webkit-clear-button, 
+input[type="password"]::-webkit-credentials-auto-fill-button { 
+    display: none; 
+}
+
+.main-container button {
+    width: 160px;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    padding: .8rem 1rem;
+    height: 2.7rem;
+    font-size: medium;
+    color: #F7F7F7;
+    background-color: #098DB3;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.main-container button:hover {
+    opacity: .9;;
+}
+
+.badge {
+    display: inline-block;
+    color: white;
+    padding: 5px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 20px; 
+    align-items: center;
+}
+
+.success {
+    background-color: #28a745; 
+}
+
+.warning {
+    background-color: #ffc107; 
+    color: #333; 
+}
+
+.error {
+    background-color: #dc3545; 
+}
+
+.info {
+    background-color: rgb(23, 162, 184); 
+}
+
+.badge:hover {
+    opacity: 0.9;
+}
+
+.table-container .alert-message-success {
+    width: auto;
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    color: #F7F7F7;
+    background-color: #90ee90;
+    border-radius: .5rem;
+    font-weight: normal;
+}
+.table-container .alert-message-danger {
+    width: auto;
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    color: #F7F7F7;
+    background-color: #dc3545;
+    border-radius: .5rem;
+    font-weight: normal;
+}
+.form-left div .custom-file-label {
+    display: inline-block;
+    width: 160px;
+    padding: .8rem 1rem;
+    color: #F7F7F7;
+    background-color: #098DB3;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.form-left  div .custom-file-label:hover {
+   opacity: .9;
+}
+.form-left div img {
+    width: 100%;
+    max-height: 250px;
+    background-size: cover;
+}
+.form-left div p {
+    margin: .5rem 0;
+}
+
+.form-left div .file-input {
+    display: none;
+}
+
+.edukasi-content {
+    margin: 1rem auto;
+    margin-bottom: 5rem;
+    overflow-x: auto;
+    padding: 1rem 2rem;
+    background-color: #F7F7F7;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.edukasi-content img {
+    width: 100%;
+    border-radius: 10px;
+}
+.edukasi-content p {
+    width: 100%;
+    font-size: 1.2rem;
+}
+
+trix-editor {
+    height: 270px;
+    overflow-y: auto;
+    max-width: 580px;
+}
+
+.table-container .deskripsi_edukasi button {
+    font-size: medium;
+}
+
+.table-container .deskripsi_edukasi h1 {
+    margin: 0;
+    color: black;
+}
+.table-container .deskripsi_edukasi p {
+    margin: 0;
+    color: black;
+}
+.table-container button.trix-button.trix-button--icon.trix-button--icon-attach {
+    display: none; 
+}
+.table-container span.trix-button-group.trix-button-group--file-tools {
+    display: none; 
+}
+.table-container img {
+    border-radius: 5px;
+}

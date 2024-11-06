@@ -6,6 +6,7 @@ use App\Helper\ViewReader;
 use FlashMessageHelper;
 use Model\AdminModel;
 use PathHelper;
+use UrlHelper;
 
 class AuthController
 {
@@ -16,7 +17,7 @@ class AuthController
         $this->admin = new AdminModel();
 
         if (isset($_SESSION["status_masuk"]) && $_SESSION["status_masuk"] == true) {
-            header("Location: /dashboard");
+            header("Location: " . UrlHelper::route("dashboard"));
         }
     }
 
@@ -33,11 +34,11 @@ class AuthController
             $nik = $_POST["nik"];
             $sandi = $_POST["sandi"];
 
-            if ($userData = $this->admin->findAdminByUnique($nik)) {
-                if (password_verify($sandi, $userData["sandi"])) {
+            if ($userData = $this->admin->findAdminByUniqueNik($nik)) {
+                if (password_verify($sandi, $userData["password"])) {
                     FlashMessageHelper::set("pesan_login_sukses", "Berhasil login akun");
                     $_SESSION["username"] = $userData["username"];
-                    $_SESSION["nik"] = $userData["nik"];
+                    $_SESSION["id_admin"] = $userData["id_admin"];
                     $_SESSION["status_masuk"] = true;
                     header("Location: " . PathHelper::getPath() . "/dashboard");
                     exit;
@@ -71,8 +72,8 @@ class AuthController
                     "sandi2" => $_POST["sandi2"],
                 ];
 
-                if ($admin = $this->admin->findAdminByUnique($data["nik"])) {
-                    if ($admin["status_aktif"] != 1) {
+                if ($admin = $this->admin->findAdminByUniqueNik($data["nik"])) {
+                    if ($admin["status_aktivasi"] != "Aktif") {
                         if ($this->admin->insertAdmin($data)) {
                             FlashMessageHelper::set("pesan_register_sukses", "Berhasil membuat akun! silahkan login");
                             header("Location: " . PathHelper::getPath() . "/login");
@@ -96,6 +97,6 @@ class AuthController
     public function logout(): void
     {
         session_destroy();
-        header("Location: /login");
+        header("Location: " . UrlHelper::route("login"));
     }
 }

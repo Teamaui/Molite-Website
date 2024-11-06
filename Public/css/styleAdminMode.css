@@ -1,0 +1,103 @@
+.table-container {
+    margin-bottom: 1.5rem;
+}
+
+.table-container button[type="submit"] {
+    width: 160px;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    padding: .8rem 1rem;
+    height: 2.7rem;
+    font-size: medium;
+    color: #F7F7F7;
+    background-color: #098DB3;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.table-container button:hover {
+    opacity: .9;;
+}
+
+.left h1 {
+    margin: 0;
+}
+
+textarea {
+    height: 300px;
+}
+
+.table-container:last-child {
+    margin-bottom: 200px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.main-content .navbar nav {
+    width: 30%;
+    background-color: #098DB3; 
+    display: flex; 
+    justify-content: space-around; 
+    height: 3rem;
+    align-items: center;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.main-content .navbar a {
+    display: flex;
+    color: white; 
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    transition: background-color 0.main-content .3s; 
+}
+.main-content .navbar nav .imunisasi:hover {
+    cursor: pointer;
+    opacity: .9;
+}
+.main-content .navbar nav .posyandu:hover {
+    cursor: pointer;
+    opacity: .9;
+}
+
+.active {
+    background-color: #9AD0DF;
+}
+
+.edukasi-content .edukasi-aksi {
+    margin-bottom: .6rem;
+    display: flex;
+}
+
+.edukasi-content .edukasi-aksi a{
+    text-decoration: none;
+    color: white;
+    padding: .6rem 1rem;
+    margin-right: .3rem;
+}
+
+.edukasi-content .edukasi-aksi .edit{
+    border-radius: 5px;
+    background-color: #ffcc00;
+}
+.edukasi-content .edukasi-aksi .hapus {
+    border-radius: 5px;
+    background-color: #ff4d4d;
+}
+
+.edukasi-content .edukasi-aksi .view {
+    border-radius: 5px;
+    background-color: #17a2b8;
+}
+.edukasi-content .edukasi-aksi .back {
+    border-radius: 5px;
+    background-color: #098DB3;
+}

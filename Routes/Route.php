@@ -2,6 +2,8 @@
 
 namespace Routes;
 
+use App\Helper\ViewReader;
+
 class Route
 {
 
@@ -24,10 +26,11 @@ class Route
         $path = isset($_SERVER["PATH_INFO"]) ? $_SERVER["PATH_INFO"] : "/";
         $method = $_SERVER["REQUEST_METHOD"];
 
-        $pattern = "#^" . $path . "$#";
-
         foreach (self::$routes as $route) {
-            if (preg_match($pattern, $route["path"], $variables) && $method == $route["method"]) {
+
+            $pattern = "#^" . $route["path"] . "$#";
+
+            if (preg_match($pattern, $path, $variables) && $method == $route["method"]) {
                 $controller = new $route["controller"];
                 $function = $route["function"];
 
@@ -39,7 +42,7 @@ class Route
         }
 
         http_response_code(404);
-        echo "CONTROLLER TIDAK DITEMUKAN";
+        ViewReader::view("/Respon/404");
         return;
     }
 }

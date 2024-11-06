@@ -7,7 +7,7 @@
         <p class="alert-message-danger"><?= FlashMessageHelper::get("pesan_register_gagal"); ?></p>
     <?php endif; ?>
 
-    <form class="form-register" action="<?= PathHelper::getPath() ?>/register" method="post">
+    <form class="form-register" action="<?= UrlHelper::route("register") ?>" method="post">
         <div class="main-form">
             <div class="form-left">
                 <div>

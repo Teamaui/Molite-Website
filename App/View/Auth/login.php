@@ -9,7 +9,7 @@
                     <h3>Mo<span>lita</span></h3>
                     <p>Login sekarang untuk mulai memantau keamanan dan perkembangan <span class="txt1">Mo</span><span class="txt2">lita</span>.</p>
                 </div>
-                <p class="p1">Jl. Otto Iskandardinata No.82, Krajan, Ajung, Kec. Ajung, Kabupaten Jember, Jawa Timur 68175</p>
+                <p class="p1">Dibuat oleh Team Maui | Kelompok 2</p>
             </div>
         </div>
         <div class="sub-main-right">
@@ -28,7 +28,7 @@
                 <p class="alert-message-danger"><?= FlashMessageHelper::get("pesan_login_gagal"); ?></p>
             <?php endif; ?>
 
-            <form action="<?= PathHelper::getPath() ?>/login" method="post">
+            <form action="<?= UrlHelper::route("login") ?>" method="post">
                 <div>
                     <label for="nik">NIK</label>
                     <input type="text" id="nik" placeholder="Masukkan NIK..." name="nik" required>
