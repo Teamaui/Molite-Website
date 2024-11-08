@@ -243,6 +243,8 @@
                 icon.classList.replace('bi-calendar-week', 'bi-calendar-week-fill');
             } else if (icon.classList.contains('bi-file-text')) {
                 icon.classList.replace('bi-file-text', 'bi-file-text-fill');
+            } else if (icon.classList.contains('bi-printer')) {
+                icon.classList.replace('bi-printer', 'bi-printer-fill');
             }
         }
     }
@@ -267,6 +269,8 @@
                 icon.classList.replace('bi-calendar-week-fill', 'bi-calendar-week');
             } else if (icon.classList.contains('bi-file-text-fill')) {
                 icon.classList.replace('bi-file-text-fill', 'bi-file-text');
+            } else if (icon.classList.contains('bi-printer-fill')) {
+                icon.classList.replace('bi-printer-fill', 'bi-printer');
             }
         }
     }

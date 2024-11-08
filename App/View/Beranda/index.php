@@ -35,14 +35,18 @@ use Routes\Route;
         </nav>
     </header>
     <main>
+        <img src="<?= UrlHelper::img("assets/background.png") ?>" alt="" class="top">
         <div class="main-left">
-            <h1>UNDUH APLIKASI MONITORING BALITA!</h1>
-            <p>Ayo unduh aplikasi monitoring balita untuk memantau tumbuh kembang si kecil dengan mudah! Dapatkan fitur lengkap untuk mendukung perkembangan balita secara optimal.</p>
-            <a href=""><i class="bi bi-arrow-right-circle-fill"></i> Unduh Sekarang, Pantau Lebih Mudah!</a>
+            <div class="left">
+                <h1>UNDUH APLIKASI MONITORING BALITA!</h1>
+                <p>Ayo unduh aplikasi monitoring balita untuk memantau tumbuh kembang si kecil dengan mudah! Dapatkan fitur lengkap untuk mendukung perkembangan balita secara optimal.</p>
+                <a href=""><i class="bi bi-arrow-right-circle-fill"></i> Unduh Sekarang, Pantau Lebih Mudah!</a>
+            </div>
         </div>
         <div class="main-right">
             <img class="shake" src="<?= UrlHelper::img("lg1.png") ?>" alt="">
         </div>
+        <img src="<?= UrlHelper::img("assets/background.png") ?>" alt="" class="bottom">
     </main>
 
     <script>

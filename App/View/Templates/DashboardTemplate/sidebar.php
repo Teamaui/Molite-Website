@@ -8,7 +8,7 @@
             <li><a href="<?= UrlHelper::route("imunisasi"); ?>" onclick="setActive()"><i class="bi bi-bandaid"></i> Imunisasi</a></li>
             <li><a href="<?= UrlHelper::route("penjadwalan"); ?>" onclick="setActive()"><i class="bi bi-calendar-week"></i> Penjadwalan</a></li>
             <li><a href="<?= UrlHelper::route("edukasi"); ?>" onclick="setActive()"><i class="bi bi-file-text"></i> Edukasi</a></li>
-            <li><a href="<?= UrlHelper::route("customer-service"); ?>" onclick="setActive()"><i class="bi bi-telephone"></i> Customer Service</a></li>
+            <!-- <li><a href="<?= UrlHelper::route("customer-service"); ?>" onclick="setActive()"><i class="bi bi-telephone"></i> Customer Service</a></li> -->
             <li><a href="<?= UrlHelper::route("cetak-laporan"); ?>" onclick="setActive()"><i class="bi bi-printer"></i> Cetak Laporan</a></li>
             <li><a onclick="showExitAlert()"><i class="bi bi-box-arrow-left"></i> Keluar</a></li>
         </ul>

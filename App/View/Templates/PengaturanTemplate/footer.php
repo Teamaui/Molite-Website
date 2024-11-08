@@ -1,3 +1,11 @@
+<div id="exitAlert" class="alert-container">
+    <div class="alert-box">
+        <p>Apakah Anda yakin ingin keluar?</p>
+        <a href="<?= UrlHelper::route("logout"); ?>" onclick="confirmExit()" class="alert-button confirm">Ya</a>
+        <a onclick="closeExitAlert()" class="alert-button cancel">Tidak</a>
+    </div>
+</div>
+
 <!-- JavaScript -->
 <script>
     function toggleDropdown() {
@@ -74,6 +82,16 @@
 
     // Menandai link sidebar berdasarkan URL saat ini
     document.addEventListener("DOMContentLoaded", setActive);
+
+    // Menampilkan alert konfirmasi keluar
+    function showExitAlert() {
+        document.getElementById("exitAlert").style.display = "flex";
+    }
+
+    // Menutup alert konfirmasi keluar
+    function closeExitAlert() {
+        document.getElementById("exitAlert").style.display = "none";
+    }
 
     function displayFileName() {
         const fileInput = document.getElementById('file-input');

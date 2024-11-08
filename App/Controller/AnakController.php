@@ -39,17 +39,31 @@ class AnakController
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
+        // Pagination
+        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+        $limit = 1;
+        $offset = ($page - 1) * $limit;
+
         if (isset($_GET["search"])) {
             $search = '%' . $_GET["search"] . '%';
-            $anak = $this->anakModel->findAllBySearch($search);
+            $anak = $this->anakModel->findAllBySearch($search,$limit, $offset);
+            $totalRows = $this->anakModel->getTotalRows($search);
+            $totalPages = ceil($totalRows / $limit);
         } else {
-            $anak = $this->anakModel->findAll();
+            $anak = $this->anakModel->getPaginationData($limit, $offset);
+            $totalRows = $this->anakModel->getTotalRows();
+            $totalPages = ceil($totalRows / $limit);
         }
+
+        $pagination = [
+            'totalRows' => $totalRows,
+            'totalPages' => $totalPages
+        ];
 
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Anak/index", ["anak" => $anak]);
+        ViewReader::view("/Anak/index", ["anak" => $anak, "pagination" => $pagination]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 

@@ -7,14 +7,21 @@ use App\Controller\BerandaController;
 use App\Controller\DashboardController;
 use App\Controller\EditProfilController;
 use App\Controller\ImunisasiController;
+use App\Controller\LaporanController;
 use App\Controller\OrangTuaController;
 use App\Controller\PenjadwalanController;
 use App\Controller\PertumbuhanController;
+use App\Controller\ReportController;
 use Controller\SeederController;
 use Routes\Route;
 
 // ------ ADD REQUIRE 
+// Libs
+require_once __DIR__ . "/../App/Libs/fpdf/fpdf.php";
+
 // Helper
+require_once __DIR__ . "/../App/Helper/PdfHelper.php";
+require_once __DIR__ . "/../App/Helper/PaginationHelper.php";
 require_once __DIR__ . "/../App/Helper/UrlHelper.php";
 require_once __DIR__ . "/../App/Helper/FlashMessageHelper.php";
 require_once __DIR__ . "/../App/Helper/PathHelper.php";
@@ -43,6 +50,8 @@ require_once __DIR__ . "/../App/Controller/EditProfilController.php";
 require_once __DIR__ . "/../App/Controller/PertumbuhanController.php";
 require_once __DIR__ . "/../App/Controller/PenjadwalanController.php";
 require_once __DIR__ . "/../App/Controller/EdukasiController.php";
+require_once __DIR__ . "/../App/Controller/LaporanController.php";
+require_once __DIR__ . "/../App/Controller/ReportController.php";
 
 // Seeder
 require_once __DIR__ . "/../App/Seeder/MasterSeeder.php";
@@ -72,6 +81,7 @@ Route::add("POST", "/orang-tua/store", OrangTuaController::class, "store");
 Route::add("GET", "/orang-tua/edit/([0-9a-zA-Z]*)", OrangTuaController::class, "edit");
 Route::add("POST", "/orang-tua/update", OrangTuaController::class, "update");
 Route::add("GET", "/orang-tua/delete/([0-9a-zA-Z]*)", OrangTuaController::class, "destroy");
+Route::add("GET", "/orang-tua/view/([0-9a-zA-Z]*)", OrangTuaController::class, "view");
 
 // Anak
 Route::add("GET", "/anak", AnakController::class, "index");
@@ -122,7 +132,15 @@ Route::add("POST", "/edukasi/detail-edukasi/store", EdukasiController::class, "s
 Route::add("GET", "/edukasi/view/([0-9a-zA-Z]*)", EdukasiController::class, "view");
 Route::add("GET", "/edukasi/edit-jenis/([0-9a-zA-Z]*)", EdukasiController::class, "editJenis");
 Route::add("POST", "/edukasi/update-jenis", EdukasiController::class, "updateJenis");
+Route::add("GET", "/edukasi/edit-detail-edukasi/([0-9a-zA-Z]*)", EdukasiController::class, "editDetailEdukasi");
+Route::add("POST", "/edukasi/detail-edukasi/update", EdukasiController::class, "updateDetailEdukasi");
+Route::add("GET", "/edukasi/delete-detail-edukasi/([0-9a-zA-Z]*)", EdukasiController::class, "destroyDetailEdukasi");
 
+// LAPORAN
+Route::add("GET", "/cetak-laporan", LaporanController::class, "index");
+
+// Cetak-Laporan
+Route::add("GET", "/cetak-laporan/cetak", ReportController::class, "generateReport");
 
 // Edit Profil
 Route::add("GET", "/edit-profile", EditProfilController::class, "index");

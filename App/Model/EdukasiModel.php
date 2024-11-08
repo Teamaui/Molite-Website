@@ -38,7 +38,8 @@ class EdukasiModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findJenisEdukasiById($id) {
+    public function findJenisEdukasiById($id)
+    {
         $query = "SELECT * FROM jenis_edukasi WHERE id_jenis_edukasi = :id_jenis_edukasi";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":id_jenis_edukasi", $id);
@@ -109,37 +110,40 @@ class EdukasiModel
         }
     }
 
-    public function updateData($data)
+    public function updateDataDetailEdukasi($data)
     {
-        $idAdmin = $_SESSION["id_admin"];
-
+        $idEdukasi = $this->generateAutoIncrementIDEdukasi();
 
         if (empty($data["foto"]["name"])) {
             // id_admin nik nama_admin email username password status_aktivasi
-            $sql = "UPDATE admin SET nik = :nik, nama_admin = :nama_admin, email = :email, username = :username WHERE id_admin = :id_admin";
+            $sql = "UPDATE edukasi SET judul_edukasi = :judul_edukasi, deskripsi_edukasi = :deskripsi_edukasi WHERE id_edukasi = :id_edukasi";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(":id_admin", $idAdmin);
-            $stmt->bindParam(":nik", $data["nik"]);
-            $stmt->bindParam(":nama_admin", $data["nama_admin"]);
-            $stmt->bindParam(":email", $data["email"]);
-            $stmt->bindParam(":username", $data["username"]);
+            $stmt->bindParam(":id_edukasi", $data["id_edukasi"]);
+            $stmt->bindParam(":judul_edukasi", $data["judul_edukasi"]);
+            $stmt->bindParam(":deskripsi_edukasi", $data["deskripsi_edukasi"]);
 
             return $stmt->execute();
         } else {
             if ($newFileName = $this->updateImg($data["oldFoto"], $data["foto"])) {
                 // id_admin nik nama_admin email username password status_aktivasi
-                $sql = "UPDATE admin SET nik = :nik, nama_admin = :nama_admin, email = :email, username = :username, img = :img WHERE id_admin = :id_admin";
+                $sql = "UPDATE edukasi SET judul_edukasi = :judul_edukasi, deskripsi_edukasi = :deskripsi_edukasi, img = :img WHERE id_edukasi = :id_edukasi";
                 $stmt = $this->db->prepare($sql);
-                $stmt->bindParam(":id_admin", $idAdmin);
-                $stmt->bindParam(":nik", $data["nik"]);
-                $stmt->bindParam(":nama_admin", $data["nama_admin"]);
-                $stmt->bindParam(":email", $data["email"]);
-                $stmt->bindParam(":username", $data["username"]);
+                $stmt->bindParam(":id_edukasi", $data["id_edukasi"]);
+                $stmt->bindParam(":judul_edukasi", $data["judul_edukasi"]);
+                $stmt->bindParam(":deskripsi_edukasi", $data["deskripsi_edukasi"]);
                 $stmt->bindParam(":img", $newFileName);
 
                 return $stmt->execute();
             }
         }
+    }
+
+    public function deleteDetailEdukasi($id) {
+        $query = "DELETE FROM edukasi WHERE id_edukasi = :id_edukasi";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_edukasi", $id);
+
+        return $stmt->execute();
     }
 
     private function generateAutoIncrementIDJenisEdukasi()

@@ -32,17 +32,31 @@ class OrangTuaController
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
+        // Pagination
+        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+        $limit = 1;
+        $offset = ($page - 1) * $limit;
+
         if (isset($_GET["search"])) {
             $search = '%' . $_GET["search"] . '%';
-            $orangTua = $this->orangTuaModel->findAllBySearch($search);
+            $orangTua = $this->orangTuaModel->findAllBySearch($search, $limit, $offset);
+            $totalRows = $this->orangTuaModel->getTotalRows($search);
+            $totalPages = ceil($totalRows / $limit);
         } else {
-            $orangTua = $this->orangTuaModel->findAll();
+            $orangTua = $this->orangTuaModel->getPaginationData($limit, $offset);
+            $totalRows = $this->orangTuaModel->getTotalRows();
+            $totalPages = ceil($totalRows / $limit);
         }
+
+        $pagination = [
+            'totalRows' => $totalRows,
+            'totalPages' => $totalPages
+        ];
 
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/OrangTua/index", ["orangTua" => $orangTua]);
+        ViewReader::view("/OrangTua/index", ["orangTua" => $orangTua, "pagination" => $pagination]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
     public function create()
@@ -121,6 +135,24 @@ class OrangTuaController
             header("Location: " . UrlHelper::route("/orang-tua"));
             exit;
         }
+    }
+
+    public function view($id)
+    {
+        $title = "Molita | Data Orang Tua";
+        $styleCss = "styleMainAdmin";
+        $styleCss2 = "styleAdminOne";
+        $styleCss3 = "styleAdminOrangTua";
+
+        $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
+
+        $orangTua = $this->orangTuaModel->findAllDataById($id);
+
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
+        ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
+        ViewReader::view("/OrangTua/view", ["orangTua" => $orangTua]);
+        ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 
     public function destroy(string $idOrangTua)

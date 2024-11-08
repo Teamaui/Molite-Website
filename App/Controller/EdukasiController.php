@@ -127,7 +127,8 @@ class EdukasiController
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 
-    public function editJenis($id) {
+    public function editJenis($id)
+    {
         $title = "Molita | Edit Jenis Edukasi";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
@@ -157,6 +158,57 @@ class EdukasiController
         } else {
             FlashMessageHelper::set("pesan_gagal", "Gagal update jenis Edukasi!");
             header("Location: " . UrlHelper::route("edukasi"));
+            exit;
+        }
+    }
+
+    public function editDetailEdukasi($id)
+    {
+        $title = "Molita | Edit Detail Edukasi";
+        $styleCss = "styleMainAdmin";
+        $styleCss2 = "styleAdminOne";
+        $styleCss3 = "styleAdminMode";
+
+        $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
+        $edukasi = $this->edukasiModel->findEdukasiById($id);
+
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
+        ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
+        ViewReader::view("/Edukasi/editDetailEdukasi", ["edukasi" => $edukasi]);
+        ViewReader::view("/Templates/DashboardTemplate/footer");
+    }
+
+    public function updateDetailEdukasi()
+    {
+        $data = [
+            "id_jenis_edukasi" => $_POST["id_jenis_edukasi"],
+            "id_edukasi" => $_POST["id_edukasi"],
+            "judul_edukasi" => $_POST["judul_edukasi"],
+            "deskripsi_edukasi" => $_POST["deskripsi_edukasi"],
+            "img" => $_FILES["foto"],
+        ];
+
+        if ($this->edukasiModel->updateDataDetailEdukasi($data)) {
+            FlashMessageHelper::set("pesan_sukses", "Berhasil update data Edukasi!");
+            header("Location: " . UrlHelper::route("edukasi/detail-edukasi/" . $data["id_jenis_edukasi"]));
+            exit;
+        } else {
+            FlashMessageHelper::set("pesan_gagal", "Gagal update Edukasi!");
+            header("Location: " . UrlHelper::route("edukasi/detail-edukasi/" . $data["id_jenis_edukasi"]));
+            exit;
+        }
+    }
+
+    public function destroyDetailEdukasi($id)
+    {
+        if ($this->edukasiModel->deleteDetailEdukasi($id)) {
+            FlashMessageHelper::set("pesan_sukses", "Berhasil menghapus data detail edukasi!");
+            header("Location: " . UrlHelper::route("/edukasi"));
+            exit;
+        } else {
+            FlashMessageHelper::set("pesan_gagal", "Gagal menghapus data detail edukasi!");
+            header("Location: " . UrlHelper::route("/edukasi"));
             exit;
         }
     }

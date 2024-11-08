@@ -24,7 +24,7 @@ class AnakModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findAllBySearch($search)
+    public function findAllBySearch($search, $limit, $offset)
     {
         $query = "SELECT anak.id_anak, anak.nama_anak, anak.tanggal_lahir, anak.tempat_lahir, anak.jenis_kelamin, anak.id_orang_tua, orang_tua.nama_ibu 
           FROM anak 
@@ -33,10 +33,12 @@ class AnakModel
           OR anak.tanggal_lahir LIKE :search
           OR anak.tempat_lahir LIKE :search
           OR anak.jenis_kelamin LIKE :search
-          OR orang_tua.nama_ibu LIKE :search";
+          OR orang_tua.nama_ibu LIKE :search LIMIT :limit OFFSET :offset";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":search", $search);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -91,6 +93,43 @@ class AnakModel
         $stmt->bindParam(":id_anak", $idAnak);
 
         return $stmt->execute();
+    }
+
+    // PAGINATION
+    public function getPaginationData($limit, $offset)
+    {
+        $query = "SELECT anak.id_anak, anak.nama_anak, anak.tanggal_lahir, anak.tempat_lahir, anak.jenis_kelamin, anak.id_orang_tua, orang_tua.nama_ibu FROM anak INNER JOIN orang_tua ON anak.id_orang_tua = orang_tua.id_orang_tua LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalRows($search = false)
+    {
+        if ($search) {
+            $query =  "SELECT COUNT(*) as total FROM anak
+                INNER JOIN orang_tua ON anak.id_orang_tua = orang_tua.id_orang_tua
+                WHERE anak.nama_anak LIKE :search 
+                OR anak.tanggal_lahir LIKE :search
+                OR anak.tempat_lahir LIKE :search
+                OR anak.jenis_kelamin LIKE :search
+                OR orang_tua.nama_ibu LIKE :search";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":search", $search);
+            $stmt->execute();
+        } else {
+            $query = "SELECT COUNT(*) as total FROM anak";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+        }
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total"];
     }
 
     private function generateAutoIncrementID()

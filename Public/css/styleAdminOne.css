@@ -14,6 +14,11 @@
     padding-top: 0;
 }
 
+.table-button .laporan {
+    display: flex;
+    height: 2.5rem;
+}
+
 .table-button a {
     display: flex;
     font-size: 1rem;
@@ -182,7 +187,7 @@ tbody tr:hover {
     padding: 1rem;
 }
 
-.form-container .form-left input, .form-container .form-left select, textarea {
+.form-container .form-left input, .form-container .form-left select, textarea, .table-button .laporan input {
     width: 100%;
     height: 2.5rem;
     background-color: transparent;
@@ -320,17 +325,20 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
 }
 
 .edukasi-content {
-    margin: 1rem auto;
+    width: 70%;
+    margin: 2rem auto;
     margin-bottom: 5rem;
     overflow-x: auto;
     padding: 1rem 2rem;
     background-color: #F7F7F7;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #098DB3;
 }
 .edukasi-content img {
-    width: 100%;
+    width: 70%;
     border-radius: 10px;
+    margin-bottom: 1rem;
 }
 .edukasi-content p {
     width: 100%;
@@ -364,3 +372,90 @@ trix-editor {
 .table-container img {
     border-radius: 5px;
 }
+
+.table-button .laporan input {
+    height: 2.2rem;
+    font-size: .9rem;
+    margin-right: .5rem;
+}
+
+.table-button .laporan button {
+   background-color: #28a745;
+   color: white;
+   border-radius: 2px;
+   padding: 0;
+   margin: 0;
+   border: none;
+   height:fit-content;
+   font-size: .9rem;
+   height: 2.2rem;
+   padding: .3rem .7rem;
+   box-sizing: border-box;
+   width: 300px;
+   display: flex;
+   align-items: center;
+}
+
+.laporan button:hover {
+    cursor: pointer;
+}
+
+.btn-cetak-laporan {
+    margin-bottom: .7rem;
+}
+.btn-cetak-laporan a{
+    width: 30%;
+    height: 2.2rem;
+    padding: .6rem 1.5rem;
+    height: 2.7rem;
+    font-size: medium;
+    color: #F7F7F7;
+    background-color: #098DB3;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.sub-main-right a:hover {
+    background-color: #9AD0DF;
+}
+
+.pagination {
+    margin-top: -1.5rem;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 1rem;
+    padding-top: 1.5rem;
+    padding-bottom: .5rem;
+    gap: 0.5rem;
+    font-family: Arial, sans-serif;
+  }
+  
+  .pagination a {
+    text-decoration: none;
+    padding: 8px 12px;
+    color: #098DB3;
+    border: 1px solid #098DB3;
+    border-radius: 4px;
+    margin-top: 1.5rem;
+    transition: background-color 0.3s;
+  }
+  
+  .pagination a.active {
+    background-color: #098DB3;
+    color: white;
+  }
+  
+  .pagination a:hover:not(.active) {
+    background-color: #e6f2ff;
+  }
+  
+  .pagination a.disabled {
+    color: #ccc;
+    border-color: #ccc;
+    pointer-events: none;
+  }
+  

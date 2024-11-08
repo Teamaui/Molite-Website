@@ -5,7 +5,7 @@
             <div class="user-name" onclick="toggleDropdown()"><?= $admin["nama_admin"] ?> ▼</div>
             <div class="dropdown" id="dropdownMenu">
                 <a href="<?= UrlHelper::route("dashboard") ?>"><i class="bi bi-house-gear"></i> Dashboard</a>
-                <a href="<?= UrlHelper::route("logout") ?>"><i class="bi bi-box-arrow-left"></i> Keluar</a>
+                <a onclick="showExitAlert()"><i class="bi bi-box-arrow-left"></i> Keluar</a>
             </div>
         </div>
     </div>

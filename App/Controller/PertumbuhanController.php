@@ -35,17 +35,31 @@ class PertumbuhanController
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
-        // if (isset($_GET["search"])) {
-        //     $search = '%' . $_GET["search"] . '%';
-        //     $orangTua = $this->pertumbuhanModel->findAllBySearch($search);
-        // } else {
-            $pertumbuhan = $this->pertumbuhanModel->findAll();
-        // }
+        // Pagination
+        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+        $limit = 1;
+        $offset = ($page - 1) * $limit;
+
+        if (isset($_GET["search"])) {
+            $search = '%' . $_GET["search"] . '%';
+            $pertumbuhan = $this->pertumbuhanModel->findAllBySearch($search, $limit, $offset);
+            $totalRows = $this->pertumbuhanModel->getTotalRows($search);
+            $totalPages = ceil($totalRows / $limit);
+        } else {
+            $pertumbuhan = $this->pertumbuhanModel->getPaginationData($limit, $offset);
+            $totalRows = $this->pertumbuhanModel->getTotalRows();
+            $totalPages = ceil($totalRows / $limit);
+        }
+
+        $pagination = [
+            'totalRows' => $totalRows,
+            'totalPages' => $totalPages
+        ];
 
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Pertumbuhan/index", ["pertumbuhan" => $pertumbuhan]);
+        ViewReader::view("/Pertumbuhan/index", ["pertumbuhan" => $pertumbuhan, "pagination" => $pagination]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
     public function create()

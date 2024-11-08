@@ -25,21 +25,31 @@
                     <th>Nama Ibu</th>
                     <th>Nama Ayah</th>
                     <th>Alamat</th>
-                    <th>Nomor Telepon</th>
+                    <th>Status Aktivasi</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 $i = 1;
-                foreach ($orangTua as $ot) : ?>
+                $status = null;
+
+                foreach ($orangTua as $ot) :
+
+                    if ($ot["status_aktivasi"] == "Aktif") {
+                        $status = "success";
+                    } else {
+                        $status = "error";
+                    } ?>
                     <tr>
                         <td><?= $i++ ?></td>
                         <td><?= $ot["email"] ?></td>
                         <td><?= $ot["nama_ibu"] ?></td>
                         <td><?= $ot["nama_ayah"] ?></td>
                         <td><?= $ot["alamat"] ?></td>
-                        <td><?= $ot["no_telepon"] ?></td>
+                        <td>
+                            <div class="badge <?= $status ?>"><?= $ot["status_aktivasi"] ?></div>
+                        </td>
                         <td>
                             <a class="view" href="<?= UrlHelper::route("orang-tua/view/" . $ot["id_orang_tua"]) ?>"><i class="bi bi-eye-fill"></i></a>
                             <a class="edit" href="<?= UrlHelper::route("orang-tua/edit/" . $ot["id_orang_tua"]) ?>"><i class="bi bi-pencil-fill"></i></a>
@@ -49,5 +59,10 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <?php if (isset($_GET["search"])) : ?>
+            <?= App\Helper\PaginationHelper::renderSearch((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('orang-tua?page='), $_GET["search"]) ?>
+        <?php else : ?>
+            <?= App\Helper\PaginationHelper::render((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('orang-tua?page=')) ?>
+        <?php endif; ?>
     </div>
 </div>

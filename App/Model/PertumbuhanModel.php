@@ -38,18 +38,20 @@ class PertumbuhanModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function findAllBySearch($search)
+    public function findAllBySearch($search, $limit, $offset)
     {
-        $query = "SELECT * FROM orang_tua WHERE email LIKE :search
-       OR nama_ibu LIKE :search
-       OR nama_ayah LIKE :search
-       OR nik_ibu LIKE :search
-       OR nik_ayah LIKE :search
-       OR alamat LIKE :search
-       OR no_telepon LIKE :search";
+        $query = "SELECT pertumbuhan.*, anak.* FROM pertumbuhan JOIN anak ON anak.id_anak = pertumbuhan.id_anak 
+        WHERE anak.nama_anak LIKE :search 
+        OR pertumbuhan.berat_badan LIKE :search 
+        OR pertumbuhan.tinggi_badan LIKE :search 
+        OR pertumbuhan.lingkar_kepala LIKE :search 
+        OR pertumbuhan.tanggal_pencatatan LIKE :search 
+        LIMIT :limit OFFSET :offset";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":search", $search);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -106,6 +108,66 @@ class PertumbuhanModel
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // PAGINATION
+    public function getPaginationData($limit, $offset)
+    {
+        $query = "SELECT pertumbuhan.*, anak.* FROM pertumbuhan JOIN anak ON anak.id_anak = pertumbuhan.id_anak LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getPaginationByDate($data)
+    {
+        $query = "SELECT pertumbuhan.*, anak.* FROM pertumbuhan JOIN anak ON anak.id_anak = pertumbuhan.id_anak WHERE pertumbuhan.tanggal_pencatatan BETWEEN :start_date AND :end_date LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":start_date", $data["start_date"]);
+        $stmt->bindParam(":end_date", $data["end_date"]);
+        $stmt->bindParam(":limit", $data["limit"], PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $data["offset"], PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalRows($search = null)
+    {
+        if ($search) {
+            $query =  "SELECT COUNT(*) as total FROM pertumbuhan JOIN anak ON anak.id_anak = pertumbuhan.id_anak WHERE anak.nama_anak LIKE :search 
+                OR pertumbuhan.berat_badan LIKE :search 
+                OR pertumbuhan.tinggi_badan LIKE :search 
+                OR pertumbuhan.lingkar_kepala LIKE :search 
+                OR pertumbuhan.tanggal_pencatatan LIKE :search ";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":search", $search);
+            $stmt->execute();
+        } else {
+            $query = "SELECT COUNT(*) as total FROM pertumbuhan JOIN anak ON anak.id_anak = pertumbuhan.id_anak";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+        }
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total"];
+    }
+
+    public function getTotalRowsByDate($start_date, $end_date)
+    {
+        $query = "SELECT COUNT(*) FROM pertumbuhan JOIN anak ON anak.id_anak = pertumbuhan.id_anak WHERE tanggal_pencatatan BETWEEN :start_date AND :end_date";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":start_date", $start_date);
+        $stmt->bindParam(":end_date", $end_date);
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
     }
 
     private function generateAutoIncrementID()

@@ -18,7 +18,7 @@ class OrangTuaModel
     public function findAll()
     {
 
-        $query = "SELECT id_orang_tua, email, nama_ibu, nama_ayah, nik_ibu, nik_ayah, alamat, no_telepon FROM orang_tua";
+        $query = "SELECT id_orang_tua, email, nama_ibu, nama_ayah, nik_ibu, nik_ayah, alamat, no_telepon, status_aktivasi FROM orang_tua";
 
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -38,7 +38,18 @@ class OrangTuaModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function findAllBySearch($search)
+    public function findAllDataById($id)
+    {
+        $query = "SELECT orang_tua.*, anak.* FROM orang_tua LEFT JOIN anak ON anak.id_orang_tua = orang_tua.id_orang_tua WHERE orang_tua.id_orang_tua = :id_orang_tua";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_orang_tua", $id);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findAllBySearch($search, $limit, $offset)
     {
         $query = "SELECT * FROM orang_tua WHERE email LIKE :search
        OR nama_ibu LIKE :search
@@ -46,10 +57,12 @@ class OrangTuaModel
        OR nik_ibu LIKE :search
        OR nik_ayah LIKE :search
        OR alamat LIKE :search
-       OR no_telepon LIKE :search";
+       OR no_telepon LIKE :search LIMIT :limit OFFSET :offset";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":search", $search);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -100,10 +113,61 @@ class OrangTuaModel
         return $stmt->execute();
     }
 
+    // PAGINATION
+    public function getPaginationData($limit, $offset)
+    {
+        $query = "SELECT * FROM orang_tua LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getPaginationByDate($data)
+    {
+        $query = "SELECT pertumbuhan.*, anak.* FROM pertumbuhan JOIN anak ON anak.id_anak = pertumbuhan.id_anak WHERE pertumbuhan.tanggal_pencatatan BETWEEN :start_date AND :end_date LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":start_date", $data["start_date"]);
+        $stmt->bindParam(":end_date", $data["end_date"]);
+        $stmt->bindParam(":limit", $data["limit"], PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $data["offset"], PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalRows($search = false)
+    {
+        if ($search) {
+            $query =  "SELECT COUNT(*) as total FROM orang_tua WHERE email LIKE :search
+            OR nama_ibu LIKE :search
+            OR nama_ayah LIKE :search
+            OR nik_ibu LIKE :search
+            OR nik_ayah LIKE :search
+            OR alamat LIKE :search
+            OR no_telepon LIKE :search";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":search", $search);
+            $stmt->execute();
+        } else {
+            $query = "SELECT COUNT(*) as total FROM orang_tua";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+        }
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total"];
+    }
+
     private function generateAutoIncrementID()
     {
         // Query untuk mengambil nilai terakhir dari kolom ID di tabel orang tua
-        $query = "SELECT id_jadwal_imunisasi FROM jadwal_imunisasi ORDER BY id_jadwal_imunisasi DESC LIMIT 1";
+        $query = "SELECT id_orang_tua FROM orang_tua ORDER BY id_orang_tua DESC LIMIT 1";
         $stmt = $this->db->prepare($query);
 
         // Eksekusi query
@@ -112,8 +176,8 @@ class OrangTuaModel
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // Cek apakah ada ID terakhir
-            if ($row && isset($row['id_jadwal_imunisasi'])) {
-                $lastId = $row['id_jadwal_imunisasi'];
+            if ($row && isset($row['id_orang_tua'])) {
+                $lastId = $row['id_orang_tua'];
 
                 // Ambil bagian numerik dari format ID (contoh: OT0000000001 -> 1)
                 $num = (int)substr($lastId, 3);
