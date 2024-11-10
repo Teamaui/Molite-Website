@@ -31,12 +31,32 @@ class ImunisasiController
         $styleCss2 = "styleAdminOne";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
-        $jenisImunisasi = $this->imunisasiModel->findAll();
+
+        // Pagination
+        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+        $limit = 1;
+        $offset = ($page - 1) * $limit;
+
+        if (isset($_GET["search"])) {
+            $search = '%' . $_GET["search"] . '%';
+            $jenisImunisasi = $this->imunisasiModel->findAllBySearch($search, $limit, $offset);
+            $totalRows = $this->imunisasiModel->getTotalRows($search);
+            $totalPages = ceil($totalRows / $limit);
+        } else {
+            $jenisImunisasi = $this->imunisasiModel->getPaginationData($limit, $offset);
+            $totalRows = $this->imunisasiModel->getTotalRows();
+            $totalPages = ceil($totalRows / $limit);
+        }
+
+        $pagination = [
+            'totalRows' => $totalRows,
+            'totalPages' => $totalPages
+        ];
 
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Imunisasi/index", ["jenisImunisasi" => $jenisImunisasi]);
+        ViewReader::view("/Imunisasi/index", ["jenisImunisasi" => $jenisImunisasi, "pagination" => $pagination]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 
@@ -80,6 +100,7 @@ class ImunisasiController
         $styleCss2 = "styleAdminOne";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
+        
         $imunisasi = $this->imunisasiModel->findById($id);
         $jenisImunisasi = $this->imunisasiModel->findJenisImunisasiById($id);
 

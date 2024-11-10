@@ -24,6 +24,20 @@ class ImunisasiModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function findAllBySearch($search, $limit, $offset)
+    {
+        $query = "SELECT * FROM jenis_imunisasi WHERE nama_imunisasi LIKE :search
+            OR deskripsi_imunisasi LIKE :search
+            LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam("search", $search);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function findJenisImunisasiById($id)
     {
         $query = "SELECT * FROM jenis_imunisasi WHERE id_jenis_imunisasi = :id_jenis_imunisasi";
@@ -77,6 +91,38 @@ class ImunisasiModel
         $stmt->bindParam(":deskripsi_imunisasi", $data["deskripsi_imunisasi"]);
 
         return $stmt->execute();
+    }
+
+    // PAGINATION
+    public function getPaginationData($limit, $offset)
+    {
+        $query = "SELECT * FROM jenis_imunisasi LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalRows($search = false)
+    {
+        if ($search) {
+            $query =  "SELECT COUNT(*) as total FROM jenis_imunisasi WHERE nama_imunisasi LIKE :search
+            OR deskripsi_imunisasi LIKE :search";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":search", $search);
+            $stmt->execute();
+        } else {
+            $query = "SELECT COUNT(*) as total FROM jenis_imunisasi";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+        }
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total"];
     }
 
     private function generateAutoIncrementID()

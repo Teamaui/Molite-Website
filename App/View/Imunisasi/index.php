@@ -42,5 +42,10 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <?php if (isset($_GET["search"])) : ?>
+            <?= App\Helper\PaginationHelper::renderSearch((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('imunisasi?page='), $_GET["search"]) ?>
+        <?php else : ?>
+            <?= App\Helper\PaginationHelper::render((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('imunisasi?page=')) ?>
+        <?php endif; ?>
     </div>
 </div>

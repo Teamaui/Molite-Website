@@ -138,12 +138,33 @@ class EdukasiModel
         }
     }
 
-    public function deleteDetailEdukasi($id) {
+    public function deleteDetailEdukasi($id)
+    {
         $query = "DELETE FROM edukasi WHERE id_edukasi = :id_edukasi";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":id_edukasi", $id);
 
         return $stmt->execute();
+    }
+
+    public function getTotalRowsEdukasi($search = false)
+    {
+        if ($search) {
+            $query =  "SELECT COUNT(*) as total FROM edukasi WHERE judul_edukasi LIKE :search
+            OR deskripsi_edukasi LIKE :search
+            OR img LIKE :search";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":search", $search);
+            $stmt->execute();
+        } else {
+            $query = "SELECT COUNT(*) as total FROM edukasi";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+        }
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total"];
     }
 
     private function generateAutoIncrementIDJenisEdukasi()

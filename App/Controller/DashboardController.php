@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Helper\ViewReader;
+use App\Model\DashboardModel;
 use Model\AdminModel;
 use UrlHelper;
 
@@ -10,6 +11,7 @@ class DashboardController
 {
 
     private $adminModel;
+    private $dashboardModel;
 
     public function __construct()
     {
@@ -18,6 +20,7 @@ class DashboardController
         }
 
         $this->adminModel = new AdminModel();
+        $this->dashboardModel = new DashboardModel();
     }
 
     public function index(): void
@@ -27,11 +30,13 @@ class DashboardController
         $styleCss2 = "styleDashboard";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
+        $totalData = $this->dashboardModel->getAllRowsData();
+        $statusImunisasi = $this->dashboardModel->getStatusImunisasi();
 
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, 'styleCss2' => $styleCss2]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar");
-        ViewReader::view("/Dashboard/index");
+        ViewReader::view("/Dashboard/index", ["totalData" => $totalData, "statusImunisasi" => $statusImunisasi]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 }

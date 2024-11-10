@@ -274,6 +274,17 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
     background-color: rgb(23, 162, 184); 
 }
 
+.pink {
+    background-color: rgb(255, 182, 193);
+    color: white;
+}
+
+.blue {
+    background-color: rgb(135, 206, 250); 
+    color: white;
+}
+
+
 .badge:hover {
     opacity: 0.9;
 }

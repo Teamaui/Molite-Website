@@ -110,6 +110,19 @@ class PertumbuhanModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAllPertumbuhanForMouthById($idAnak)
+    {
+        $query = "SELECT DATE_FORMAT(tanggal_pencatatan, '%M') AS bulan_pencatatan, AVG(berat_badan) AS berat_badan, AVG(tinggi_badan) AS tinggi_badan, AVG(lingkar_kepala) AS lingkar_kepala FROM pertumbuhan WHERE pertumbuhan.id_anak = :id_anak GROUP BY bulan_pencatatan ORDER BY tanggal_pencatatan;
+        ";
+
+        $this->db->exec("SET lc_time_names = 'id_ID'");
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam("id_anak", $idAnak);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // PAGINATION
     public function getPaginationData($limit, $offset)
     {

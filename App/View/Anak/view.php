@@ -6,7 +6,7 @@
             <div class="list-group">
                 <div class="list-item">
                     <h3>Nama Anak</h3>
-                    <p><?= $anak["nama_anak"] ?></p>
+                    <p id="idAnak" data-id="<?= $anak["id_anak"] ?>"><?= $anak["nama_anak"] ?></p>
                 </div>
                 <div class="list-item">
                     <h3>Tanggal Lahir</h3>

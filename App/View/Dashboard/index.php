@@ -24,7 +24,7 @@
                     <i class="bi bi-person-heart"></i>
                 </div>
                 <div class="teks">
-                    <h1>13</h1>
+                    <h1><?= $totalData[0] ?></h1>
                     <p>Jumlah Orang Tua</p>
                 </div>
             </div>
@@ -33,21 +33,21 @@
                     <i class="bi bi-heart-pulse-fill"></i>
                 </div>
                 <div class="teks">
-                    <h1>26</h1>
+                    <h1><?= $totalData[1] ?></h1>
                     <p>Jumlah Anak</p>
                 </div>
             </div>
             <div class="card">
                 <div class="img"><i class="bi bi-capsule"></i></div>
                 <div class="teks">
-                    <h1>11</h1>
+                    <h1><?= $totalData[2] ?></h1>
                     <p>Jenis Imunisasi</p>
                 </div>
             </div>
             <div class="card">
                 <div class="img"><i class="bi bi-mortarboard-fill"></i></div>
                 <div class="teks">
-                    <h1>43</h1>
+                    <h1><?= $totalData[3] ?></h1>
                     <p>Jenis Edukasi</p>
                 </div>
             </div>

@@ -36,6 +36,7 @@ require_once __DIR__ . "/../App/Model/ImunisasiModel.php";
 require_once __DIR__ . "/../App/Model/PertumbuhanModel.php";
 require_once __DIR__ . "/../App/Model/PenjadwalanModel.php";
 require_once __DIR__ . "/../App/Model/EdukasiModel.php";
+require_once __DIR__ . "/../App/Model/DashboardModel.php";
 
 // Controller
 require_once __DIR__ . "/../App/Controller/AuthController.php";
@@ -154,6 +155,8 @@ Route::add("GET", "/seeder/rerun", SeederController::class, "rerun");
 // Api Molita
 Route::add("GET", "/molita-api/get-orang-tua", ApiController::class, "getOrangTua");
 Route::add("GET", "/molita-api/get-pertumbuhan", ApiController::class, "getPertumbuhan");
+Route::add("GET", "/molita-api/get-pertumbuhan/([0-9a-zA-Z]*)", ApiController::class, "getPertumbuhanById");
+Route::add("GET", "/molita-api/get-status-imunisasi", ApiController::class, "getStatusImunisasi");
 
 // Logout
 Route::add("GET", "/logout", AuthController::class, "logout");

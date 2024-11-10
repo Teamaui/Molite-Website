@@ -13,97 +13,7 @@
         const fileName = document.getElementById('file-name');
         fileName.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : "Belum ada file yang dipilih";
     }
-</script>
-<script>
-    // Data penjualan dan pembelian
-    const labels = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli"];
-    const dataBeratBadan = [900, 400, 800, 600, 700, 800, 900];
-    const dataTinggiBadan = [500, 300, 400, 500, 600, 700, 800];
-    const dataLingkarKepala = [300, 500, 600, 500, 600, 700, 800];
 
-    const data = {
-        labels: labels,
-        datasets: [{
-                label: "Berat Badan",
-                data: dataBeratBadan,
-                borderColor: "rgb(75, 192, 192)",
-                backgroundColor: "rgba(75, 192, 192, 0.2)",
-                fill: true,
-                tension: 0.4,
-            },
-            {
-                label: "Tinggi Badan",
-                data: dataTinggiBadan,
-                borderColor: "rgb(255, 99, 132)",
-                backgroundColor: "rgba(255, 99, 132, 0.2)",
-                fill: true,
-                tension: 0.4,
-            },
-            {
-                label: "Lingkar kepala",
-                data: dataLingkarKepala,
-                borderColor: "rgba(255, 100, 86, 0.2)",
-                backgroundColor: "rgba(255, 206, 86, 0.2)",
-                fill: true,
-                tension: 0.4,
-            },
-        ]
-    };
-
-    const config = {
-        type: 'line',
-        data: data,
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    };
-
-    // Render chart
-    const myChart = new Chart(
-        document.getElementById('waveChart'),
-        config
-    );
-</script>
-<script>
-    // JavaScript untuk menginisialisasi Chart.js
-    const ctx2 = document.getElementById('myDoughnutChart').getContext('2d');
-    const myDoughnutChart = new Chart(ctx2, {
-        type: 'doughnut', // jenis chart
-        data: {
-            labels: ['Belum', 'Tertunda', 'Sudah'], // Label data
-            datasets: [{
-                label: 'Contoh Data',
-                data: [10, 20, 30], // Data masing-masing bagian
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                }
-            }
-        }
-    });
-</script>
-<script>
     // Fungsi untuk mengambil data dari PHP
     async function fetchData(url) {
         try {
@@ -115,7 +25,96 @@
             return [];
         }
     }
+</script>
+<script>
+    function lineChart(labels, dataBeratBadan, dataTinggiBadan, dataLingkarKepala) {
+        const data = {
+            labels: labels,
+            datasets: [{
+                    label: "Berat Badan",
+                    data: dataBeratBadan,
+                    borderColor: "rgb(75, 192, 192)",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    fill: true,
+                    tension: 0.4,
+                },
+                {
+                    label: "Tinggi Badan",
+                    data: dataTinggiBadan,
+                    borderColor: "rgb(255, 99, 132)",
+                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    fill: true,
+                    tension: 0.4,
+                },
+                {
+                    label: "Lingkar kepala",
+                    data: dataLingkarKepala,
+                    borderColor: "rgba(255, 100, 86, 0.2)",
+                    backgroundColor: "rgba(255, 206, 86, 0.2)",
+                    fill: true,
+                    tension: 0.4,
+                },
+            ]
+        };
 
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        // Render chart
+        const myChart = new Chart(
+            document.getElementById('waveChart'),
+            config
+        );
+    }
+</script>
+<script>
+    // JavaScript untuk menginisialisasi Chart.js
+    const ctx2 = document.getElementById('myDoughnutChart').getContext('2d');
+
+    function doughnutChart(belum, tertunda, sudah) {
+        const myDoughnutChart = new Chart(ctx2, {
+            type: 'doughnut', // jenis chart
+            data: {
+                labels: ["Sudah", "Belum", "Tertunda"], // Label data
+                datasets: [{
+                    label: 'Contoh Data',
+                    data: [sudah, belum, tertunda], // Data masing-masing bagian
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 206, 86, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+    }
+</script>
+<script>
     // Fungsi untuk memproses data menjadi format yang sesuai untuk Chart.js
     function processData(data) {
         const labels = data.map(item => item.bulan_pencatatan); // Label bulan
@@ -173,18 +172,53 @@
 
     // Fungsi utama untuk mengatur alur eksekusi
     async function main() {
-        const data = await fetchData('http://localhost/Molita/Public/index.php/molita-api/get-pertumbuhan'); // Mengambil data dari PHP
+        const anak = document.querySelector("#idAnak");
+        const idAnak = anak.getAttribute("data-id");
+        const data = await fetchData('http://localhost/Molita/Public/index.php/molita-api/get-pertumbuhan/' + idAnak); // Mengambil data dari PHP
         const {
             labels,
             dataBeratBadan,
             dataTinggiBadan,
             dataLingkarkepala
         } = processData(data.data); // Memproses data
+
         createBarChart(labels, dataBeratBadan, dataTinggiBadan, dataLingkarkepala);
+    }
+    // Fungsi utama untuk mengatur alur eksekusi
+    async function mainStatus() {
+        const dataStatusImunisasi = await fetchData('http://localhost/Molita/Public/index.php/molita-api/get-status-imunisasi');
+        doughnutChart(dataStatusImunisasi.data["jumlah_belum"], dataStatusImunisasi.data["jumlah_tertunda"], dataStatusImunisasi.data["jumlah_sudah"])
+    }
+
+    async function mainLineChart() {
+        let dataPertumbuhan = await fetchData('http://localhost/Molita/Public/index.php/molita-api/get-pertumbuhan');
+        dataPertumbuhan = dataPertumbuhan.data;
+        console.log(dataPertumbuhan);
+        // Label bulan yang ingin digunakan
+        const labels = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+        // Array untuk menyimpan data berat badan, tinggi badan, dan lingkar kepala
+        const dataBeratBadan = new Array(labels.length).fill(0);
+        const dataTinggiBadan = new Array(labels.length).fill(0);
+        const dataLingkarKepala = new Array(labels.length).fill(0);
+
+        // Mengisi data berdasarkan bulan yang tersedia di `data`
+        dataPertumbuhan.forEach(item => {
+            const bulanIndex = labels.indexOf(item.bulan_pencatatan); // Menemukan index bulan dalam labels
+            if (bulanIndex !== -1) {
+                dataBeratBadan[bulanIndex] = item.berat_badan;
+                dataTinggiBadan[bulanIndex] = item.tinggi_badan;
+                dataLingkarKepala[bulanIndex] = item.lingkar_kepala;
+            }
+        });
+
+        lineChart(labels, dataBeratBadan, dataTinggiBadan, dataLingkarKepala);
     }
 
     // Memulai fungsi utama
     main();
+    mainStatus();
+    mainLineChart();
 </script>
 <script>
     function toggleDropdown() {
