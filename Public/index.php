@@ -27,6 +27,7 @@ require_once __DIR__ . "/../App/Helper/FlashMessageHelper.php";
 require_once __DIR__ . "/../App/Helper/PathHelper.php";
 require_once __DIR__ . "/../App/Helper/DatabaseHelper.php";
 require_once __DIR__ . "/../App/Helper/ViewHeader.php";
+require_once __DIR__ . "/../App/Helper/GenerateCodeHelper.php";
 
 // Model
 require_once __DIR__ . "/../App/Model/AdminModel.php";
@@ -157,6 +158,8 @@ Route::add("GET", "/molita-api/get-orang-tua", ApiController::class, "getOrangTu
 Route::add("GET", "/molita-api/get-pertumbuhan", ApiController::class, "getPertumbuhan");
 Route::add("GET", "/molita-api/get-pertumbuhan/([0-9a-zA-Z]*)", ApiController::class, "getPertumbuhanById");
 Route::add("GET", "/molita-api/get-status-imunisasi", ApiController::class, "getStatusImunisasi");
+Route::add("GET", "/molita-api/register-orang-tua/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", ApiController::class, "registerOrangTua");
+Route::add("GET", "/molita-api/login-orang-tua/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", ApiController::class, "loginOrangTua");
 
 // Logout
 Route::add("GET", "/logout", AuthController::class, "logout");

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Helper\generateCodeHelper;
 use App\Model\DashboardModel;
 use App\Model\OrangTuaModel;
 use App\Model\PertumbuhanModel;
@@ -20,6 +21,77 @@ class ApiController
         $this->dashboardModel = new DashboardModel();
     }
 
+    public function registerOrangTua($nik, $username, $password)
+    {
+
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+        $dataOrangTua = [
+            "nik" => $nik,
+            "username" => $username,
+            "password" => $passwordHash,
+            "token" => generateCodeHelper::generateToken(),
+        ];
+
+        if ($data = $this->orangTuaModel->registerOrangTua($dataOrangTua)) {
+            $this->respon = [
+                "code" => "200",
+                "status" => "Berhasil Register Data Orang Tua",
+                "data" => $data
+            ];
+        } else {
+            $this->respon = [
+                "code" => "401",
+                "status" => "Gagal Register Data Orang Tua",
+                "data" => ""
+            ];
+        }
+
+        print json_encode($this->respon);
+        exit;
+    }
+
+    public function loginOrangTua($nik, $password)
+    {
+
+        $dataOrangTua = [
+            "nik" => $nik,
+            "password" => $password,
+        ];
+
+        if ($data = $this->orangTuaModel->loginOrangTua($dataOrangTua)) {
+            if (password_verify($password, $data["password"])) {
+                if ($data["status_aktivasi"] == "Aktif") {
+                    $this->respon = [
+                        "code" => "200",
+                        "status" => "Berhasil Login Data Orang Tua",
+                        "data" => $data
+                    ];
+                } else {
+                    $this->respon = [
+                        "code" => "400",
+                        "status" => "Gagal Login Akun Tidak Aktif",
+                        "data" => ""
+                    ];
+                }
+            } else {
+                $this->respon = [
+                    "code" => "400",
+                    "status" => "Gagal Login Password Akun Salah",
+                    "data" => ""
+                ];
+            }
+        } else {
+            $this->respon = [
+                "code" => "401",
+                "status" => "Gagal Login Data Orang Tua",
+                "data" => ""
+            ];
+        }
+
+        print json_encode($this->respon);
+        exit;
+    }
 
     public function getOrangTua()
     {
@@ -81,7 +153,8 @@ class ApiController
         exit;
     }
 
-    public function getStatusImunisasi() {
+    public function getStatusImunisasi()
+    {
         if ($data = $this->dashboardModel->getStatusImunisasi()) {
             $this->respon = [
                 "code" => "200",

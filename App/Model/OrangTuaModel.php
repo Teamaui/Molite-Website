@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Helper\DatabaseHelper;
+use Exception;
 use PDO;
 
 class OrangTuaModel
@@ -101,6 +102,36 @@ class OrangTuaModel
         $stmt->bindParam(":nomor_telepon", $data["nomor_telepon"]);
 
         return $stmt->execute();
+    }
+
+    public function registerOrangTua(array $data): bool
+    {
+        $sql = "UPDATE orang_tua SET username = :username, password = :password, status_aktivasi = :status_aktivasi, token_orang_tua = :token_orang_tua WHERE nik_ibu = :nik_ibu OR nik_ayah = :nik_ayah";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":nik_ibu", $data["nik"]);
+        $stmt->bindParam(":nik_ayah", $data["nik"]);
+        $stmt->bindParam(":username", $data["username"]);
+        $stmt->bindParam(":password", $data["password"]);
+        $stmt->bindParam(":token_orang_tua", $data["token"]);
+        $stmt->bindValue(":status_aktivasi", "Aktif");
+
+        return $stmt->execute();
+    }
+
+    public function loginOrangTua(array $data): array
+    {
+        try {
+            $query = "SELECT username, email, password, status_aktivasi FROM orang_tua WHERE (nik_ibu = :nik_ibu OR nik_ayah = :nik_ayah)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":nik_ibu", $data["nik"]);
+            $stmt->bindParam(":nik_ayah", $data["nik"]);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public function deleteDataById(string $idOrangTua)
