@@ -105,7 +105,7 @@ body {
     display: block;
     margin: 0.5rem 0;
     color: #098DB3;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
 }
 
 .sub-main-right input {
@@ -127,18 +127,14 @@ body {
     font-style: italic;
 }
 
-.sub-main-right input::placeholder {
-    color: #9AD0DF;
-    font-style: italic;
-}
 
 .sub-main-right input:-webkit-autofill {
-    color: #9AD0DF;
+    color: #098DB3;
     -webkit-box-shadow: 0 0 0px 1000px #F7F7F7 inset;
 }
 
 .sub-main-right input:-webkit-autofill::first-line {
-    color: #9AD0DF;
+    color: #098DB3;
 }
 
 input[type="password"]::-ms-reveal,
@@ -219,6 +215,18 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
 
 .toggle-password:hover {
     cursor:pointer;
+}
+
+.label-sandi {
+    display: flex;
+    justify-content: space-between;
+}
+
+.label-sandi a {
+    display: block;
+    margin: 0.5rem 0;
+    color: #098DB3;
+    font-size: 1.1rem;
 }
 
 @media (max-width: 1024px) {

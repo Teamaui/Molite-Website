@@ -109,3 +109,35 @@
 .main-img button:hover {
     opacity: .9;
 }
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear, 
+input[type="password"]::-webkit-clear-button, 
+input[type="password"]::-webkit-credentials-auto-fill-button { 
+    display: none; 
+}
+
+.toggle-password {
+    background-color: #098DB3;
+    color: #F7F7F7;
+    width: 3rem;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    font-size: 1.5rem;
+    align-items: center;
+    height: 2.5rem;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+    cursor:pointer;
+}
+
+.password-container {
+    display: flex;
+}
+
+.password-container input {
+    width: calc(40% - 3rem);
+}

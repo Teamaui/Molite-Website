@@ -22,7 +22,6 @@
 .main-content .card-header {
     display: flex;
     margin: 0 auto;
-    overflow-x: auto;
     padding: 1rem;
     background-color: #098DB3;
     border-radius: 20px;
@@ -46,6 +45,23 @@
 .cards-layout {
     display: flex;
     flex-direction: column;
+}
+.left-header {
+    width: 75%;
+}
+
+
+.right-header {
+    width: 25%;
+    position: relative;
+}
+
+.right-header img {
+    position: absolute;
+    top: -137px;
+    right: 140px;
+    width: 150px;
+    transform: scaleX(-1);
 }
 
 .card .img {

@@ -1,4 +1,7 @@
 <!-- Start Body -->
+<img src="<?= UrlHelper::img("assets/bg-corner.png") ?>" alt="" class="top-left">
+<img src="<?= UrlHelper::img("assets/bg-corner.png") ?>" alt="" class="top-right">
+
 <div class="main">
     <h1>Registrasi</h1>
     <p>Mohon lengkapi data dibawah ini!</p>
@@ -26,12 +29,12 @@
             <div class="form-right">
                 <label for="sandi2">Sandi</label>
                 <div class="password-container">
-                    <input type="password" id="sandi2" placeholder="Masukkan Konfirmasi Sandi..." name="sandi1" required>
+                    <input type="password" id="sand1" placeholder="Masukkan Konfirmasi Sandi..." name="sandi1" required>
                     <span class="toggle-password" id="toggle-password2"><i class="bi bi-eye-slash-fill"></i></span>
                 </div>
                 <label for="sandi2">Konfirmasi Sandi</label>
                 <div class="password-container">
-                    <input type="password" id="sandi3" placeholder="Masukkan Konfirmasi Sandi..." name="sandi2" required>
+                    <input type="password" id="sandi2" placeholder="Masukkan Konfirmasi Sandi..." name="sandi2" required>
                     <span class="toggle-password" id="toggle-password3"><i class="bi bi-eye-slash-fill"></i></span>
                 </div>
             </div>
@@ -41,3 +44,5 @@
     <a href="<?= PathHelper::getPath() ?>/login">Sudah punya akun? <span>Masuk</span></a>
 </div>
 <!-- End Body -->
+<img src="<?= UrlHelper::img("assets/bg-corner.png") ?>" alt="" class="bottom-left">
+<img src="<?= UrlHelper::img("assets/bg-corner.png") ?>" alt="" class="bottom-right">

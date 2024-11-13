@@ -1,10 +1,12 @@
 <?php
 
+use App\Controller\AdminController;
 use App\Controller\AnakController;
 use App\Controller\ApiController;
 use App\Controller\AuthController;
 use App\Controller\BerandaController;
 use App\Controller\DashboardController;
+use App\Controller\DashboarSuperController;
 use App\Controller\EditProfilController;
 use App\Controller\ImunisasiController;
 use App\Controller\LaporanController;
@@ -38,9 +40,11 @@ require_once __DIR__ . "/../App/Model/PertumbuhanModel.php";
 require_once __DIR__ . "/../App/Model/PenjadwalanModel.php";
 require_once __DIR__ . "/../App/Model/EdukasiModel.php";
 require_once __DIR__ . "/../App/Model/DashboardModel.php";
+require_once __DIR__ . "/../App/Model/SuperAdminModel.php";
 
 // Controller
 require_once __DIR__ . "/../App/Controller/AuthController.php";
+require_once __DIR__ . "/../App/Controller/DashboardSuperController.php";
 require_once __DIR__ . "/../App/Controller/DashboardController.php";
 require_once __DIR__ . "/../App/Controller/SeederController.php";
 require_once __DIR__ . "/../App/Controller/AnakController.php";
@@ -54,6 +58,7 @@ require_once __DIR__ . "/../App/Controller/PenjadwalanController.php";
 require_once __DIR__ . "/../App/Controller/EdukasiController.php";
 require_once __DIR__ . "/../App/Controller/LaporanController.php";
 require_once __DIR__ . "/../App/Controller/ReportController.php";
+require_once __DIR__ . "/../App/Controller/AdminController.php";
 
 // Seeder
 require_once __DIR__ . "/../App/Seeder/MasterSeeder.php";
@@ -62,6 +67,15 @@ require_once __DIR__ . "/../App/Seeder/MasterSeeder.php";
 require_once __DIR__ . "/../Routes/Route.php";
 
 // ------- ADD ROUTE
+// SuperAdmin Dashboard
+Route::add("GET", "/dashboard-super-admin", DashboarSuperController::class, "index");
+// SuperAdmin Admin
+Route::add("GET", "/admin", AdminController::class, "index");
+Route::add("GET", "/admin/create", AdminController::class, "create");
+Route::add("POST", "/admin/store", AdminController::class, "store");
+Route::add("GET", "/admin/edit/([0-9a-zA-Z]*)", AdminController::class, "edit");
+Route::add("GET", "/admin/delete/([0-9a-zA-Z]*)", AdminController::class, "destroy");
+
 // Beranda
 Route::add("GET", "/", BerandaController::class, "index");
 
@@ -72,6 +86,9 @@ Route::add("POST", "/login", AuthController::class, "index");
 // Register
 Route::add("GET", "/register", AuthController::class, "register");
 Route::add("POST", "/register", AuthController::class, "register");
+
+// Lupa Sandi
+Route::add("GET", "/lupa-sandi", AuthController::class, "lupaSandi");
 
 // Dashboard
 Route::add("GET", "/dashboard", DashboardController::class, "index");

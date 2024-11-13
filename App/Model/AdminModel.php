@@ -31,6 +31,21 @@ class AdminModel
         }
     }
 
+    public function findAll()
+    {
+        $sql = "SELECT * FROM admin";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($data) {
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
     public function findAdminByUniqueId(string $idAdmin)
     {
         $sql = "SELECT * FROM admin WHERE id_admin = :id_admin";
@@ -57,6 +72,19 @@ class AdminModel
         $stmt->bindParam(":username", $data["username"]);
         $stmt->bindParam(":password", $sandiAman);
         $stmt->bindParam(":nik", $data["nik"]);
+
+        return $stmt->execute();
+    }
+
+    public function insertNewAdmin(array $data)
+    {
+        $id_admin = $this->generateAutoIncrementID();
+        $query = "INSERT INTO admin (id_admin, nik, nama_admin, email) VALUES (:id_admin , :nik , :nama_admin , :email)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_admin", $id_admin);
+        $stmt->bindParam(":nik", $data["nik"]);
+        $stmt->bindParam(":nama_admin", $data["nama_admin"]);
+        $stmt->bindParam(":email", $data["email"]);
 
         return $stmt->execute();
     }
@@ -157,5 +185,49 @@ class AdminModel
             echo "Tidak ada file yang dipilih atau terjadi kesalahan saat mengunggah.";
             return false;
         }
+    }
+
+    public function deleteDataById($id)
+    {
+        $query = "DELETE FROM admin WHERE id_admin = :id_admin";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_admin", $id);
+
+        return $stmt->execute();
+    }
+
+    private function generateAutoIncrementID()
+    {
+        // Query untuk mengambil nilai terakhir dari kolom ID di tabel orang tua
+        $query = "SELECT id_admin FROM admin ORDER BY id_admin DESC LIMIT 1";
+        $stmt = $this->db->prepare($query);
+
+        // Eksekusi query
+        if ($stmt->execute()) {
+            // Ambil hasil query
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Cek apakah ada ID terakhir
+            if ($row && isset($row['id_admin'])) {
+                $lastId = $row['id_admin'];
+
+                // Ambil bagian numerik dari format ID (contoh: ADM0000000001 -> 1)
+                $num = (int)substr($lastId, 3);
+
+                // Tambah 1 untuk ID selanjutnya
+                $newNum = $num + 1;
+
+                // Format ulang ID dengan leading zeros
+                $newId = 'ADM' . str_pad($newNum, 10, '0', STR_PAD_LEFT);
+            } else {
+                // Jika tidak ada ID sebelumnya, mulai dari ADM0000000001
+                $newId = 'ADM0000000001';
+            }
+        } else {
+            // Jika query gagal dieksekusi, kembalikan nilai kosong atau lakukan penanganan error
+            $newId = null; // atau throw new Exception("Gagal mengeksekusi query");
+        }
+
+        return $newId;
     }
 }

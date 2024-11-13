@@ -7,13 +7,38 @@ body {
     min-height: 100vh;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     margin: 0;
+    position: relative;
+}
+img {
+    position: absolute;
+    z-index: -1;
 }
 
+img.top-left {
+    top: -10px;
+    left: 0;
+}
+img.top-right {
+    right: 0;
+    top: -10px;
+    transform: rotate(90deg);
+}
+
+img.bottom-left {
+    bottom: -10px;
+    left: 0;
+    transform: rotate(270deg);
+}
+img.bottom-right {
+    right: 0;
+    bottom: -10px;
+    transform: rotate(180deg);
+}
 .main {
     width: 80%;
     max-width: 1200px;
     background-color: #F7F7F7;
-    border-radius: 1rem;
+    border-radius: .5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     padding: 1rem;
@@ -54,7 +79,7 @@ label {
     display: block;
     margin: 0.5rem 0;
     color: #098DB3;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
 }
 
 input {
@@ -78,12 +103,12 @@ input::placeholder {
 }
 
 input:-webkit-autofill {
-    color: #9AD0DF;
+    color: #098DB3;
     -webkit-box-shadow: 0 0 0px 1000px #F7F7F7 inset;
 }
 
 input:-webkit-autofill::first-line {
-    color: #9AD0DF;
+    color: #098DB3;
 }
 
 input[type="password"]::-ms-reveal,

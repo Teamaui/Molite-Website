@@ -35,16 +35,25 @@
 
                 <h1>KEAMANAN AKUN</h1>
                 <div>
-                    <label for="password_sekarang">Sandi Sekarang</label>
-                    <input type="password" id="password_sekarang" placeholder="Masukkan Sandi Sekarang..." name="password_sekarang">
+                    <div class="password-container">
+                        <label for="sandi1">Sandi Sekarang</label>
+                        <input type="password" id="sandi1" placeholder="Masukkan Sandi Sekarang..." name="password_sekarang">
+                        <span class="toggle-password" id="toggle-password1"><i class="bi bi-eye-slash-fill"></i></span>
+                    </div>
                 </div>
                 <div>
-                    <label for="new_password">Ganti Sandi</label>
-                    <input type="password" id="new_password" placeholder="Masukkan Sandi Baru..." name="new_password">
+                    <div class="password-container">
+                        <label for="sandi2">Ganti Sandi</label>
+                        <input type="password" id="sandi2" placeholder="Masukkan Sandi Baru..." name="new_password">
+                        <span class="toggle-password" id="toggle-password2"><i class="bi bi-eye-slash-fill"></i></span>
+                    </div>
                 </div>
                 <div>
-                    <label for="repeat_password">Konfirmasi Sandi</label>
-                    <input type="password" id="repeat_password" placeholder="Masukkan Konfirmasi Sandi..." name="repeat_password">
+                    <div class="password-container">
+                        <label for="sandi3">Konfirmasi Sandi</label>
+                        <input type="password" id="sandi3" placeholder="Masukkan Konfirmasi Sandi..." name="repeat_password">
+                        <span class="toggle-password" id="toggle-password3"><i class="bi bi-eye-slash-fill"></i></span>
+                    </div>
                 </div>
 
                 <button class="submit">Edit Profile</button>

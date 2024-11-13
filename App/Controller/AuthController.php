@@ -5,16 +5,19 @@ namespace App\Controller;
 use App\Helper\ViewReader;
 use FlashMessageHelper;
 use Model\AdminModel;
+use Model\SuperAdminModel;
 use PathHelper;
 use UrlHelper;
 
 class AuthController
 {
     private AdminModel $admin;
+    private SuperAdminModel $superAdminModel;
 
     public function __construct()
     {
         $this->admin = new AdminModel();
+        $this->superAdminModel = new SuperAdminModel();
 
         if (isset($_SESSION["status_masuk"]) && $_SESSION["status_masuk"] == true) {
             header("Location: " . UrlHelper::route("dashboard"));
@@ -31,24 +34,39 @@ class AuthController
             ViewReader::view("Auth/login");
             ViewReader::view("Templates/AuthTemplate/auth_footer");
         } else {
-            $nik = $_POST["nik"];
-            $sandi = $_POST["sandi"];
-
-            if ($userData = $this->admin->findAdminByUniqueNik($nik)) {
-                if (password_verify($sandi, $userData["password"])) {
+            $nik_atau_email = $_POST["nik_atau_email"];
+            $sandi = $_POST["sandi"];   
+            
+            if ($userSuperAdmin = $this->superAdminModel->findByEmail($nik_atau_email)){
+                if (password_verify($sandi, $userSuperAdmin["password"])) {
                     FlashMessageHelper::set("pesan_login_sukses", "Berhasil login akun");
-                    $_SESSION["username"] = $userData["username"];
-                    $_SESSION["id_admin"] = $userData["id_admin"];
-                    $_SESSION["status_masuk"] = true;
-                    header("Location: " . PathHelper::getPath() . "/dashboard");
+                    $_SESSION["nama_super_admin"] = $userSuperAdmin["nama"];
+                    $_SESSION["email_super_admin"] = $userSuperAdmin["email"];
+                    $_SESSION["status_masuk_super_admin"] = true;
+                    header("Location: " . PathHelper::getPath() . "/dashboard-super-admin");
                     exit;
                 } else {
                     FlashMessageHelper::set("pesan_login_gagal", "Sandi salah");
                     header("Location: " . PathHelper::getPath() . "/login");
                 }
-            } else {
-                FlashMessageHelper::set("pesan_login_gagal", "NIK tidak terdaftar");
-                header("Location: " . PathHelper::getPath() . "/login");
+            }else{
+                if ($userData = $this->admin->findAdminByUniqueNik($nik_atau_email)) {
+                    if (password_verify($sandi, $userData["password"])) {
+                        FlashMessageHelper::set("pesan_login_sukses", "Berhasil login akun");
+                        $_SESSION["username"] = $userData["username"];
+                        $_SESSION["id_admin"] = $userData["id_admin"];
+                        $_SESSION["nik"] = $userData["nik"];
+                        $_SESSION["status_masuk"] = true;
+                        header("Location: " . PathHelper::getPath() . "/dashboard");
+                        exit;
+                    } else {
+                        FlashMessageHelper::set("pesan_login_gagal", "Sandi salah");
+                        header("Location: " . PathHelper::getPath() . "/login");
+                    }
+                } else {
+                    FlashMessageHelper::set("pesan_login_gagal", "NIK tidak terdaftar");
+                    header("Location: " . PathHelper::getPath() . "/login");
+                }  
             }
         }
     }
@@ -90,6 +108,38 @@ class AuthController
             } else {
                 FlashMessageHelper::set("pesan_register_gagal", "Password tidak sama");
                 header("Location: " . PathHelper::getPath() . "/register");
+            }
+        }
+    }
+
+    public function lupaSandi(): void
+    {
+        $title = "Molita | Lupa Sandi";
+        $styleCss = "styleAuthLogin";
+
+        if ($_SERVER["REQUEST_METHOD"] == "GET") {
+            ViewReader::view("Templates/AuthTemplate/auth_header", ["title" => $title, "styleCss" => $styleCss]);
+            ViewReader::view("Auth/lupaSandi");
+            ViewReader::view("Templates/AuthTemplate/auth_footer");
+        } else {
+            $nik = $_POST["nik"];
+            $sandi = $_POST["sandi"];
+
+            if ($userData = $this->admin->findAdminByUniqueNik($nik)) {
+                if (password_verify($sandi, $userData["password"])) {
+                    FlashMessageHelper::set("pesan_login_sukses", "Berhasil login akun");
+                    $_SESSION["username"] = $userData["username"];
+                    $_SESSION["id_admin"] = $userData["id_admin"];
+                    $_SESSION["status_masuk"] = true;
+                    header("Location: " . PathHelper::getPath() . "/dashboard");
+                    exit;
+                } else {
+                    FlashMessageHelper::set("pesan_login_gagal", "Sandi salah");
+                    header("Location: " . PathHelper::getPath() . "/login");
+                }
+            } else {
+                FlashMessageHelper::set("pesan_login_gagal", "NIK tidak terdaftar");
+                header("Location: " . PathHelper::getPath() . "/login");
             }
         }
     }

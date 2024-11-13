@@ -13,8 +13,8 @@
             </div>
         </div>
         <div class="sub-main-right">
-            <h1>Masuk</h1>
-            <p>Mohon masuk untuk melanjutkan</p>
+            <h1>Lupa Sandi?</h1>
+            <p>Mohon masukkan email untuk melanjutkan</p>
 
             <?php if (FlashMessageHelper::has("pesan_register_sukses")) : ?>
                 <p class="alert-message-success"><?= FlashMessageHelper::get("pesan_register_sukses"); ?></p>
@@ -30,20 +30,13 @@
 
             <form action="<?= UrlHelper::route("login") ?>" method="post">
                 <div>
-                    <label for="nik_atau_email">NIK / Email</label>
-                    <input type="text" id="nik_atau_email" placeholder="Masukkan NIK atau Email..." name="nik_atau_email" required>
+                    <label for="email">Alamat Email</label>
+                    <input type="text" id="email" placeholder="Masukkan Alamat Email..." name="email" required>
                 </div>
-                <div class="label-sandi">
-                    <label for="sandi">Sandi</label>
-                    <a href="<?= UrlHelper::route("lupa-sandi") ?>">Lupa Sandi?</a>
-                </div>
-                <div class="password-container">
-                    <input type="password" id="sandi1" placeholder="Masukkan Sandi..." name="sandi" required>
-                    <span class="toggle-password" id="toggle-password1"><i class="bi bi-eye-slash-fill"></i></span>
-                </div>
-                <button type="submit">Masuk</button>
+
+                <button type="submit">Ganti Sandi</button>
             </form>
-            <a href="<?= PathHelper::getPath() ?>/register">Belum punya akun? <span>Register</span></a>
+            <a href="<?= PathHelper::getPath() ?>/login">Kembali ke halaman masuk? <span>Masuk</span></a>
         </div>
     </div>
 </div>
