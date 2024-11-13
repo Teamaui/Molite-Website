@@ -40,7 +40,7 @@ class AuthController
             if ($userSuperAdmin = $this->superAdminModel->findByEmail($nik_atau_email)){
                 if (password_verify($sandi, $userSuperAdmin["password"])) {
                     FlashMessageHelper::set("pesan_login_sukses", "Berhasil login akun");
-                    $_SESSION["nama_super_admin"] = $userSuperAdmin["nama"];
+                    $_SESSION["nama_pengguna"] = $userSuperAdmin["nama"];
                     $_SESSION["email_super_admin"] = $userSuperAdmin["email"];
                     $_SESSION["status_masuk_super_admin"] = true;
                     header("Location: " . PathHelper::getPath() . "/dashboard-super-admin");

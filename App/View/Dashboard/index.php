@@ -8,7 +8,7 @@
                 ?></p>
             <div class="card-header">
                 <div class="left-header">
-                    <h1>Selamat datang, <span>Abdullah Muchsin</span></h1>
+                    <h1>Selamat datang, <span><?= (isset($admin["nama_admin"]) ? $admin["nama_admin"] : $superAdmin["nama"]) ?></span></h1>
                     <p>Sehatmu, semangat kami! Terus layani dengan hati untuk kesehatan yang lebih baik.</p>
                 </div>
                 <div class="right-header">

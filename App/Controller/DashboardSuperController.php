@@ -39,7 +39,7 @@ class DashboarSuperController
         ViewReader::view("/Templates/SuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, 'styleCss2' => $styleCss2]);
         ViewReader::view("/Templates/SuperAdminTemplate/topbar", ["superAdmin" => $superAdmin]);
         ViewReader::view("/Templates/SuperAdminTemplate/sidebar");
-        ViewReader::view("/Dashboard/index", ["totalData" => $totalData, "statusImunisasi" => $statusImunisasi]);
+        ViewReader::view("/Dashboard/index", ["superAdmin" => $superAdmin, "totalData" => $totalData, "statusImunisasi" => $statusImunisasi]);
         ViewReader::view("/Templates/SuperAdminTemplate/footer");
     }
 }

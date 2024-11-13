@@ -36,7 +36,7 @@ class DashboardController
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, 'styleCss2' => $styleCss2]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar");
-        ViewReader::view("/Dashboard/index", ["totalData" => $totalData, "statusImunisasi" => $statusImunisasi]);
+        ViewReader::view("/Dashboard/index", ["admin" => $admin, "totalData" => $totalData, "statusImunisasi" => $statusImunisasi]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 }
