@@ -2,9 +2,10 @@
 <div class="main-content">
     <h1>Edit Data Admin</h1>
     <div class="main-container">
-        <form action="/admin/store" method="post">
+        <form action="<?= UrlHelper::route("admin/update"); ?>" method="post">
             <div class="form-container">
                 <div class="form-left">
+                    <input type="hidden" name="id_admin"value="<?= $admin["id_admin"] ?>">
                     <div>
                         <label for="nik">NIK</label>
                         <input type="text" id="nik" value="<?= $admin["nik"] ?>" placeholder="Masukkan NIK..." name="nik" required>

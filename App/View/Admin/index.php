@@ -11,7 +11,7 @@
         <?php endif; ?>
         <div class="table-button">
             <a href="<?= UrlHelper::route("admin/create"); ?>"><i class="bi bi-plus-circle"></i> Tambah Data</a>
-            <form action="<?= UrlHelper::route("/edit") ?>" method="get">
+            <form action="<?= UrlHelper::route("/admin") ?>" method="get">
                 <i class="bi bi-search"></i>
                 <input type="text" placeholder="Search here..." name="search">
                 <button type="submit">Search</button>
@@ -55,5 +55,10 @@
 
             </tbody>
         </table>
+        <?php if (isset($_GET["search"])) : ?>
+            <?= App\Helper\PaginationHelper::renderSearch((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('admin?page='), $_GET["search"]) ?>
+        <?php else : ?>
+            <?= App\Helper\PaginationHelper::render((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('admin?page=')) ?>
+        <?php endif; ?>
     </div>
 </div>

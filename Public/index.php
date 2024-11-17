@@ -8,8 +8,10 @@ use App\Controller\BerandaController;
 use App\Controller\DashboardController;
 use App\Controller\DashboarSuperController;
 use App\Controller\EditProfilController;
+use App\Controller\EditProfileSuperAdminController;
 use App\Controller\ImunisasiController;
 use App\Controller\LaporanController;
+use App\Controller\OrangTuaAdminController;
 use App\Controller\OrangTuaController;
 use App\Controller\PenjadwalanController;
 use App\Controller\PertumbuhanController;
@@ -63,6 +65,8 @@ require_once __DIR__ . "/../App/Controller/EdukasiController.php";
 require_once __DIR__ . "/../App/Controller/LaporanController.php";
 require_once __DIR__ . "/../App/Controller/ReportController.php";
 require_once __DIR__ . "/../App/Controller/AdminController.php";
+require_once __DIR__ . "/../App/Controller/OrangTuaAdminController.php";
+require_once __DIR__ . "/../App/Controller/EditProfileSuperAdminController.php";
 
 // Seeder
 require_once __DIR__ . "/../App/Seeder/MasterSeeder.php";
@@ -79,6 +83,7 @@ Route::add("GET", "/admin/create", AdminController::class, "create");
 Route::add("POST", "/admin/store", AdminController::class, "store");
 Route::add("GET", "/admin/edit/([0-9a-zA-Z]*)", AdminController::class, "edit");
 Route::add("GET", "/admin/delete/([0-9a-zA-Z]*)", AdminController::class, "destroy");
+Route::add("POST", "/admin/update", AdminController::class, "update");
 
 // Beranda
 Route::add("GET", "/", BerandaController::class, "index");
@@ -109,6 +114,9 @@ Route::add("GET", "/orang-tua/edit/([0-9a-zA-Z]*)", OrangTuaController::class, "
 Route::add("POST", "/orang-tua/update", OrangTuaController::class, "update");
 Route::add("GET", "/orang-tua/delete/([0-9a-zA-Z]*)", OrangTuaController::class, "destroy");
 Route::add("GET", "/orang-tua/view/([0-9a-zA-Z]*)", OrangTuaController::class, "view");
+
+// orang tua super admin
+Route::add("GET", "/orang-tua-admin", OrangTuaAdminController::class, "index");
 
 // Anak
 Route::add("GET", "/anak", AnakController::class, "index");
@@ -172,6 +180,10 @@ Route::add("GET", "/cetak-laporan/cetak", ReportController::class, "generateRepo
 // Edit Profil
 Route::add("GET", "/edit-profile", EditProfilController::class, "index");
 Route::add("POST", "/edit-profile/update", EditProfilController::class, "update");
+
+// Edit Profil Super Admin
+Route::add("GET", "/edit-profile-super-admin", EditProfileSuperAdminController::class, "index");
+Route::add("POST", "/edit-profile-super-admin/update", EditProfileSuperAdminController::class, "update");
 
 // Seeder
 Route::add("GET", "/seeder/run", SeederController::class, "run");

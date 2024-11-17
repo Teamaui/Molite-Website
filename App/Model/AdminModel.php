@@ -171,6 +171,66 @@ class AdminModel
         return $stmt->execute();
     }
 
+    public function updateDataAdmin($data)
+    {
+        $sql = "UPDATE admin SET nama_admin = :nama_admin, nik = :nik, email = :email WHERE id_admin = :id_admin";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":id_admin", $data["id_admin"]);
+        $stmt->bindParam(":nama_admin", $data["nama_admin"]);
+        $stmt->bindParam(":nik", $data["nik"]);
+        $stmt->bindParam(":email", $data["email"]);
+
+        return $stmt->execute();
+    }
+
+    // PAGINATION
+    public function getPaginationData($limit, $offset)
+    {
+        $query = "SELECT * FROM admin LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getTotalRows($search = false)
+    {
+        if ($search) {
+            $query =  "SELECT COUNT(*) as total FROM admin WHERE nik LIKE :search
+            OR nik LIKE :search
+            OR nama_admin LIKE :search
+            OR email LIKE :search";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":search", $search);
+            $stmt->execute();
+        } else {
+            $query = "SELECT COUNT(*) as total FROM admin";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+        }
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total"];
+    }
+
+    public function findAllBySearch($search, $limit, $offset)
+    {
+        $query = "SELECT * FROM admin WHERE nik LIKE :search
+       OR nama_admin LIKE :search
+       OR email LIKE :search LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":search", $search);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function updateImg($oldImg, $foto)
     {
         // Direktori tempat menyimpan foto

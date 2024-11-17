@@ -4,7 +4,7 @@
         <div class="user-section">
             <div class="user-name" onclick="toggleDropdown()"><?= $superAdmin["nama"] ?> ▼</div>
             <div class="dropdown" id="dropdownMenu">
-                <a href="<?= UrlHelper::route("edit-profile-super-admin") ?>"><i class="bi bi-pencil"></i> Edit Profil</a>
+                <a href="<?= UrlHelper::route("dashboard-super-admin") ?>"><i class="bi bi-house-gear"></i> Dashboard</a>
                 <a onclick="showExitAlert()"><i class="bi bi-box-arrow-left"></i> Keluar</a>
             </div>
         </div>

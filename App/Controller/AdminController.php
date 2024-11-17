@@ -31,12 +31,31 @@ class AdminController
         $styleCss2 = "styleAdminOne";
 
         $superAdmin = $this->superAdminModel->findByEmail($_SESSION["email_super_admin"]);
-        $admin = $this->adminModel->findAll();
+        // Pagination
+        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+        $limit = 2;
+        $offset = ($page - 1) * $limit;
+
+        if (isset($_GET["search"])) {
+            $search = '%' . $_GET["search"] . '%';
+            $admin = $this->adminModel->findAllBySearch($search, $limit, $offset);
+            $totalRows = $this->adminModel->getTotalRows($search);
+            $totalPages = ceil($totalRows / $limit);
+        } else {
+            $admin = $this->adminModel->getPaginationData($limit, $offset);
+            $totalRows = $this->adminModel->getTotalRows();
+            $totalPages = ceil($totalRows / $limit);
+        }
+
+        $pagination = [
+            'totalRows' => $totalRows,
+            'totalPages' => $totalPages
+        ];
 
         ViewReader::view("/Templates/SuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
         ViewReader::view("/Templates/SuperAdminTemplate/topbar", ["superAdmin" => $superAdmin]);
         ViewReader::view("/Templates/SuperAdminTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Admin/index", ["admin" => $admin]);
+        ViewReader::view("/Admin/index", ["admin" => $admin,"pagination" => $pagination]);
         ViewReader::view("/Templates/SuperAdminTemplate/footer");
     }
     public function create()
@@ -67,7 +86,8 @@ class AdminController
             header("Location: " . UrlHelper::route("/admin"));
             exit;
         } else {
-            header("Location: " . UrlHelper::route("/admin/create"));
+            FlashMessageHelper::set("pesan_gagal", "Gagal menambahkan Admin!");
+            header("Location: " . UrlHelper::route("/admin"));
             exit;
         }
     }
@@ -88,29 +108,25 @@ class AdminController
         ViewReader::view("/Templates/SuperAdminTemplate/footer");
     }
 
-    // public function update(): void
-    // {
-    //     $data = [
-    //         "id_orang_tua" => $_POST["id_orang_tua"],
-    //         "email" => $_POST["email"],
-    //         "nama_ibu" => $_POST["nama_ibu"],
-    //         "nama_ayah" => $_POST["nama_ayah"],
-    //         "alamat" => $_POST["alamat"],
-    //         "nik_ibu" => $_POST["nik_ibu"],
-    //         "nik_ayah" => $_POST["nik_ayah"],
-    //         "nomor_telepon" => $_POST["nomor_telepon"],
-    //     ];
+    public function update(): void
+    {
+        $data = [
+            "nik" => $_POST["nik"],
+            "nama_admin" => $_POST["nama_admin"],
+            "email" => $_POST["email"],
+            "id_admin" => $_POST["id_admin"],
+        ];
 
-    //     if ($this->orangTuaModel->updateData($data)) {
-    //         FlashMessageHelper::set("pesan_sukses", "Berhasil update data Admin!");
-    //         header("Location: " . UrlHelper::route("/orang-tua"));
-    //         exit;
-    //     } else {
-    //         FlashMessageHelper::set("pesan_gagal", "Gagal update Admin!");
-    //         header("Location: " . UrlHelper::route("/orang-tua"));
-    //         exit;
-    //     }
-    // }
+        if ($this->adminModel->updateDataAdmin($data)) {
+            FlashMessageHelper::set("pesan_sukses", "Berhasil update data Admin!");
+            header("Location: " . UrlHelper::route("/admin"));
+            exit;
+        } else {
+            FlashMessageHelper::set("pesan_gagal", "Gagal update Admin!");
+            header("Location: " . UrlHelper::route("/admin"));
+            exit;
+        }
+    }
 
     // public function view($id)
     // {
