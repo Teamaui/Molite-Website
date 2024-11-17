@@ -10,13 +10,16 @@ class PdfHelper extends FPDF
     // Fungsi untuk membuat header PDF
     public function header()
     {
+        $this->SetX($this->GetX() + 3);
         $this->Image(UrlHelper::img('logo.png'), 30, 11, 13); 
         $this->SetFont('Times', 'B', 20);
         $this->Cell(0, 12, 'LAPORAN PERTUMBUHAN ANAK', 0, 1, 'C');
         $this->Ln(1);
+        $this->SetX($this->GetX() + 3);
         $this->SetFont('Times', 'I', 10);
         $this->Cell(0, 0, 'Alamat : Jln.Sumbersari No 3, Jember, Indonesia', 0, 1, 'C');
         $this->Ln(5);
+        $this->SetX($this->GetX() + 3);
         $this->SetFont('Times', 'I', 10);
         $this->Cell(0, 0, 'Tlp : (+62) 895241640055 - Email : teamaui29@gmail.com', 0, 1, 'C');
         $this->Line(10, 34, 200, 34);

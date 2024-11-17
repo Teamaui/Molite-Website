@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Helper\DatabaseHelper;
 use Exception;
+use FlashMessageHelper;
 use PDO;
 
 class OrangTuaModel
@@ -71,20 +72,31 @@ class OrangTuaModel
 
     public function insertData(array $data): bool
     {
-        $idAnak = $this->generateAutoIncrementID();
-        $sql = "INSERT INTO orang_tua (id_orang_tua, email, nama_ibu, nama_ayah, nik_ibu, nik_ayah, alamat, no_telepon) VALUES (:id_orang_tua, :email, :nama_ibu, :nama_ayah, :nik_ibu, :nik_ayah, :alamat, :no_telepon)";
+        if ($this->cekOrangTuaByEmail($data["email"])) {
+            FlashMessageHelper::set("pesan_gagal", "Email sudah digunakan, silakan coba yang lain.");
+            return false;
+        } else if ($this->cekOrangTuaByNikIbu($data["nik_ibu"])) {
+            FlashMessageHelper::set("pesan_gagal", "NIK Ibu sudah digunakan, silakan coba yang lain.");
+            return false;
+        } else if ($this->cekOrangTuaByNikAyah($data["nik_ayah"])) {
+            FlashMessageHelper::set("pesan_gagal", "NIK Ayah sudah digunakan, silakan coba yang lain.");
+            return false;
+        } else {
+            $idAnak = $this->generateAutoIncrementID();
+            $sql = "INSERT INTO orang_tua (id_orang_tua, email, nama_ibu, nama_ayah, nik_ibu, nik_ayah, alamat, no_telepon) VALUES (:id_orang_tua, :email, :nama_ibu, :nama_ayah, :nik_ibu, :nik_ayah, :alamat, :no_telepon)";
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(":id_orang_tua", $idAnak);
-        $stmt->bindParam(":email", $data["email"]);
-        $stmt->bindParam(":nama_ibu", $data["nama_ibu"]);
-        $stmt->bindParam(":nama_ayah", $data["nama_ayah"]);
-        $stmt->bindParam(":nik_ibu", $data["nik_ibu"]);
-        $stmt->bindParam(":nik_ayah", $data["nik_ayah"]);
-        $stmt->bindParam(":alamat", $data["alamat"]);
-        $stmt->bindParam(":no_telepon", $data["nomor_telepon"]);
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":id_orang_tua", $idAnak);
+            $stmt->bindParam(":email", $data["email"]);
+            $stmt->bindParam(":nama_ibu", $data["nama_ibu"]);
+            $stmt->bindParam(":nama_ayah", $data["nama_ayah"]);
+            $stmt->bindParam(":nik_ibu", $data["nik_ibu"]);
+            $stmt->bindParam(":nik_ayah", $data["nik_ayah"]);
+            $stmt->bindParam(":alamat", $data["alamat"]);
+            $stmt->bindParam(":no_telepon", $data["nomor_telepon"]);
 
-        return $stmt->execute();
+            return $stmt->execute();
+        }
     }
 
     public function updateData(array $data): bool
@@ -193,6 +205,36 @@ class OrangTuaModel
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $result["total"];
+    }
+
+    public function cekOrangTuaByEmail($email)
+    {
+        $query = "SELECT * FROM orang_tua WHERE email = :email";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":email", $email);
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
+
+    public function cekOrangTuaByNikIbu($nikIbu)
+    {
+        $query = "SELECT * FROM orang_tua WHERE nik_ibu = :nik_ibu";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":nik_ibu", $nikIbu);
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
+
+    public function cekOrangTuaByNikAyah($nikAyah)
+    {
+        $query = "SELECT * FROM orang_tua WHERE nik_ayah = :nik_ayah";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":nik_ayah", $nikAyah);
+        $stmt->execute();
+
+        return $stmt->rowCount();
     }
 
     private function generateAutoIncrementID()

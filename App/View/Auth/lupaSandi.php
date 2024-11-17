@@ -16,19 +16,15 @@
             <h1>Lupa Sandi?</h1>
             <p>Mohon masukkan email untuk melanjutkan</p>
 
-            <?php if (FlashMessageHelper::has("pesan_register_sukses")) : ?>
-                <p class="alert-message-success"><?= FlashMessageHelper::get("pesan_register_sukses"); ?></p>
+            <?php if (FlashMessageHelper::has("pesan_sukses")) : ?>
+                <p class="alert-message-success"><?= FlashMessageHelper::get("pesan_sukses"); ?></p>
             <?php endif; ?>
 
-            <?php if (FlashMessageHelper::has("pesan_login_sukses")) : ?>
-                <p class="alert-message-success"><?= FlashMessageHelper::get("pesan_login_sukses"); ?></p>
+            <?php if (FlashMessageHelper::has("pesan_gagal")) : ?>
+                <p class="alert-message-danger"><?= FlashMessageHelper::get("pesan_gagal"); ?></p>
             <?php endif; ?>
 
-            <?php if (FlashMessageHelper::has("pesan_login_gagal")) : ?>
-                <p class="alert-message-danger"><?= FlashMessageHelper::get("pesan_login_gagal"); ?></p>
-            <?php endif; ?>
-
-            <form action="<?= UrlHelper::route("login") ?>" method="post">
+            <form action="<?= UrlHelper::route("lupa-sandi") ?>" method="post">
                 <div>
                     <label for="email">Alamat Email</label>
                     <input type="text" id="email" placeholder="Masukkan Alamat Email..." name="email" required>

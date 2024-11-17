@@ -21,8 +21,12 @@ class ApiController
         $this->dashboardModel = new DashboardModel();
     }
 
-    public function registerOrangTua($nik, $username, $password)
+    public function registerOrangTua()
     {
+
+        $nik = $_POST["nik"];
+        $username = $_POST["username"];
+        $password = $_POST["password"];
 
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
@@ -36,13 +40,15 @@ class ApiController
         if ($data = $this->orangTuaModel->registerOrangTua($dataOrangTua)) {
             $this->respon = [
                 "code" => "200",
-                "status" => "Berhasil Register Data Orang Tua",
+                "success" => true,
+                "message" => "Berhasil Register Data Orang Tua",
                 "data" => $data
             ];
         } else {
             $this->respon = [
                 "code" => "401",
-                "status" => "Gagal Register Data Orang Tua",
+                "success" => false,
+                "message" => "Gagal Register Data Orang Tua",
                 "data" => ""
             ];
         }
@@ -51,8 +57,11 @@ class ApiController
         exit;
     }
 
-    public function loginOrangTua($nik, $password)
+    public function loginOrangTua()
     {
+
+        $nik = $_POST["nik"];
+        $password = $_POST["password"];
 
         $dataOrangTua = [
             "nik" => $nik,
@@ -64,27 +73,31 @@ class ApiController
                 if ($data["status_aktivasi"] == "Aktif") {
                     $this->respon = [
                         "code" => "200",
-                        "status" => "Berhasil Login Data Orang Tua",
+                        "success" => true,
+                        "message" => "Berhasil Login Data Orang Tua",
                         "data" => $data
                     ];
                 } else {
                     $this->respon = [
                         "code" => "400",
-                        "status" => "Gagal Login Akun Tidak Aktif",
+                        "success" => false,
+                        "message" => "Gagal Login Akun Tidak Aktif",
                         "data" => ""
                     ];
                 }
             } else {
                 $this->respon = [
                     "code" => "400",
-                    "status" => "Gagal Login Password Akun Salah",
+                    "success" => false,
+                    "message" => "Gagal Login Password Akun Salah",
                     "data" => ""
                 ];
             }
         } else {
             $this->respon = [
                 "code" => "401",
-                "status" => "Gagal Login Data Orang Tua",
+                "success" => false,
+                "message" => "Gagal Login Data Orang Tua",
                 "data" => ""
             ];
         }
@@ -98,13 +111,15 @@ class ApiController
         if ($data = $this->orangTuaModel->findAll()) {
             $this->respon = [
                 "code" => "200",
-                "status" => "Berhasil Ambil Data Orang Tua",
+                "success" => true,
+                "message" => "Berhasil Ambil Data Orang Tua",
                 "data" => $data
             ];
         } else {
             $this->respon = [
                 "code" => "401",
-                "status" => "Gagal Ambil Data Orang Tua",
+                "success" => false,
+                "message" => "Gagal Ambil Data Orang Tua",
                 "data" => ""
             ];
         }
@@ -118,13 +133,15 @@ class ApiController
         if ($data = $this->pertumbuhanModel->getAllPertumbuhanForMouth()) {
             $this->respon = [
                 "code" => "200",
-                "status" => "Berhasil Ambil Data Pertumbuhan",
+                "success" => true,
+                "message" => "Berhasil Ambil Data Pertumbuhan",
                 "data" => $data
             ];
         } else {
             $this->respon = [
                 "code" => "401",
-                "status" => "Gagal Ambil Data Pertumbuhan",
+                "success" => false,
+                "message" => "Gagal Ambil Data Pertumbuhan",
                 "data" => ""
             ];
         }
@@ -138,13 +155,15 @@ class ApiController
         if ($data = $this->pertumbuhanModel->getAllPertumbuhanForMouthById($idAnak)) {
             $this->respon = [
                 "code" => "200",
-                "status" => "Berhasil Ambil Data Pertumbuhan",
+                "success" => true,
+                "message" => "Berhasil Ambil Data Pertumbuhan",
                 "data" => $data
             ];
         } else {
             $this->respon = [
                 "code" => "401",
-                "status" => "Gagal Ambil Data Pertumbuhan",
+                "success" => false,
+                "message" => "Gagal Ambil Data Pertumbuhan",
                 "data" => ""
             ];
         }
@@ -158,13 +177,15 @@ class ApiController
         if ($data = $this->dashboardModel->getStatusImunisasi()) {
             $this->respon = [
                 "code" => "200",
-                "status" => "Berhasil Ambil Data Pertumbuhan",
+                "success" => true,
+                "message" => "Berhasil Ambil Data Pertumbuhan",
                 "data" => $data
             ];
         } else {
             $this->respon = [
                 "code" => "401",
-                "status" => "Gagal Ambil Data Pertumbuhan",
+                "success" => false,
+                "message" => "Gagal Ambil Data Pertumbuhan",
                 "data" => ""
             ];
         }

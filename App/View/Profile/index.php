@@ -1,12 +1,19 @@
 <!-- Main Content -->
 <div class="main-content">
     <div class="table-container">
+        <?php if (FlashMessageHelper::has("pesan_sukses")) : ?>
+            <p class="alert-message-success"><?= FlashMessageHelper::get("pesan_sukses"); ?></p>
+        <?php endif; ?>
+
+        <?php if (FlashMessageHelper::has("pesan_gagal")) : ?>
+            <p class="alert-message-danger"><?= FlashMessageHelper::get("pesan_gagal"); ?></p>
+        <?php endif; ?>
         <h1>Edit Profile</h1>
         <form action="<?= UrlHelper::route("edit-profile/update") ?>" method="post" enctype="multipart/form-data">
             <div class="header-img">
                 <div class="img-left">
                     <input type="hidden" name="oldFoto" value="<?= $admin["img"] ?>">
-                    <img src="<?= UrlHelper::img("profile/" . $admin["img"]) ?>" width="200" alt="">
+                    <img id="photo-preview" src="<?= UrlHelper::img("profile/" . $admin["img"]) ?>" width="200" alt="">
                 </div>
                 <div class="img-right">
                     <input type="file" id="file-input" class="file-input" name="foto" accept="image/*" onchange="displayFileName()">

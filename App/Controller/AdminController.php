@@ -67,8 +67,7 @@ class AdminController
             header("Location: " . UrlHelper::route("/admin"));
             exit;
         } else {
-            FlashMessageHelper::set("pesan_gagal", "Gagal menambahkan Admin!");
-            header("Location: " . UrlHelper::route("/admin"));
+            header("Location: " . UrlHelper::route("/admin/create"));
             exit;
         }
     }

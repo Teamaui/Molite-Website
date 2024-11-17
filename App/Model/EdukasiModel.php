@@ -3,7 +3,9 @@
 namespace App\Model;
 
 use App\Helper\DatabaseHelper;
+use FlashMessageHelper;
 use PDO;
+use UrlHelper;
 
 class EdukasiModel
 {
@@ -60,14 +62,19 @@ class EdukasiModel
 
     public function insertDataJenisEdukasi($data): bool
     {
-        $idJenisEdukasi = $this->generateAutoIncrementIDJenisEdukasi();
+        if ($this->cekJenisEdukasiByNama($data["nama_edukasi"])) {
+            FlashMessageHelper::set("pesan_gagal", "Nama Edukasi sudah digunakan, silakan coba yang lain.");
+            return false;
+        } else {
+            $idJenisEdukasi = $this->generateAutoIncrementIDJenisEdukasi();
 
-        $query = "INSERT INTO jenis_edukasi (id_jenis_edukasi, nama_edukasi) VALUES (:id_jenis_edukasi, :nama_edukasi)";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(":id_jenis_edukasi", $idJenisEdukasi);
-        $stmt->bindParam(":nama_edukasi", $data["nama_edukasi"]);
+            $query = "INSERT INTO jenis_edukasi (id_jenis_edukasi, nama_edukasi) VALUES (:id_jenis_edukasi, :nama_edukasi)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_jenis_edukasi", $idJenisEdukasi);
+            $stmt->bindParam(":nama_edukasi", $data["nama_edukasi"]);
 
-        return $stmt->execute();
+            return $stmt->execute();
+        }
     }
 
     public function updateDataJenisEdukasi($data): bool
@@ -97,7 +104,7 @@ class EdukasiModel
         } else {
             if ($newFileName = $this->updateImg($data["oldFoto"], $data["foto"])) {
                 // id_admin nik nama_admin email username password status_aktivasi
-                $sql = "INSERT edukasi (id_edukasi, id_jenis_edukasi, judul_edukasi, deskripsi_edukasi, img) VALUES (:id_edukasi,  :id_jenis_edukasi, :judul_edukasi, :deskripsi_edukasi, :img";
+                $sql = "INSERT edukasi (id_edukasi, id_jenis_edukasi, judul_edukasi, deskripsi_edukasi, img) VALUES (:id_edukasi,  :id_jenis_edukasi, :judul_edukasi, :deskripsi_edukasi, :img)";
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":id_edukasi", $idEdukasi);
                 $stmt->bindParam(":id_jenis_edukasi", $data["id_jenis_edukasi"]);
@@ -112,8 +119,6 @@ class EdukasiModel
 
     public function updateDataDetailEdukasi($data)
     {
-        $idEdukasi = $this->generateAutoIncrementIDEdukasi();
-
         if (empty($data["foto"]["name"])) {
             // id_admin nik nama_admin email username password status_aktivasi
             $sql = "UPDATE edukasi SET judul_edukasi = :judul_edukasi, deskripsi_edukasi = :deskripsi_edukasi WHERE id_edukasi = :id_edukasi";
@@ -165,6 +170,109 @@ class EdukasiModel
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $result["total"];
+    }
+
+    // PAGINATION
+    public function getPaginationData($limit, $offset)
+    {
+        $query = "SELECT jenis_edukasi.id_jenis_edukasi, jenis_edukasi.nama_edukasi, COALESCE(COUNT(edukasi.id_edukasi), 0) AS jumlah_edukasi
+        FROM jenis_edukasi LEFT JOIN edukasi ON jenis_edukasi.id_jenis_edukasi = edukasi.id_jenis_edukasi GROUP BY jenis_edukasi.id_jenis_edukasi, jenis_edukasi.nama_edukasi LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalRows($search = false)
+    {
+        if ($search) {
+            $query =  "SELECT COUNT(*) as total FROM jenis_edukasi WHERE nama_edukasi LIKE :search";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":search", $search);
+            $stmt->execute();
+        } else {
+            $query = "SELECT COUNT(*) as total FROM jenis_edukasi";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+        }
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total"];
+    }
+
+    public function findAllBySearch($search, $limit, $offset)
+    {
+        $query = "SELECT jenis_edukasi.id_jenis_edukasi, jenis_edukasi.nama_edukasi, COALESCE(COUNT(edukasi.id_edukasi), 0) AS jumlah_edukasi FROM jenis_edukasi LEFT JOIN edukasi ON jenis_edukasi.id_jenis_edukasi = edukasi.id_jenis_edukasi  WHERE jenis_edukasi.nama_edukasi LIKE :search GROUP BY jenis_edukasi.id_jenis_edukasi, jenis_edukasi.nama_edukasi LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":search", $search);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // PAGINATION BY ID
+    public function getPaginationDataById($id, $limit, $offset)
+    {
+        $query = "SELECT edukasi.*, jenis_edukasi.nama_edukasi FROM jenis_edukasi LEFT JOIN edukasi ON jenis_edukasi.id_jenis_edukasi = edukasi.id_jenis_edukasi WHERE jenis_edukasi.id_jenis_edukasi = :id_jenis_edukasi LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_jenis_edukasi", $id);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalRowsById($id, $search = false)
+    {
+        if ($search) {
+            $query =  "SELECT COUNT(*) as total FROM jenis_edukasi LEFT JOIN edukasi ON jenis_edukasi.id_jenis_edukasi = edukasi.id_jenis_edukasi WHERE jenis_edukasi.nama_edukasi LIKE :search AND jenis_edukasi.id_jenis_edukasi = :id_jenis_edukasi";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_jenis_edukasi", $id);
+            $stmt->bindParam(":search", $search);
+            $stmt->execute();
+        } else {
+            $query = "SELECT COUNT(*) as total FROM jenis_edukasi LEFT JOIN edukasi ON jenis_edukasi.id_jenis_edukasi = edukasi.id_jenis_edukasi WHERE jenis_edukasi.id_jenis_edukasi = :id_jenis_edukasi";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_jenis_edukasi", $id);
+            $stmt->execute();
+        }
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total"];
+    }
+
+    public function findAllBySearchById($id, $search, $limit, $offset)
+    {
+        $query = "SELECT edukasi.*, jenis_edukasi.nama_edukasi FROM jenis_edukasi LEFT JOIN edukasi ON jenis_edukasi.id_jenis_edukasi = edukasi.id_jenis_edukasi WHERE edukasi.judul_edukasi LIKE :search AND jenis_edukasi.id_jenis_edukasi = :id_jenis_edukasi LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_jenis_edukasi", $id);
+        $stmt->bindParam(":search", $search);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function cekJenisEdukasiByNama($nama)
+    {
+        $query = "SELECT * FROM jenis_imunisasi WHERE LOWER(nama_edukasi) = LOWER(:nama_edukasi)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":nama_edukasi", $nama);
+        $stmt->execute();
+
+        return $stmt->rowCount();
     }
 
     private function generateAutoIncrementIDJenisEdukasi()
@@ -265,8 +373,8 @@ class EdukasiModel
                 if (move_uploaded_file($fileTmpPath, $targetFilePath)) {
                     // Hapus foto lama jika ada
 
-                    if (file_exists($oldPhoto) && $oldPhoto != "default.png") {
-                        unlink($oldPhoto);
+                    if (file_exists($targetDir . $oldPhoto) && $oldPhoto != "default.png") {
+                        unlink($targetDir . $oldPhoto);
                     }
 
                     return $newFileName;

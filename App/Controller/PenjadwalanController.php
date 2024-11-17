@@ -40,12 +40,32 @@ class PenjadwalanController
         $styleCss3 = "styleAdminMode";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
-        $penjadwalan = $this->penjadwalanModel->findAllPenjadwalan();
+
+        // Pagination
+        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+        $limit = 1;
+        $offset = ($page - 1) * $limit;
+
+        if (isset($_GET["search"])) {
+            $search = '%' . $_GET["search"] . '%';
+            $penjadwalan = $this->penjadwalanModel->findAllBySearchImunisasi($search, $limit, $offset);
+            $totalRows = $this->penjadwalanModel->getTotalRowsImunisasi($search);
+            $totalPages = ceil($totalRows / $limit);
+        } else {
+            $penjadwalan = $this->penjadwalanModel->getPaginationDataImunisasi($limit, $offset);
+            $totalRows = $this->penjadwalanModel->getTotalRowsImunisasi();
+            $totalPages = ceil($totalRows / $limit);
+        }
+
+        $pagination = [
+            'totalRows' => $totalRows,
+            'totalPages' => $totalPages
+        ];
 
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Penjadwalan/index", ["penjadwalan" => $penjadwalan]);
+        ViewReader::view("/Penjadwalan/index", ["penjadwalan" => $penjadwalan, "pagination" => $pagination]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
     public function create()
@@ -139,12 +159,32 @@ class PenjadwalanController
         $styleCss3 = "styleAdminMode";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
-        $penjadwalan = $this->penjadwalanModel->findAllPosyandu();
+
+        // Pagination
+        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+        $limit = 1;
+        $offset = ($page - 1) * $limit;
+
+        if (isset($_GET["search"])) {
+            $search = '%' . $_GET["search"] . '%';
+            $penjadwalan = $this->penjadwalanModel->findAllBySearchPosyandu($search, $limit, $offset);
+            $totalRows = $this->penjadwalanModel->getTotalRowsPosyandu($search);
+            $totalPages = ceil($totalRows / $limit);
+        } else {
+            $penjadwalan = $this->penjadwalanModel->getPaginationDataPosyandu($limit, $offset);
+            $totalRows = $this->penjadwalanModel->getTotalRowsPosyandu();
+            $totalPages = ceil($totalRows / $limit);
+        }
+
+        $pagination = [
+            'totalRows' => $totalRows,
+            'totalPages' => $totalPages
+        ];
 
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Penjadwalan/posyandu", ["penjadwalan" => $penjadwalan]);
+        ViewReader::view("/Penjadwalan/posyandu", ["penjadwalan" => $penjadwalan, "pagination" => $pagination]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
     public function createPosyandu()
@@ -175,8 +215,7 @@ class PenjadwalanController
             header("Location: " . UrlHelper::route("/penjadwalan/posyandu"));
             exit;
         } else {
-            FlashMessageHelper::set("pesan_gagal", "Gagal menambahkan Jadwal Posyandu!");
-            header("Location: " . UrlHelper::route("/penjadwalan/posyandu"));
+            header("Location: " . UrlHelper::route("/penjadwalan/posyandu/create"));
             exit;
         }
     }

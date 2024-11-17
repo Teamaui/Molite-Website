@@ -3,6 +3,7 @@
 namespace Model;
 
 use App\Helper\DatabaseHelper;
+use FlashMessageHelper;
 use PDO;
 use UrlHelper;
 
@@ -20,6 +21,23 @@ class AdminModel
         $sql = "SELECT * FROM admin WHERE nik = :nik";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(":nik", $nik);
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($data) {
+            return $data;
+        } else {
+            return false;
+        }
+    }
+
+    public function findAdminByUniqueNikOrEmail(string $nik_or_email)
+    {
+        $sql = "SELECT * FROM admin WHERE nik = :nik OR email = :email";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":nik", $nik_or_email);
+        $stmt->bindParam(":email", $nik_or_email);
         $stmt->execute();
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -64,29 +82,42 @@ class AdminModel
 
     public function insertAdmin(array $data): bool
     {
-        $sandiAman = password_hash($data["sandi1"], PASSWORD_DEFAULT);
+        if ($this->cekAdminByUsername($data["username"])) {
+            FlashMessageHelper::set("pesan_register_gagal", "Username sudah digunakan, silakan coba yang lain.");
+            return false;
+        } else {
+            $sandiAman = password_hash($data["sandi1"], PASSWORD_DEFAULT);
 
-        $sql = "UPDATE admin SET username = :username, status_aktivasi = :status_aktivasi, password = :password WHERE nik = :nik";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(":status_aktivasi", "Aktif");
-        $stmt->bindParam(":username", $data["username"]);
-        $stmt->bindParam(":password", $sandiAman);
-        $stmt->bindParam(":nik", $data["nik"]);
+            $sql = "UPDATE admin SET username = :username, status_aktivasi = :status_aktivasi, password = :password WHERE nik = :nik";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(":status_aktivasi", "Aktif");
+            $stmt->bindParam(":username", $data["username"]);
+            $stmt->bindParam(":password", $sandiAman);
+            $stmt->bindParam(":nik", $data["nik"]);
 
-        return $stmt->execute();
+            return $stmt->execute();
+        }
     }
 
     public function insertNewAdmin(array $data)
     {
-        $id_admin = $this->generateAutoIncrementID();
-        $query = "INSERT INTO admin (id_admin, nik, nama_admin, email) VALUES (:id_admin , :nik , :nama_admin , :email)";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(":id_admin", $id_admin);
-        $stmt->bindParam(":nik", $data["nik"]);
-        $stmt->bindParam(":nama_admin", $data["nama_admin"]);
-        $stmt->bindParam(":email", $data["email"]);
+        if ($this->cekAdminByNik($data["nik"])) {
+            FlashMessageHelper::set("pesan_gagal", "NIK sudah digunakan, silakan coba yang lain.");
+            return false;
+        } else if ($this->cekAdminByEmail($data["email"])) {
+            FlashMessageHelper::set("pesan_gagal", "Email sudah digunakan, silakan coba yang lain.");
+            return false;
+        } else {
+            $id_admin = $this->generateAutoIncrementID();
+            $query = "INSERT INTO admin (id_admin, nik, nama_admin, email) VALUES (:id_admin , :nik , :nama_admin , :email)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_admin", $id_admin);
+            $stmt->bindParam(":nik", $data["nik"]);
+            $stmt->bindParam(":nama_admin", $data["nama_admin"]);
+            $stmt->bindParam(":email", $data["email"]);
 
-        return $stmt->execute();
+            return $stmt->execute();
+        }
     }
 
     public function updateData($data)
@@ -194,6 +225,36 @@ class AdminModel
         $stmt->bindParam(":id_admin", $id);
 
         return $stmt->execute();
+    }
+
+    public function cekAdminByNik($nik)
+    {
+        $query = "SELECT * FROM admin WHERE nik = :nik";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":nik", $nik);
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
+
+    public function cekAdminByEmail($email)
+    {
+        $query = "SELECT * FROM admin WHERE email = :email";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":email", $email);
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
+
+    public function cekAdminByUsername($username)
+    {
+        $query = "SELECT * FROM admin WHERE username = :username";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":username", $username);
+        $stmt->execute();
+
+        return $stmt->rowCount();
     }
 
     private function generateAutoIncrementID()

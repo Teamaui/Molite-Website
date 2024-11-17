@@ -28,12 +28,31 @@ class EdukasiController
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
-        $edukasi = $this->edukasiModel->findAll();
+        // Pagination
+        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+        $limit = 1;
+        $offset = ($page - 1) * $limit;
+
+        if (isset($_GET["search"])) {
+            $search = '%' . $_GET["search"] . '%';
+            $edukasi = $this->edukasiModel->findAllBySearch($search, $limit, $offset);
+            $totalRows = $this->edukasiModel->getTotalRows($search);
+            $totalPages = ceil($totalRows / $limit);
+        } else {
+            $edukasi = $this->edukasiModel->getPaginationData($limit, $offset);
+            $totalRows = $this->edukasiModel->getTotalRows();
+            $totalPages = ceil($totalRows / $limit);
+        }
+
+        $pagination = [
+            'totalRows' => $totalRows,
+            'totalPages' => $totalPages
+        ];
 
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Edukasi/index", ["edukasi" => $edukasi]);
+        ViewReader::view("/Edukasi/index", ["edukasi" => $edukasi, "pagination" => $pagination]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 
@@ -58,14 +77,12 @@ class EdukasiController
             "nama_edukasi" => $_POST["nama_edukasi"],
         ];
 
-
         if ($this->edukasiModel->insertDataJenisEdukasi($data)) {
             FlashMessageHelper::set("pesan_sukses", "Berhasil menambahkan data Edukasi!");
             header("Location: " . UrlHelper::route("/edukasi"));
             exit;
         } else {
-            FlashMessageHelper::set("pesan_gagal", "Gagal menambahkan Edukasi!");
-            header("Location: " . UrlHelper::route("/edukasi"));
+            header("Location: " . UrlHelper::route("/edukasi/create"));
             exit;
         }
     }
@@ -78,25 +95,45 @@ class EdukasiController
         $styleCss3 = "styleAdminMode";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
-        $idJenisEdukasi = $id;
-        $edukasi = $this->edukasiModel->findAllById($id);
+        $jenisEdukasi = $this->edukasiModel->findJenisEdukasiById($id);
+
+        // Pagination
+        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+        $limit = 1;
+        $offset = ($page - 1) * $limit;
+
+        if (isset($_GET["search"])) {
+            $search = '%' . $_GET["search"] . '%';
+            $edukasi = $this->edukasiModel->findAllBySearchById($id, $search, $limit, $offset);
+            $totalRows = $this->edukasiModel->getTotalRowsById($id, $search);
+            $totalPages = ceil($totalRows / $limit);
+        } else {
+            $edukasi = $this->edukasiModel->getPaginationDataById($id, $limit, $offset);
+            $totalRows = $this->edukasiModel->getTotalRowsById($id);
+            $totalPages = ceil($totalRows / $limit);
+        }
+
+        $pagination = [
+            'totalRows' => $totalRows,
+            'totalPages' => $totalPages
+        ];
 
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Edukasi/detailJenis", ["edukasi" => $edukasi, "idJenisEdukasi" => $idJenisEdukasi]);
+        ViewReader::view("/Edukasi/detailJenis", ["edukasi" => $edukasi, "jenisEdukasi" => $jenisEdukasi, "pagination" => $pagination]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 
     public function storeDetailJenis()
     {
         $data = [
+            "oldFoto" => $_POST["oldFoto"],
             "id_jenis_edukasi" => $_POST["id_jenis_edukasi"],
             "judul_edukasi" => $_POST["judul_edukasi"],
             "deskripsi_edukasi" => $_POST["deskripsi_edukasi"],
-            "img" => $_FILES["foto"],
+            "foto" => $_FILES["foto"],
         ];
-
 
         if ($this->edukasiModel->insertDataEdukasi($data)) {
             FlashMessageHelper::set("pesan_sukses", "Berhasil menambahkan data Edukasi!");
@@ -182,11 +219,12 @@ class EdukasiController
     public function updateDetailEdukasi()
     {
         $data = [
+            "oldFoto" => $_POST["oldFoto"],
             "id_jenis_edukasi" => $_POST["id_jenis_edukasi"],
             "id_edukasi" => $_POST["id_edukasi"],
             "judul_edukasi" => $_POST["judul_edukasi"],
             "deskripsi_edukasi" => $_POST["deskripsi_edukasi"],
-            "img" => $_FILES["foto"],
+            "foto" => $_FILES["foto"],
         ];
 
         if ($this->edukasiModel->updateDataDetailEdukasi($data)) {

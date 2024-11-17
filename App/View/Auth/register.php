@@ -27,15 +27,15 @@
                 </div>
             </div>
             <div class="form-right">
-                <label for="sandi2">Sandi</label>
+                <label for="sandi_register1">Sandi</label>
                 <div class="password-container">
-                    <input type="password" id="sand1" placeholder="Masukkan Konfirmasi Sandi..." name="sandi1" required>
-                    <span class="toggle-password" id="toggle-password2"><i class="bi bi-eye-slash-fill"></i></span>
+                    <input type="password" id="sandi_register1" placeholder="Masukkan Konfirmasi Sandi..." name="sandi1" required>
+                    <span class="toggle-password" id="toggle-register-password1"><i class="bi bi-eye-slash-fill"></i></span>
                 </div>
-                <label for="sandi2">Konfirmasi Sandi</label>
+                <label for="sandi_register2">Konfirmasi Sandi</label>
                 <div class="password-container">
-                    <input type="password" id="sandi2" placeholder="Masukkan Konfirmasi Sandi..." name="sandi2" required>
-                    <span class="toggle-password" id="toggle-password3"><i class="bi bi-eye-slash-fill"></i></span>
+                    <input type="password" id="sandi_register2" placeholder="Masukkan Konfirmasi Sandi..." name="sandi2" required>
+                    <span class="toggle-password" id="toggle-register-password2"><i class="bi bi-eye-slash-fill"></i></span>
                 </div>
             </div>
         </div>

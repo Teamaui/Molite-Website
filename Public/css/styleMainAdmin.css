@@ -1,208 +1,209 @@
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
 }
 
 .topbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #F7F7F7;
-    height: 70px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-    color: white;
-    z-index: 1;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f7f7f7;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  color: white;
+  z-index: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .app-name {
-    display: flex;
-    margin-left: 1rem;
-    align-items: center;
-    font-size: 1.8rem;
+  display: flex;
+  margin-left: 1rem;
+  align-items: center;
+  font-size: 1.8rem;
 }
 
 .app-name .mo {
-    margin-left: 0.7rem;
-    color: #098DB3;
+  margin-left: 0.7rem;
+  color: #098db3;
 }
 
 .app-name .lita {
-    color: #CCAE00;
+  color: #ccae00;
 }
 
 .user-section {
-    position: relative;
+  position: relative;
+  min-width: 200px;
 }
 
 .user-name {
-    color: #098DB3;
-    font-weight: bold;
-    cursor: pointer;
-    margin-right: 4rem;
+  display: flex;
+  justify-self: end;
+  color: #098db3;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 4rem;
 }
 
 .dropdown {
-    display: none;
-    position: absolute;
-    right: 20;
-    background-color: white;
-    min-width: 150px;
-    box-shadow: 0px 8px 16px rgba(9, 141, 179, 0.1);
-    z-index: 1;
-    border-radius: .3rem;
+  display: none;
+  position: absolute;
+  right: 20;
+  background-color: white;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px rgba(9, 141, 179, 0.1);
+  z-index: 1;
+  border-radius: 0.3rem;
 }
 
 .dropdown a {
-    color: #098DB3;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    margin: 0 .4rem;
-    border-bottom: 1px solid #098DB3;
+  color: #098db3;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  margin: 0 0.4rem;
+  border-bottom: 1px solid #098db3;
 }
 
 .dropdown a:last-of-type {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .dropdown a:hover {
-    background-color: #ebfbff;
-    cursor: pointer;
+  background-color: #ebfbff;
+  cursor: pointer;
 }
 
 .dropdown a i {
-    margin-right: .3rem;
+  margin-right: 0.3rem;
 }
 
 .sidebar {
-    position: fixed;
-    top: 50px;
-    background-color: #F7F7F7;
-    left: 0;
-    width: 250px;
-    height: 100%;
-    padding-top: 20px;
+  position: fixed;
+  top: 50px;
+  background-color: #f7f7f7;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  padding-top: 20px;
 }
 
 .sidebar ul {
-    list-style-type: none;
-    padding: 0 .5rem;
-    margin-top: 2rem;
+  list-style-type: none;
+  padding: 0 0.5rem;
+  margin-top: 2rem;
 }
 
 .sidebar ul li {
-    padding: 7px 10px;
-    text-align: start;
-    margin-top: 0;
-    margin-bottom: 0;
+  padding: 7px 10px;
+  text-align: start;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .sidebar ul li a {
-    color: #098DB3;
-    font-size: 1rem;
-    text-decoration: none;
-    display: block;
-    background-color: #F7F7F7;
-    padding: .65rem .7rem;
-    border-radius: 10px;
-    box-sizing: border-box;
-    border: solid 2px transparent;
+  color: #098db3;
+  font-size: 1rem;
+  text-decoration: none;
+  display: block;
+  background-color: #f7f7f7;
+  padding: 0.65rem 0.7rem;
+  border-radius: 10px;
+  box-sizing: border-box;
+  border: solid 2px transparent;
 }
 
 .sidebar ul li i {
-    font-size: 1.2rem;
-    margin-right: .3rem;
+  font-size: 1.2rem;
+  margin-right: 0.3rem;
 }
 
 .sidebar ul li a:hover {
-    border: 2px solid #098DB3;
-    cursor: pointer;
+  border: 2px solid #098db3;
+  cursor: pointer;
 }
 
 .main-content {
-    background-image: url(../img/bg_main.png);
-    background-size: cover;
-    min-height: calc(100vh - 70px);
-    width: 100%;
-    margin-left: 250px;
-    margin-top: 50px;
-    /* below the topbar */
-    padding: 20px;
+  background-image: url(../img/bg_main.png);
+  background-size: cover;
+  min-height: calc(100vh - 70px);
+  width: 100%;
+  margin-left: 250px;
+  margin-top: 50px;
+  /* below the topbar */
+  padding: 20px;
 }
 
 .main-content h1,
 .main-content p {
-    color: #098DB3;
+  color: #098db3;
 }
 
 .sidebar ul li a.active {
-    background-color: #098DB3;
-    color: #F7F7F7;
+  background-color: #098db3;
+  color: #f7f7f7;
 }
 
 /* Styling untuk alert container */
 .alert-container {
-    display: none; /* Alert disembunyikan secara default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Background semi-transparan */
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-  
-  /* Styling untuk alert box */
-  .alert-box {
-    background-color: #fff;
-    padding: 20px;
-    padding-bottom: 2rem;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    width: 300px;
-  }
-  
-  /* Styling untuk teks dalam alert */
-  .alert-box p {
-    margin-bottom: 20px;
-    font-size: 16px;
-    color: #333;
-  }
-  
-  /* Styling untuk tombol alert */
-  .alert-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    margin: 0 5px;
-    text-decoration: none;
-  }
-  
-  .alert-button.confirm {
-    background-color: #098DB3;
-    color: #fff;
-  }
-  
-  .alert-button.cancel {
-    background-color: #ccc;
-    color: #333;
-  }
-  
+  display: none; /* Alert disembunyikan secara default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Background semi-transparan */
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
 
-  /* Style Dashboard */
-  .card-content {
-    background-color: #F7F7F7;
-    margin-top: 2rem;
-    
-  }
+/* Styling untuk alert box */
+.alert-box {
+  background-color: #fff;
+  padding: 20px;
+  padding-bottom: 2rem;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 300px;
+}
+
+/* Styling untuk teks dalam alert */
+.alert-box p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Styling untuk tombol alert */
+.alert-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 0 5px;
+  text-decoration: none;
+}
+
+.alert-button.confirm {
+  background-color: #098db3;
+  color: #fff;
+}
+
+.alert-button.cancel {
+  background-color: #ccc;
+  color: #333;
+}
+
+/* Style Dashboard */
+.card-content {
+  background-color: #f7f7f7;
+  margin-top: 2rem;
+}

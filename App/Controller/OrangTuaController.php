@@ -91,8 +91,7 @@ class OrangTuaController
             header("Location: " . UrlHelper::route("/orang-tua"));
             exit;
         } else {
-            FlashMessageHelper::set("pesan_gagal", "Gagal menambahkan Orang Tua!");
-            header("Location: " . UrlHelper::route("/orang-tua"));
+            header("Location: " . UrlHelper::route("/orang-tua/create"));
             exit;
         }
     }

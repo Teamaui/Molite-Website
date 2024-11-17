@@ -131,6 +131,24 @@
         const fileName = document.getElementById('file-name');
         fileName.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : "Pilih foto untuk background edukasi";
     }
+
+    // Foto
+    const photoInput = document.getElementById('file-input');
+    const photoPreview = document.getElementById('photo-preview');
+
+    photoInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                photoPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            photoPreview.style.border = "none";
+        }
+    });
 </script>
 </body>
 

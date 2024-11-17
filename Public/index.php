@@ -20,6 +20,9 @@ use Routes\Route;
 // ------ ADD REQUIRE 
 // Libs
 require_once __DIR__ . "/../App/Libs/fpdf/fpdf.php";
+require_once __DIR__ . "/../App/Libs/PHPMailer/src/PHPMailer.php";
+require_once __DIR__ . "/../App/Libs/PHPMailer/src/SMTP.php";
+require_once __DIR__ . "/../App/Libs/PHPMailer/src/Exception.php";
 
 // Helper
 require_once __DIR__ . "/../App/Helper/PdfHelper.php";
@@ -41,6 +44,7 @@ require_once __DIR__ . "/../App/Model/PenjadwalanModel.php";
 require_once __DIR__ . "/../App/Model/EdukasiModel.php";
 require_once __DIR__ . "/../App/Model/DashboardModel.php";
 require_once __DIR__ . "/../App/Model/SuperAdminModel.php";
+require_once __DIR__ . "/../App/Model/OtpModel.php";
 
 // Controller
 require_once __DIR__ . "/../App/Controller/AuthController.php";
@@ -89,6 +93,10 @@ Route::add("POST", "/register", AuthController::class, "register");
 
 // Lupa Sandi
 Route::add("GET", "/lupa-sandi", AuthController::class, "lupaSandi");
+Route::add("POST", "/lupa-sandi", AuthController::class, "sendOtp");
+Route::add("GET", "/otp-lupa-sandi/([0-9a-zA-Z]*)", AuthController::class, "otpLupaSandi");
+Route::add("POST", "/otp-lupa-sandi", AuthController::class, "storeOtpLupaSandi");
+Route::add("POST", "/ganti-sandi", AuthController::class, "gantiSandi");
 
 // Dashboard
 Route::add("GET", "/dashboard", DashboardController::class, "index");
@@ -175,8 +183,8 @@ Route::add("GET", "/molita-api/get-orang-tua", ApiController::class, "getOrangTu
 Route::add("GET", "/molita-api/get-pertumbuhan", ApiController::class, "getPertumbuhan");
 Route::add("GET", "/molita-api/get-pertumbuhan/([0-9a-zA-Z]*)", ApiController::class, "getPertumbuhanById");
 Route::add("GET", "/molita-api/get-status-imunisasi", ApiController::class, "getStatusImunisasi");
-Route::add("GET", "/molita-api/register-orang-tua/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", ApiController::class, "registerOrangTua");
-Route::add("GET", "/molita-api/login-orang-tua/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", ApiController::class, "loginOrangTua");
+Route::add("POST", "/molita-api/register-orang-tua", ApiController::class, "registerOrangTua");
+Route::add("POST", "/molita-api/login-orang-tua", ApiController::class, "loginOrangTua");
 
 // Logout
 Route::add("GET", "/logout", AuthController::class, "logout");

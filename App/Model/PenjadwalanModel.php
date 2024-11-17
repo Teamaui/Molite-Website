@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Helper\DatabaseHelper;
 use Exception;
+use FlashMessageHelper;
 use PDO;
 
 class PenjadwalanModel
@@ -111,16 +112,21 @@ class PenjadwalanModel
 
     public function insertDataPosyandu($data)
     {
-        $idPosyandu = $this->generateAutoIncrementIDPosyandu();
+        if ($this->cekJadwalPosyanduByPos($data["nama_pos"])) {
+            FlashMessageHelper::set("pesan_gagal", "Nama Posyandu sudah digunakan, silakan coba yang lain.");
+            return false;
+        } else {
+            $idPosyandu = $this->generateAutoIncrementIDPosyandu();
 
-        $query = "INSERT INTO jadwal_posyandu (id_jadwal_posyandu, pos, tanggal, jam) VALUES (:id_jadwal_posyandu, :pos, :tanggal, :jam)";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(":id_jadwal_posyandu", $idPosyandu);
-        $stmt->bindParam(":pos", $data["nama_pos"]);
-        $stmt->bindParam(":tanggal", $data["tanggal"]);
-        $stmt->bindParam(":jam", $data["jam"]);
+            $query = "INSERT INTO jadwal_posyandu (id_jadwal_posyandu, pos, tanggal, jam) VALUES (:id_jadwal_posyandu, :pos, :tanggal, :jam)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_jadwal_posyandu", $idPosyandu);
+            $stmt->bindParam(":pos", $data["nama_pos"]);
+            $stmt->bindParam(":tanggal", $data["tanggal"]);
+            $stmt->bindParam(":jam", $data["jam"]);
 
-        return $stmt->execute();
+            return $stmt->execute();
+        }
     }
 
     public function updateDataPosyandu($data)
@@ -168,6 +174,112 @@ class PenjadwalanModel
             die;
             return false;
         }
+    }
+
+    // PAGINATION JADWAL IMUNISASI
+    public function getPaginationDataImunisasi($limit, $offset)
+    {
+        $query = "SELECT jenis_imunisasi.*, anak.*, jadwal_imunisasi.* FROM daftar_imunisasi JOIN jadwal_imunisasi ON jadwal_imunisasi.id_jadwal_imunisasi = daftar_imunisasi.id_jadwal_imunisasi JOIN anak ON anak.id_anak = daftar_imunisasi.id_anak JOIN jenis_imunisasi ON jenis_imunisasi.id_jenis_imunisasi = jadwal_imunisasi.id_jenis_imunisasi LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalRowsImunisasi($search = false)
+    {
+        if ($search) {
+            $query =  "SELECT COUNT(*) as total FROM daftar_imunisasi JOIN jadwal_imunisasi ON jadwal_imunisasi.id_jadwal_imunisasi = daftar_imunisasi.id_jadwal_imunisasi JOIN anak ON anak.id_anak = daftar_imunisasi.id_anak JOIN jenis_imunisasi ON jenis_imunisasi.id_jenis_imunisasi = jadwal_imunisasi.id_jenis_imunisasi WHERE anak.nama_anak LIKE :search
+            OR jenis_imunisasi.nama_imunisasi LIKE :search
+            OR jadwal_imunisasi.status_imunisasi LIKE :search";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":search", $search);
+            $stmt->execute();
+        } else {
+            $query = "SELECT COUNT(*) as total FROM daftar_imunisasi JOIN jadwal_imunisasi ON jadwal_imunisasi.id_jadwal_imunisasi = daftar_imunisasi.id_jadwal_imunisasi JOIN anak ON anak.id_anak = daftar_imunisasi.id_anak JOIN jenis_imunisasi ON jenis_imunisasi.id_jenis_imunisasi = jadwal_imunisasi.id_jenis_imunisasi";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+        }
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total"];
+    }
+
+    public function findAllBySearchImunisasi($search, $limit, $offset)
+    {
+        $query = "SELECT jenis_imunisasi.*, anak.*, jadwal_imunisasi.* FROM daftar_imunisasi JOIN jadwal_imunisasi ON jadwal_imunisasi.id_jadwal_imunisasi = daftar_imunisasi.id_jadwal_imunisasi JOIN anak ON anak.id_anak = daftar_imunisasi.id_anak JOIN jenis_imunisasi ON jenis_imunisasi.id_jenis_imunisasi = jadwal_imunisasi.id_jenis_imunisasi WHERE anak.nama_anak LIKE :search
+            OR jenis_imunisasi.nama_imunisasi LIKE :search
+            OR jadwal_imunisasi.status_imunisasi LIKE :search LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":search", $search);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // PAGINATION JADWAL POSYANDU
+    public function getPaginationDataPosyandu($limit, $offset)
+    {
+        $query = "SELECT * FROM jadwal_posyandu LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalRowsPosyandu($search = false)
+    {
+        if ($search) {
+            $query =  "SELECT COUNT(*) as total FROM jadwal_posyandu WHERE pos LIKE :search
+            OR tanggal LIKE :search
+            OR jam LIKE :search";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":search", $search);
+            $stmt->execute();
+        } else {
+            $query = "SELECT COUNT(*) as total FROM jadwal_posyandu";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+        }
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total"];
+    }
+
+    public function findAllBySearchPosyandu($search, $limit, $offset)
+    {
+        $query = "SELECT * FROM jadwal_posyandu WHERE pos LIKE :search
+            OR tanggal LIKE :search
+            OR jam LIKE :search LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":search", $search);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function cekJadwalPosyanduByPos($pos)
+    {
+        $query = "SELECT * FROM jadwal_posyandu WHERE LOWER(pos) = LOWER(:pos)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":pos", $pos);
+        $stmt->execute();
+
+        return $stmt->rowCount();
     }
 
     private function generateAutoIncrementID()

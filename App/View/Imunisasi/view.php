@@ -11,7 +11,7 @@
         <?php endif; ?>
         <div class="table-button">
             <div><a href="<?= UrlHelper::route("imunisasi") ?>" onclick="setActive()"><i class="bi bi-backspace"></i> Kembali</a></div>
-            <form action="" method="get">
+            <form action="<?= UrlHelper::route('imunisasi/view/' . $jenisImunisasi["id_jenis_imunisasi"]) ?>" method="get">
                 <i class="bi bi-search"></i>
                 <input type="text" placeholder="Search here..." name="search">
                 <button type="submit">Search</button>
@@ -50,5 +50,10 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <?php if (isset($_GET["search"])) : ?>
+            <?= App\Helper\PaginationHelper::renderSearch((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('imunisasi/view/' . $jenisImunisasi["id_jenis_imunisasi"] .'?page='), $_GET["search"]) ?>
+        <?php else : ?>
+            <?= App\Helper\PaginationHelper::render((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('imunisasi/view/' . $jenisImunisasi["id_jenis_imunisasi"] .'?page=')) ?>
+        <?php endif; ?>
     </div>
 </div>

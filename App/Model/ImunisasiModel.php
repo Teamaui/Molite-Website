@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Helper\DatabaseHelper;
+use FlashMessageHelper;
 use PDO;
 
 class ImunisasiModel
@@ -48,6 +49,20 @@ class ImunisasiModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function findSearchViewById($id, $search, $limit, $offset)
+    {
+        $query = "SELECT jadwal_imunisasi.*, anak.* FROM jadwal_imunisasi JOIN daftar_imunisasi ON daftar_imunisasi.id_jadwal_imunisasi = jadwal_imunisasi.id_jadwal_imunisasi JOIN anak ON anak.id_anak = daftar_imunisasi.id_anak WHERE anak.nama_anak LIKE :search
+            OR jadwal_imunisasi.tanggal_imunisasi LIKE :search OR jadwal_imunisasi.status_imunisasi LIKE :search AND jadwal_imunisasi.id_jenis_imunisasi = :id_jenis_imunisasi LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_jenis_imunisasi", $id);
+        $stmt->bindParam("search", $search);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function findById($id)
     {
         $query = "SELECT jadwal_imunisasi.*, anak.* FROM jadwal_imunisasi JOIN daftar_imunisasi ON daftar_imunisasi.id_jadwal_imunisasi = jadwal_imunisasi.id_jadwal_imunisasi JOIN anak ON anak.id_anak = daftar_imunisasi.id_anak WHERE jadwal_imunisasi.id_jenis_imunisasi = :id_jenis_imunisasi";
@@ -70,15 +85,20 @@ class ImunisasiModel
 
     public function insertData(array $data): bool
     {
-        $idJensiImunisasi = $this->generateAutoIncrementID();
-        $sql = "INSERT INTO jenis_imunisasi (id_jenis_imunisasi, nama_imunisasi, deskripsi_imunisasi) VALUES (:id_jenis_imunisasi, :nama_imunisasi, :deskripsi_imunisasi)";
+        if ($this->cekImunisasiByNama($data["nama_imunisasi"])) {
+            FlashMessageHelper::set("pesan_gagal", "Nama Imunisasi sudah digunakan, silakan coba yang lain.");
+            return false;
+        } else {
+            $idJensiImunisasi = $this->generateAutoIncrementID();
+            $sql = "INSERT INTO jenis_imunisasi (id_jenis_imunisasi, nama_imunisasi, deskripsi_imunisasi) VALUES (:id_jenis_imunisasi, :nama_imunisasi, :deskripsi_imunisasi)";
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(":id_jenis_imunisasi", $idJensiImunisasi);
-        $stmt->bindParam(":nama_imunisasi", $data["nama_imunisasi"]);
-        $stmt->bindParam(":deskripsi_imunisasi", $data["deskripsi_imunisasi"]);
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":id_jenis_imunisasi", $idJensiImunisasi);
+            $stmt->bindParam(":nama_imunisasi", $data["nama_imunisasi"]);
+            $stmt->bindParam(":deskripsi_imunisasi", $data["deskripsi_imunisasi"]);
 
-        return $stmt->execute();
+            return $stmt->execute();
+        }
     }
 
     public function updateData($data)
@@ -123,6 +143,61 @@ class ImunisasiModel
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $result["total"];
+    }
+
+    public function cekImunisasiByNama($nama)
+    {
+        $query = "SELECT * FROM jenis_imunisasi WHERE LOWER(nama_imunisasi) = LOWER(:nama_imunisasi)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":nama_imunisasi", $nama);
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
+
+    // PAGINATION BY ID
+    public function getPaginationDataById($id, $limit, $offset)
+    {
+        $query = "SELECT jadwal_imunisasi.*, anak.* FROM jadwal_imunisasi JOIN daftar_imunisasi ON daftar_imunisasi.id_jadwal_imunisasi = jadwal_imunisasi.id_jadwal_imunisasi JOIN anak ON anak.id_anak = daftar_imunisasi.id_anak WHERE jadwal_imunisasi.id_jenis_imunisasi = :id_jenis_imunisasi LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_jenis_imunisasi", $id);
+        $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
+        $stmt->bindParam(":offset", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalRowsById($id, $search = false)
+    {
+        if ($search) {
+            $query =  "SELECT COUNT(*) as total FROM jadwal_imunisasi JOIN daftar_imunisasi ON daftar_imunisasi.id_jadwal_imunisasi = jadwal_imunisasi.id_jadwal_imunisasi JOIN anak ON anak.id_anak = daftar_imunisasi.id_anak WHERE anak.nama_anak LIKE :search
+            OR jadwal_imunisasi.tanggal_imunisasi LIKE :search OR jadwal_imunisasi.status_imunisasi LIKE :search AND jadwal_imunisasi.id_jenis_imunisasi = :id_jenis_imunisasi";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_jenis_imunisasi", $id);
+            $stmt->bindParam(":search", $search);
+            $stmt->execute();
+        } else {
+            $query = "SELECT COUNT(*) as total FROM jadwal_imunisasi JOIN daftar_imunisasi ON daftar_imunisasi.id_jadwal_imunisasi = jadwal_imunisasi.id_jadwal_imunisasi JOIN anak ON anak.id_anak = daftar_imunisasi.id_anak WHERE jadwal_imunisasi.id_jenis_imunisasi = :id_jenis_imunisasi";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_jenis_imunisasi", $id);
+            $stmt->execute();
+        }
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total"];
+    }
+
+    public function cekImunisasiByNamaById($nama)
+    {
+        $query = "SELECT * FROM jenis_imunisasi WHERE LOWER(nama_imunisasi) = LOWER(:nama_imunisasi)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":nama_imunisasi", $nama);
+        $stmt->execute();
+
+        return $stmt->rowCount();
     }
 
     private function generateAutoIncrementID()

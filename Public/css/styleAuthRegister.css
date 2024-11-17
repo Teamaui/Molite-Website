@@ -1,196 +1,193 @@
 body {
-    background-image: url(../img/bg_main.png);
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    margin: 0;
-    position: relative;
+  background-image: url(../img/bg_main.png);
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: 0;
+  position: relative;
 }
 img {
-    position: absolute;
-    z-index: -1;
+  position: absolute;
+  z-index: -1;
 }
 
 img.top-left {
-    top: -10px;
-    left: 0;
+  top: -10px;
+  left: 0;
 }
 img.top-right {
-    right: 0;
-    top: -10px;
-    transform: rotate(90deg);
+  right: 0;
+  top: -10px;
+  transform: rotate(90deg);
 }
 
 img.bottom-left {
-    bottom: -10px;
-    left: 0;
-    transform: rotate(270deg);
+  bottom: -10px;
+  left: 0;
+  transform: rotate(270deg);
 }
 img.bottom-right {
-    right: 0;
-    bottom: -10px;
-    transform: rotate(180deg);
+  right: 0;
+  bottom: -10px;
+  transform: rotate(180deg);
 }
 .main {
-    width: 80%;
-    max-width: 1200px;
-    background-color: #F7F7F7;
-    border-radius: .5rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    padding: 1rem;
-    padding-bottom: 2rem;
+  width: 80%;
+  max-width: 1200px;
+  background-color: #f7f7f7;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 1rem;
+  padding-bottom: 2rem;
 }
 
 h1 {
-    text-align: center;
-    color: #098DB3;
-    margin: 0.5rem 0;
-    font-size: 2.5rem;
+  text-align: center;
+  color: #098db3;
+  margin: 0.5rem 0;
+  font-size: 2.5rem;
 }
 
 p {
-    text-align: center;
-    color: #9AD0DF;
-    margin: 0;
-    font-weight: 600;
-    margin-top: 1rem;
+  text-align: center;
+  color: #9ad0df;
+  margin: 0;
+  font-weight: 600;
+  margin-top: 1rem;
 }
 
 .main-form {
-    display: flex;
-    margin: 1rem 4rem;
-    justify-content: space-between;
+  display: flex;
+  margin: 1rem 4rem;
+  justify-content: space-between;
 }
 .form-left {
-    width: 50%;
-    padding: 1rem;
+  width: 50%;
+  padding: 1rem;
 }
 .form-right {
-    width: 50%;
-    padding: 1rem;
+  width: 50%;
+  padding: 1rem;
 }
 
-
 label {
-    display: block;
-    margin: 0.5rem 0;
-    color: #098DB3;
-    font-size: 1.1rem;
+  display: block;
+  margin: 0.5rem 0;
+  color: #098db3;
+  font-size: 1.1rem;
 }
 
 input {
-    width: 100%;
-    height: 2.5rem;
-    background-color: transparent;
-    outline: none;
-    border: 1px solid #098DB3;
-    padding: 0.5rem;
-    box-sizing: border-box;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-    color: #098DB3;
-    letter-spacing: 0.1rem;
-    margin-bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+  background-color: transparent;
+  outline: none;
+  border: 1px solid #098db3;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #098db3;
+  letter-spacing: 0.1rem;
+  margin-bottom: 0;
 }
 
 input::placeholder {
-    color: #9AD0DF;
-    font-style: italic;
+  color: #9ad0df;
+  font-style: italic;
 }
 
 input:-webkit-autofill {
-    color: #098DB3;
-    -webkit-box-shadow: 0 0 0px 1000px #F7F7F7 inset;
+  color: #098db3;
+  -webkit-box-shadow: 0 0 0px 1000px #f7f7f7 inset;
 }
 
 input:-webkit-autofill::first-line {
-    color: #098DB3;
+  color: #098db3;
 }
 
 input[type="password"]::-ms-reveal,
-input[type="password"]::-ms-clear, 
-input[type="password"]::-webkit-clear-button, 
-input[type="password"]::-webkit-credentials-auto-fill-button { 
-    display: none; 
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-clear-button,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  display: none;
 }
 
 button {
-    display: block;
-    margin: auto;
-    width: 30%;
-    padding: .8rem 1rem;
-    height: 2.7rem;
-    font-size: medium;
-    color: #F7F7F7;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 1rem;
-    background-color: #098DB3;
-
+  display: block;
+  margin: auto;
+  width: 30%;
+  padding: 0.8rem 1rem;
+  height: 2.7rem;
+  font-size: medium;
+  color: #f7f7f7;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  background-color: #098db3;
 }
 
 button:hover {
-    background-color: #9AD0DF;
+  background-color: #9ad0df;
 }
 
 .password-container {
-    display: flex;
+  display: flex;
 }
 
 .toggle-password {
-    background-color: #098DB3;
-    color: #F7F7F7;
-    width: 3rem;
-    text-align: center;
-    align-items: center;
-    display: flex;
-    font-size: 1.5rem;
-    align-items: center;
-    height: 2.5rem;
-    justify-content: center;
+  background-color: #098db3;
+  color: #f7f7f7;
+  width: 3rem;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  font-size: 1.5rem;
+  align-items: center;
+  height: 2.5rem;
+  justify-content: center;
 }
 
 .toggle-password:hover {
-    cursor:pointer;
+  cursor: pointer;
 }
 
 a {
-    display: block;
-    text-align: center;
-    margin-top: 1rem;
-    font-size: 1rem;
-    color: #9AD0DF;
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #9ad0df;
 }
 
 a span {
-    color: #098DB3;
+  color: #098db3;
 }
-
 
 .alert-message-success {
-    margin: 0;
-    margin: auto;
-    width: 50%;
-    margin-top: 1rem;
-    padding: 1rem 2rem;
-    color: white;
-    background-color: #90ee90;
-    border-radius: .5rem;
-    font-weight: normal;
+  margin: 0;
+  margin: auto;
+  width: 50%;
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  color: white;
+  background-color: #90ee90;
+  border-radius: 0.5rem;
+  font-weight: normal;
 }
 .alert-message-danger {
-    margin: 0;
-    margin: auto;
-    width: 50%;
-    margin-top: 1rem;
-    padding: 1rem 2rem;
-    color: white;
-    background-color: #dc3545;
-    border-radius: .5rem;
-    font-weight: normal;
+  margin: 0;
+  margin: auto;
+  width: 50%;
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  color: white;
+  background-color: #dc3545;
+  border-radius: 0.5rem;
+  font-weight: normal;
 }

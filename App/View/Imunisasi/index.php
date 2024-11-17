@@ -11,7 +11,7 @@
         <?php endif; ?>
         <div class="table-button">
             <a href="<?= UrlHelper::route("imunisasi/create"); ?>"><i class="bi bi-plus-circle"></i> Tambah Data</a>
-            <form action="" method="get">
+            <form action="<?= UrlHelper::route("/imunisasi") ?>" method="get">
                 <i class="bi bi-search"></i>
                 <input type="text" placeholder="Search here..." name="search">
                 <button type="submit">Search</button>

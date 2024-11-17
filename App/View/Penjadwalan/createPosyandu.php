@@ -3,6 +3,13 @@
     <h1>Tambah Jadwal Posyandu</h1>
     <div class="main-container">
         <form action="<?= UrlHelper::route("penjadwalan/posyandu/store"); ?>" method="post">
+            <?php if (FlashMessageHelper::has("pesan_sukses")) : ?>
+                <p class="alert-message-success"><?= FlashMessageHelper::get("pesan_sukses"); ?></p>
+            <?php endif; ?>
+
+            <?php if (FlashMessageHelper::has("pesan_gagal")) : ?>
+                <p class="alert-message-danger"><?= FlashMessageHelper::get("pesan_gagal"); ?></p>
+            <?php endif; ?>
             <div class="form-container">
 
                 <div class="form-left">

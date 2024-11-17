@@ -16,7 +16,7 @@
                     <input type="hidden" name="id_edukasi" value="<?= $edukasi["id_edukasi"] ?>">
                     <div>
                         <label for="judul_edukasi">Judul Edukasi</label>
-                        <input type="text" id="judul_edukasi" value="<?= $edukasi["judul_edukasi"] ?>" placeholder="Masukkan Nama Imunisasi..." name="judul_edukasi" required >
+                        <input type="text" id="judul_edukasi" value="<?= $edukasi["judul_edukasi"] ?>" placeholder="Masukkan Nama Imunisasi..." name="judul_edukasi" required>
                     </div>
                     <div class="deskripsi_edukasi">
                         <label for="deskripsi_edukasi">Deskripsi Edukasi</label>
@@ -27,6 +27,7 @@
                 <div class="form-left">
                     <label for="img">Tambah Foto</label>
                     <div>
+                        <input type="hidden" name="oldFoto" value="<?= $edukasi["img"] ?>">
                         <img class="img-card" id="photo-preview" src="<?= UrlHelper::img("edukasi/" . $edukasi["img"]) ?>" width="300" alt="">
                         <input type="file" id="file-input" class="file-input" name="foto" accept="image/*" onchange="displayFileName()">
                         <p class="img-p" id="file-name">Pilih foto untuk background edukasi</p>

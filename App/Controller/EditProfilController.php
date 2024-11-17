@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Helper\ViewReader;
+use FlashMessageHelper;
 use Model\AdminModel;
 use UrlHelper;
 
@@ -53,20 +54,26 @@ class EditProfilController
                 $dataAdmin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
                 if (password_verify($data["password_sekarang"], $dataAdmin["password"])) {
                     if ($this->adminModel->updatePassword($data)) {
+                        FlashMessageHelper::set("pesan_sukses", "Berhasil update data profile!");
                         header("Location: " . UrlHelper::route("edit-profile"));
                     } else {
+                        FlashMessageHelper::set("pesan_gagal", "Gagal update data profile!");
                         header("Location: " . UrlHelper::route("edit-profile"));
                     }
                 } else {
+                    FlashMessageHelper::set("pesan_gagal", "Gagal update data password salah!");
                     header("Location: " . UrlHelper::route("edit-profile"));
                 }
             } else {
+                FlashMessageHelper::set("pesan_gagal", "Gagal update data password tidak sama!");
                 header("Location: " . UrlHelper::route("edit-profile"));
             }
         } else {
             if ($this->adminModel->updateData($data)) {
+                FlashMessageHelper::set("pesan_sukses", "Berhasil update data profile!");
                 header("Location: " . UrlHelper::route("edit-profile"));
             } else {
+                FlashMessageHelper::set("pesan_gagal", "Gagal update data profile!");
                 header("Location: " . UrlHelper::route("edit-profile"));
             }
         }

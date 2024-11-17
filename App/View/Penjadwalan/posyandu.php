@@ -22,7 +22,7 @@
 
         <div class="table-button">
             <a href="<?= UrlHelper::route("penjadwalan/posyandu/create"); ?>"><i class="bi bi-plus-circle"></i> Tambah Data</a>
-            <form action="<?= UrlHelper::route("/pertumbuhan") ?>" method="get">
+            <form action="<?= UrlHelper::route("penjadwalan/posyandu") ?>" method="get">
                 <i class="bi bi-search"></i>
                 <input type="text" placeholder="Search here..." name="search">
                 <button type="submit">Search</button>
@@ -57,5 +57,10 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <?php if (isset($_GET["search"])) : ?>
+            <?= App\Helper\PaginationHelper::renderSearch((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('penjadwalan/posyandu?page='), $_GET["search"]) ?>
+        <?php else : ?>
+            <?= App\Helper\PaginationHelper::render((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('penjadwalan/posyandu?page=')) ?>
+        <?php endif; ?>
     </div>
 </div>

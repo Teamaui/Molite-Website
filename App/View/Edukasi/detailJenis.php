@@ -26,6 +26,7 @@
                 <div class="form-left">
                     <label for="img">Tambah Foto</label>
                     <div>
+                        <input type="hidden" name="oldFoto" value="<?= $admin["img"] ?>">
                         <img class="img-card" id="photo-preview" src="<?= UrlHelper::img("edukasi/default.png") ?>" width="300" alt="">
                         <input type="file" id="file-input" class="file-input" name="foto" accept="image/*" onchange="displayFileName()">
                         <p class="img-p" id="file-name">Pilih foto untuk background edukasi</p>
@@ -39,8 +40,8 @@
 
     <div class="table-container left">
         <div class="table-button">
-            <h1 class="">Daftar Edukasi : <?= $edukasi[0]["nama_edukasi"] ?></h1>
-            <form action="<?= UrlHelper::route("/edukasi") ?>" method="get">
+            <h1 class="">Daftar Edukasi : <?= $jenisEdukasi["nama_edukasi"] ?></h1>
+            <form action="<?= UrlHelper::route("edukasi/detail-edukasi/" . $jenisEdukasi["id_jenis_edukasi"]) ?>" method="get">
                 <i class="bi bi-search"></i>
                 <input type="text" placeholder="Search here..." name="search">
                 <button type="submit">Search</button>
@@ -58,20 +59,23 @@
             <tbody>
                 <?php
                 $i = 1;
-                if (!is_null($edukasi[0]["judul_edukasi"])) {
 
-                    foreach ($edukasi as $edk) : ?>
-                        <tr>
-                            <td><?= $i++ ?></td>
-                            <td><?= $edk["judul_edukasi"] ?></td>
-                            <td>
-                                <a class="view" href="<?= UrlHelper::route("edukasi/view/" . $edk["id_edukasi"]) ?>"><i class="bi bi-eye-fill"></i></a>
-                            </td>
-                        </tr>
+                foreach ($edukasi as $edk) : ?>
+                    <tr>
+                        <td><?= $i++ ?></td>
+                        <td><?= $edk["judul_edukasi"] ?></td>
+                        <td>
+                            <a class="view" href="<?= UrlHelper::route("edukasi/view/" . $edk["id_edukasi"]) ?>"><i class="bi bi-eye-fill"></i></a>
+                        </td>
+                    </tr>
                 <?php endforeach;
-                }
                 ?>
             </tbody>
         </table>
+        <?php if (isset($_GET["search"])) : ?>
+            <?= App\Helper\PaginationHelper::renderSearch((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('edukasi/detail-edukasi/' . $jenisEdukasi["id_jenis_edukasi"] . '?page='), $_GET["search"]) ?>
+        <?php else : ?>
+            <?= App\Helper\PaginationHelper::render((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('edukasi/detail-edukasi/' . $jenisEdukasi["id_jenis_edukasi"] . '?page=')) ?>
+        <?php endif; ?>
     </div>
 </div>
