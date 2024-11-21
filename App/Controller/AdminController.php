@@ -29,6 +29,7 @@ class AdminController
         $title = "Molita | Data Admin";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss3 = "styleSuperAdminOne";
 
         $superAdmin = $this->superAdminModel->findByEmail($_SESSION["email_super_admin"]);
         // Pagination
@@ -52,7 +53,7 @@ class AdminController
             'totalPages' => $totalPages
         ];
 
-        ViewReader::view("/Templates/SuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/SuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
         ViewReader::view("/Templates/SuperAdminTemplate/topbar", ["superAdmin" => $superAdmin]);
         ViewReader::view("/Templates/SuperAdminTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Admin/index", ["admin" => $admin,"pagination" => $pagination]);

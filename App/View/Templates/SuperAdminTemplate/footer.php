@@ -346,6 +346,21 @@
         const fileName = document.getElementById('file-name');
         fileName.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : "Belum ada file yang dipilih";
     }
+
+    function openModal() {
+        document.getElementById("userModal").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("userModal").style.display = "none";
+    }
+
+    const viewAdmin = document.getElementById('viewAdmin');
+
+    viewAdmin.addEventListener("click", function(event) {
+        event.preventDefault();
+        openModal();
+    });
 </script>
 </body>
 

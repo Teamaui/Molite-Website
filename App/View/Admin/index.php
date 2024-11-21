@@ -46,7 +46,7 @@
                         </td>
                         <td><?= $am["email"] ?></td>
                         <td>
-                            <a class="view" href="<?= UrlHelper::route("admin/view/" . $am["id_admin"]) ?>"><i class="bi bi-eye-fill"></i></a>
+                            <a class="view" id="viewAdmin" onclick="openModal()" href="#"><i class="bi bi-eye-fill"></i></a>
                             <a class="edit" href="<?= UrlHelper::route("admin/edit/" . $am["id_admin"]) ?>"><i class="bi bi-pencil-fill"></i></a>
                             <a class="hapus" href="<?= UrlHelper::route("admin/delete/" . $am["id_admin"]) ?>"><i class="bi bi-trash"></i></a>
                         </td>
@@ -60,5 +60,41 @@
         <?php else : ?>
             <?= App\Helper\PaginationHelper::render((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('admin?page=')) ?>
         <?php endif; ?>
+    </div>
+</div>
+
+<div class="modal" id="userModal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeModal()">X</button>
+        <div class="modal-container">
+            <h1>Detail Data Admin</h1>
+            <div class="list-group">
+                <div class="list-section">
+                    <div class="list-item">
+                        <img src="<?= UrlHelper::img("profile/default.png") ?>" alt="">
+                    </div>
+                    <div class="list-item">
+                        <h3>Nama</h3>
+                        <p>Tes</p>
+                    </div>
+                    <div class="list-item">
+                        <h3>NIK</h3>
+                        <p>Test</p>
+                    </div>
+                    <div class="list-item">
+                        <h3>Email</h3>
+                        <p>Test</p>
+                    </div>
+                    <div class="list-item">
+                        <h3>Username</h3>
+                        <p>Test</p>
+                    </div>
+                    <div class="list-item">
+                        <h3>Status Aktivasi</h3>
+                        <p>Test</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

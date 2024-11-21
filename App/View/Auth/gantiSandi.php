@@ -14,7 +14,7 @@
         </div>
         <div class="sub-main-right">
             <h1>Ganti sandi</h1>
-            <p>Mohon masukkan email untuk melanjutkan</p>
+            <p>Masukkan kata sandi baru untuk akun Anda. pastikan kata sandi memiliki kombinasi huruf, angka, dan simbol untuk keamanan yang lebih baik.</p>
 
             <?php if (FlashMessageHelper::has("pesan_sukses")) : ?>
                 <p class="alert-message-success"><?= FlashMessageHelper::get("pesan_sukses"); ?></p>
