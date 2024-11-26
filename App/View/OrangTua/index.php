@@ -31,7 +31,6 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
                 $status = null;
 
                 foreach ($orangTua as $ot) :
@@ -42,7 +41,7 @@
                         $status = "error";
                     } ?>
                     <tr>
-                        <td><?= $i++ ?></td>
+                        <td><?= $startNumber++ ?></td>
                         <td><?= $ot["email"] ?></td>
                         <td><?= $ot["nama_ibu"] ?></td>
                         <td><?= $ot["nama_ayah"] ?></td>

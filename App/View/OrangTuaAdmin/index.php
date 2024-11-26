@@ -30,7 +30,6 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
                 $status = null;
 
                 foreach ($orangTua as $ot) :
@@ -41,13 +40,13 @@
                         $status = "error";
                     } ?>
                     <tr>
-                        <td><?= $i++ ?></td>
+                        <td><?= $startNumber++ ?></td>
                         <td><?= $ot["email"] ?></td>
                         <td><?= $ot["nama_ibu"] ?></td>
                         <td><?= $ot["nama_ayah"] ?></td>
                         <td><?= $ot["alamat"] ?></td>
                         <td>
-                            <a class="view" href="<?= UrlHelper::route("orang-tua-admin/view/" . $ot["status_aktivasi"]) ?>"><i class="bi bi-eye-fill"></i></a>
+                            <a class="view" id="viewAdmin" data-id="<?= $ot["id_orang_tua"] ?>" onclick="showDetailOrangtua(this)" href="#"><i class="bi bi-eye-fill"></i></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -58,5 +57,49 @@
         <?php else : ?>
             <?= App\Helper\PaginationHelper::render((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('orang-tua-admin?page=')) ?>
         <?php endif; ?>
+    </div>
+</div>
+<div class="modal" id="userModalOrangTua">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeModalOrangTua()">X</button>
+        <div class="modal-container">
+            <h1>Detail Data Orang Tua</h1>
+            <div class="list-group">
+                <div class="list-section">
+                    <div class="list-item">
+                        <h3>Alamat Email</h3>
+                        <p id="email-admin-orang-tua"></p>
+                    </div>
+                    <div class="list-item">
+                        <h3>NIK Ibu</h3>
+                        <p id="nik-ibu-admin-orang-tua"></p>
+                    </div>
+                    <div class="list-item">
+                        <h3>NIK Ayah</h3>
+                        <p id="nik-ayah-admin-orang-tua"></p>
+                    </div>
+                    <div class="list-item">
+                        <h3>Nama Ibu</h3>
+                        <p id="nama-ibu-admin-orang-tua"></p>
+                    </div>
+                    <div class="list-item">
+                        <h3>Nama Ayah</h3>
+                        <p id="nama-ayah-admin-orang-tua"></p>
+                    </div>
+                    <div class="list-item">
+                        <h3>Nomor Telepon</h3>
+                        <p id="nomor-telepon-admin-orang-tua"></p>
+                    </div>
+                    <div class="list-item">
+                        <h3>Alamat</h3>
+                        <p id="alamat-admin-orang-tua"></p>
+                    </div>
+                    <div class="list-item">
+                        <h3>Status Aktivasi</h3>
+                        <p class="badge" id="status-aktivasi-admin-orang-tua"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

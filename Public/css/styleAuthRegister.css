@@ -133,7 +133,7 @@ button {
 }
 
 button:hover {
-  background-color: #9ad0df;
+  opacity: 0.9;
 }
 
 .password-container {
@@ -190,4 +190,99 @@ a span {
   background-color: #dc3545;
   border-radius: 0.5rem;
   font-weight: normal;
+}
+.a-pack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.a-pack a {
+  width: fit-content;
+}
+@media (max-width: 768px) {
+  p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    font-weight: normal;
+  }
+
+  .alert-message-success, .alert-message-danger {
+    width: 100%;
+    padding: 1rem 0;
+  }
+
+  a {
+    font-size: .8rem;
+  }
+
+  button {
+    margin-top: 1.2rem;
+    width: 100%;
+  }
+  img {
+    width: 10rem;
+  }
+  .main-form {
+    flex-direction: column;
+    margin: 0;
+    width: 100%;
+    padding: 0;
+  }
+
+  .form-left {
+    width: 100%;
+    padding: 0;
+  }
+
+  .form-right {
+    width: 100%;
+    padding: 0;
+  }
+
+  .sub-main-right input {
+    font-size: 1rem;
+  }
+  .sub-main {
+    padding: 0;
+    padding-top: 2rem;
+  }
+
+  .sub-main-right p {
+    margin: 2rem 0;
+    margin-top: 0;
+  }
+
+  .main {
+    flex-direction: column;
+    height: auto;
+    width: 90%;
+    box-sizing: border-box;
+  }
+  .sub-main-right label {
+    font-size: 1rem;
+  }
+
+  .sub-main-right a {
+    font-size: 0.8rem;
+  }
+  .label-sandi a {
+    font-size: 1rem;
+  }
+  .main h2 {
+    display: none;
+  }
+
+  .sub-main-left {
+    display: none;
+  }
+  .sub-main-right {
+    width: 100%;
+  }
+  .sub-main-right button {
+    margin-top: 1rem;
+  }
+  .sub-main-right h1,
+  .sub-main-right p {
+    text-align: center;
+  }
 }

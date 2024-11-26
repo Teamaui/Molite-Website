@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Helper\generateCodeHelper;
 use App\Model\DashboardModel;
+use App\Model\EdukasiModel;
 use App\Model\OrangTuaModel;
 use App\Model\PertumbuhanModel;
+use Model\AdminModel;
 
 class ApiController
 {
@@ -13,12 +15,16 @@ class ApiController
     private OrangTuaModel $orangTuaModel;
     private PertumbuhanModel $pertumbuhanModel;
     private DashboardModel $dashboardModel;
+    private EdukasiModel $edukasiModel;
+    private AdminModel $adminModel;
 
     public function __construct()
     {
         $this->orangTuaModel = new OrangTuaModel();
         $this->pertumbuhanModel = new PertumbuhanModel();
         $this->dashboardModel = new DashboardModel();
+        $this->edukasiModel = new EdukasiModel();
+        $this->adminModel = new AdminModel();
     }
 
     public function registerOrangTua()
@@ -186,6 +192,99 @@ class ApiController
                 "code" => "401",
                 "success" => false,
                 "message" => "Gagal Ambil Data Pertumbuhan",
+                "data" => ""
+            ];
+        }
+
+        print json_encode($this->respon);
+        exit;
+    }
+
+    public function likeUserEdukasi()
+    {
+
+        $data = [
+            "like_user" => $_POST["like_user"],
+            "id_edukasi" => $_POST["id_edukasi"],
+        ];
+
+        if ($data = $this->edukasiModel->updateLikeEdukasi($data)) {
+            $this->respon = [
+                "code" => "200",
+                "success" => true,
+                "message" => "Berhasil Data di update",
+            ];
+        } else {
+            $this->respon = [
+                "code" => "401",
+                "success" => false,
+                "message" => "Gagal Data di update",
+            ];
+        }
+
+        print json_encode($this->respon);
+        exit;
+    }
+
+    public function getDataEdukasi()
+    {
+        if ($data = $this->edukasiModel->getAllEdukasi()) {
+            $this->respon = [
+                "code" => "200",
+                "success" => true,
+                "message" => "Berhasil Ambil Data Edukasi",
+                "data" => $data
+            ];
+        } else {
+            $this->respon = [
+                "code" => "401",
+                "success" => false,
+                "message" => "Gagal Ambil Data Edukasi",
+                "data" => ""
+            ];
+        }
+
+        print json_encode($this->respon);
+        exit;
+    }
+
+
+    public function getDataAdminById($id)
+    {
+        if ($data = $this->adminModel->findAdminByUniqueId($id)) {
+            $this->respon = [
+                "code" => "200",
+                "success" => true,
+                "message" => "Berhasil Ambil Data Admin",
+                "data" => $data
+            ];
+        } else {
+            $this->respon = [
+                "code" => "401",
+                "success" => false,
+                "message" => "Gagal Ambil Data Admin",
+                "data" => ""
+            ];
+        }
+
+        print json_encode($this->respon);
+        exit;
+    }
+
+    public function getDataOrangTuaById($id)
+    {
+        if ($data = $this->orangTuaModel->findById($id)) {
+            $this->respon = [
+                "code" => "200",
+                "success" => true,
+                "message" => "Berhasil Ambil Data Orang Tua",
+                "data" => $data
+            ];
+        } else {
+            $this->respon = [
+                "code" => "401",
+                "success" => false,
+                "message" => "Gagal Ambil Data Orang Tua",
                 "data" => ""
             ];
         }

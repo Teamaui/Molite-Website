@@ -63,7 +63,7 @@
                     </div>
                 </div>
 
-                <button class="submit">Edit Profile</button>
+                <button class="submit" id="submit-edit-profile">Edit Profile</button>
             </div>
         </form>
     </div>

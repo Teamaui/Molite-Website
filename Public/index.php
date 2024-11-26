@@ -35,6 +35,7 @@ require_once __DIR__ . "/../App/Helper/PathHelper.php";
 require_once __DIR__ . "/../App/Helper/DatabaseHelper.php";
 require_once __DIR__ . "/../App/Helper/ViewHeader.php";
 require_once __DIR__ . "/../App/Helper/GenerateCodeHelper.php";
+require_once __DIR__ . "/../App/Helper/TimeHelper.php";
 
 // Model
 require_once __DIR__ . "/../App/Model/AdminModel.php";
@@ -84,9 +85,12 @@ Route::add("POST", "/admin/store", AdminController::class, "store");
 Route::add("GET", "/admin/edit/([0-9a-zA-Z]*)", AdminController::class, "edit");
 Route::add("GET", "/admin/delete/([0-9a-zA-Z]*)", AdminController::class, "destroy");
 Route::add("POST", "/admin/update", AdminController::class, "update");
+//Edit Profile
+Route::add("POST", "/edit-profile-admin/update", EditProfileSuperAdminController::class, "update");
 
 // Beranda
 Route::add("GET", "/", BerandaController::class, "index");
+Route::add("GET", "/edukasi/([0-9a-zA-Z]*)", BerandaController::class, "edukasi");
 
 // Login
 Route::add("GET", "/login", AuthController::class, "index");
@@ -197,6 +201,10 @@ Route::add("GET", "/molita-api/get-pertumbuhan/([0-9a-zA-Z]*)", ApiController::c
 Route::add("GET", "/molita-api/get-status-imunisasi", ApiController::class, "getStatusImunisasi");
 Route::add("POST", "/molita-api/register-orang-tua", ApiController::class, "registerOrangTua");
 Route::add("POST", "/molita-api/login-orang-tua", ApiController::class, "loginOrangTua");
+Route::add("GET", "/molita-api/get-edukasi", ApiController::class, "getDataEdukasi");
+Route::add("POST", "/molita-api/update-like-user-edukasi", ApiController::class, "likeUserEdukasi");
+Route::add("GET", "/molita-api/get-admin/([0-9a-zA-Z]*)", ApiController::class, "getDataAdminById");
+Route::add("GET", "/molita-api/get-orang-tua/([0-9a-zA-Z]*)", ApiController::class, "getDataOrangTuaById");
 
 // Logout
 Route::add("GET", "/logout", AuthController::class, "logout");

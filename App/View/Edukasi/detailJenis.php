@@ -12,7 +12,7 @@
         <form action="<?= UrlHelper::route("edukasi/detail-edukasi/store"); ?>" method="post" enctype="multipart/form-data">
             <div class="form-container">
                 <div class="form-left">
-                    <input type="hidden" name="id_jenis_edukasi" value="<?= $idJenisEdukasi ?>">
+                    <input type="hidden" name="id_jenis_edukasi" value="<?= $jenisEdukasi["id_jenis_edukasi"] ?>">
                     <div>
                         <label for="judul_edukasi">Judul Edukasi</label>
                         <input type="text" id="judul_edukasi" placeholder="Masukkan Nama Imunisasi..." name="judul_edukasi" required>
@@ -58,11 +58,9 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
-
                 foreach ($edukasi as $edk) : ?>
                     <tr>
-                        <td><?= $i++ ?></td>
+                        <td><?= $startNumber++ ?></td>
                         <td><?= $edk["judul_edukasi"] ?></td>
                         <td>
                             <a class="view" href="<?= UrlHelper::route("edukasi/view/" . $edk["id_edukasi"]) ?>"><i class="bi bi-eye-fill"></i></a>

@@ -29,10 +29,9 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
                 foreach ($edukasi as $edk) : ?>
                     <tr>
-                        <td><?= $i++ ?></td>
+                        <td><?= $startNumber++ ?></td>
                         <td><?= $edk["nama_edukasi"] ?></td>
                         <td><?= $edk["jumlah_edukasi"] ?></td>
                         <td>

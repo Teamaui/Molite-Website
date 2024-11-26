@@ -159,3 +159,10 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
   border-radius: 0.5rem;
   font-weight: normal;
 }
+
+.main-img .valid {
+  border: 2px solid rgb(130, 233, 130);
+}
+.main-img .invalid {
+  border: 2px solid red;
+}

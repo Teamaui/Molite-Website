@@ -221,6 +221,119 @@
     mainLineChart();
 </script>
 <script>
+    function showDetailAdmin(element) {
+        event.preventDefault();
+        const id = element.getAttribute("data-id");
+        let currentImg = document.getElementById("img-admin").src;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://localhost/Molita/Public/index.php/molita-api/get-admin/" + id, true);
+        xhr.onload = function() {
+            if (this.status == 200) {
+                const result = JSON.parse(this.responseText);
+                if (result.error) {
+                    document.getElementById('nama-admin').textContent = "-";
+                    document.getElementById('nik-admin').textContent = "-";
+                    document.getElementById('username-admin').textContent = "-";
+                    document.getElementById('email-admin').textContent = "-";
+                    document.getElementById('status-admin').textContent = "-";
+                } else {
+
+
+                    // Base URL untuk folder gambar
+                    const baseURL = "http://localhost/Molita/Public/img/profile/";
+
+                    // Cek apakah result.data["img"] ada atau tidak
+                    let newImg = result.data["img"] ?
+                        baseURL + result.data["img"] // Jika ada gambar baru
+                        :
+                        baseURL + "default.png"; // Jika null, gunakan gambar default
+
+                    // Update src gambar
+                    document.getElementById("img-admin").src = newImg;
+
+                    document.getElementById('nama-admin').textContent = (result.data["nama_admin"]) ? result.data["nama_admin"] : "-";
+                    document.getElementById('nik-admin').textContent = (result.data["nik"]) ? result.data["nik"] : "-";
+                    document.getElementById('username-admin').textContent = (result.data["username"]) ? result.data["username"] : "-";
+                    document.getElementById('email-admin').textContent = (result.data["email"]) ? result.data["email"] : "-";
+                    document.getElementById('status-admin').textContent = (result.data["status_aktivasi"]) ? result.data["status_aktivasi"] : "-";
+
+                    if (result.data["status_aktivasi"] == "Aktif") {
+                        if (document.getElementById('status-admin').classList.contains("error")) {
+                            document.getElementById('status-admin').classList.remove("error");
+                            document.getElementById('status-admin').classList.add("success");
+                        } else {
+                            document.getElementById('status-admin').classList.add("success");
+                        }
+                    } else {
+                        if (document.getElementById('status-admin').classList.contains("success")) {
+                            document.getElementById('status-admin').classList.remove("success");
+                            document.getElementById('status-admin').classList.add("error");
+                        } else {
+                            document.getElementById('status-admin').classList.add("error");
+                        }
+                    }
+                }
+            }
+        }
+        xhr.send();
+
+        openModal();
+    }
+
+    function showDetailOrangtua(element) {
+        event.preventDefault();
+        const id = element.getAttribute("data-id");
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://localhost/Molita/Public/index.php/molita-api/get-orang-tua/" + id, true);
+        xhr.onload = function() {
+            if (this.status == 200) {
+                const result = JSON.parse(this.responseText);
+                if (result.error) {
+                    document.getElementById('alamat-admin-orang-tua').textContent = "-";
+                    document.getElementById('nik-ibu-admin-orang-tua').textContent = "-";
+                    document.getElementById('nik-ayah-admin-orang-tua').textContent = "-";
+                    document.getElementById('nama-ibu-admin-orang-tua').textContent = "-";
+                    document.getElementById('nama-ayah-admin-orang-tua').textContent = "-";
+                    document.getElementById('nomor-telepon-admin-orang-tua').textContent = "-";
+                    document.getElementById('email-admin-orang-tua').textContent = "-";
+                    document.getElementById('status-aktivasi-admin-orang-tua').textContent = "-";
+                } else {
+
+                    document.getElementById('email-admin-orang-tua').textContent = (result.data["email"]) ? result.data["email"] : "-";
+                    document.getElementById('alamat-admin-orang-tua').textContent = (result.data["alamat"]) ? result.data["alamat"] : "-";
+                    document.getElementById('nik-ibu-admin-orang-tua').textContent = (result.data["nik_ibu"]) ? result.data["nik_ibu"] : "-";
+                    document.getElementById('nik-ayah-admin-orang-tua').textContent = (result.data["nik_ayah"]) ? result.data["nik_ayah"] : "-";
+                    document.getElementById('nama-ibu-admin-orang-tua').textContent = (result.data["nama_ibu"]) ? result.data["nama_ibu"] : "-";
+                    document.getElementById('nama-ayah-admin-orang-tua').textContent = (result.data["nama_ayah"]) ? result.data["nama_ayah"] : "-";
+                    document.getElementById('nomor-telepon-admin-orang-tua').textContent = (result.data["no_telepon"]) ? result.data["no_telepon"] : "-";
+                    document.getElementById('status-aktivasi-admin-orang-tua').textContent = (result.data["status_aktivasi"]) ? result.data["status_aktivasi"] : "-";
+
+                    if (result.data["status_aktivasi"] == "Aktif") {
+                        if (document.getElementById('status-aktivasi-admin-orang-tua').classList.contains("error")) {
+                            document.getElementById('status-aktivasi-admin-orang-tua').classList.remove("error");
+                            document.getElementById('status-aktivasi-admin-orang-tua').classList.add("success");
+                        } else {
+                            document.getElementById('status-aktivasi-admin-orang-tua').classList.add("success");
+                        }
+                    } else {
+                        if (document.getElementById('status-aktivasi-admin-orang-tua').classList.contains("success")) {
+                            document.getElementById('status-aktivasi-admin-orang-tua').classList.remove("success");
+                            document.getElementById('status-aktivasi-admin-orang-tua').classList.add("error");
+                        } else {
+                            document.getElementById('status-aktivasi-admin-orang-tua').classList.add("error");
+                        }
+                    }
+                }
+            }
+        }
+        xhr.send();
+
+        openModalOrangTua();
+
+    }
+
     function toggleDropdown() {
         var dropdown = document.getElementById("dropdownMenu");
         if (dropdown.style.display === "block") {
@@ -361,6 +474,14 @@
         event.preventDefault();
         openModal();
     });
+
+    function openModalOrangTua() {
+        document.getElementById("userModalOrangTua").style.display = "flex";
+    }
+
+    function closeModalOrangTua() {
+        document.getElementById("userModalOrangTua").style.display = "none";
+    }
 </script>
 </body>
 

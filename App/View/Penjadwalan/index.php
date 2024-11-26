@@ -42,7 +42,6 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
                 $status = null;
                 foreach ($penjadwalan as $pjl) :
                     if ($pjl["status_imunisasi"] == "Sudah") {
@@ -54,7 +53,7 @@
                     }
                 ?>
                     <tr>
-                        <td><?= $i++ ?></td>
+                        <td><?= $startNumber++ ?></td>
                         <td><?= $pjl["nama_anak"] ?></td>
                         <td><?= $pjl["nama_imunisasi"] ?></td>
                         <td><?= $pjl["tanggal_imunisasi"] ?></td>

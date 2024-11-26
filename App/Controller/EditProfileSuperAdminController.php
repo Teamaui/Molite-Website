@@ -44,19 +44,18 @@ class EditProfileSuperAdminController
         $data = [
             "oldFoto" => $_POST["oldFoto"],
             "foto" => $_FILES["foto"],
-            "username" => $_POST["username"],
-            "nik" => $_POST["nik"],
-            "nama_admin" => $_POST["nama_admin"],
             "email" => $_POST["email"],
+            "nama" => $_POST["nama"],
+            "alamat" => $_POST["alamat"],
             "password_sekarang" => $_POST["password_sekarang"],
             "new_password" => $_POST["new_password"],
             "repeat_password" => $_POST["repeat_password"],
         ];
         if (isset($data["password_sekarang"]) && trim($data["password_sekarang"]) != "") {
             if ($data["new_password"] == $data["repeat_password"]) {
-                $dataAdmin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
-                if (password_verify($data["password_sekarang"], $dataAdmin["password"])) {
-                    if ($this->adminModel->updatePassword($data)) {
+                $dataSuperAdmin = $this->superAdminModel->findSuperAdminByUniqueId($_SESSION["id_super_admin"]);
+                if (password_verify($data["password_sekarang"], $dataSuperAdmin["password"])) {
+                    if ($this->superAdminModel->updatePassword($data)) {
                         FlashMessageHelper::set("pesan_sukses", "Berhasil update data profile!");
                         header("Location: " . UrlHelper::route("edit-profile-super-admin"));
                     } else {
@@ -72,7 +71,7 @@ class EditProfileSuperAdminController
                 header("Location: " . UrlHelper::route("edit-profile-super-admin"));
             }
         } else {
-            if ($this->adminModel->updateData($data)) {
+            if ($this->superAdminModel->updateData($data)) {
                 FlashMessageHelper::set("pesan_sukses", "Berhasil update data profile!");
                 header("Location: " . UrlHelper::route("edit-profile-super-admin"));
             } else {

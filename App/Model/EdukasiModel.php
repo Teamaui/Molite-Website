@@ -29,6 +29,26 @@ class EdukasiModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function findAllEdukasi()
+    {
+        $query = "SELECT * FROM edukasi";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findAllJenisEdukasi()
+    {
+        $query = "SELECT * FROM jenis_edukasi";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function findAllById($id)
     {
         $query = "SELECT edukasi.*, jenis_edukasi.nama_edukasi FROM jenis_edukasi LEFT JOIN edukasi ON jenis_edukasi.id_jenis_edukasi = edukasi.id_jenis_edukasi WHERE jenis_edukasi.id_jenis_edukasi = :id_jenis_edukasi";
@@ -40,6 +60,16 @@ class EdukasiModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function findAllBySlug($slug)
+    {
+        $query = "SELECT edukasi.*, jenis_edukasi.nama_edukasi FROM jenis_edukasi LEFT JOIN edukasi ON jenis_edukasi.id_jenis_edukasi = edukasi.id_jenis_edukasi WHERE jenis_edukasi.slug = :slug";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":slug", $slug);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     public function findJenisEdukasiById($id)
     {
         $query = "SELECT * FROM jenis_edukasi WHERE id_jenis_edukasi = :id_jenis_edukasi";
@@ -62,19 +92,16 @@ class EdukasiModel
 
     public function insertDataJenisEdukasi($data): bool
     {
-        if ($this->cekJenisEdukasiByNama($data["nama_edukasi"])) {
-            FlashMessageHelper::set("pesan_gagal", "Nama Edukasi sudah digunakan, silakan coba yang lain.");
-            return false;
-        } else {
-            $idJenisEdukasi = $this->generateAutoIncrementIDJenisEdukasi();
+        $idJenisEdukasi = $this->generateAutoIncrementIDJenisEdukasi();
+        $slug = $this->generateSlug($data["nama_edukasi"]);
 
-            $query = "INSERT INTO jenis_edukasi (id_jenis_edukasi, nama_edukasi) VALUES (:id_jenis_edukasi, :nama_edukasi)";
-            $stmt = $this->db->prepare($query);
-            $stmt->bindParam(":id_jenis_edukasi", $idJenisEdukasi);
-            $stmt->bindParam(":nama_edukasi", $data["nama_edukasi"]);
+        $query = "INSERT INTO jenis_edukasi (id_jenis_edukasi, nama_edukasi, slug) VALUES (:id_jenis_edukasi, :nama_edukasi, :slug)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_jenis_edukasi", $idJenisEdukasi);
+        $stmt->bindParam(":nama_edukasi", $data["nama_edukasi"]);
+        $stmt->bindParam(":slug", $slug);
 
-            return $stmt->execute();
-        }
+        return $stmt->execute();
     }
 
     public function updateDataJenisEdukasi($data): bool
@@ -91,6 +118,7 @@ class EdukasiModel
     {
         $idEdukasi = $this->generateAutoIncrementIDEdukasi();
 
+        var_dump($data);
         if (empty($data["foto"]["name"])) {
             // id_admin nik nama_admin email username password status_aktivasi
             $sql = "INSERT edukasi (id_edukasi, id_jenis_edukasi, judul_edukasi, deskripsi_edukasi) VALUES (:id_edukasi,  :id_jenis_edukasi, :judul_edukasi, :deskripsi_edukasi)";
@@ -141,6 +169,16 @@ class EdukasiModel
                 return $stmt->execute();
             }
         }
+    }
+
+    public function updateLikeEdukasi($data)
+    {
+        $query = "UPDATE edukasi SET like_user = :like_user WHERE id_edukasi = :id_edukasi";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":like_user", $data["like_user"]);
+        $stmt->bindParam(":id_edukasi", $data["id_edukasi"]);
+
+        return $stmt->execute();
     }
 
     public function deleteDetailEdukasi($id)
@@ -202,6 +240,24 @@ class EdukasiModel
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $result["total"];
+    }
+
+    public function getAllEdukasi()
+    {
+        $query = "SELECT * FROM edukasi";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+        // Array untuk menampung hasil
+        $sliderData = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $row['image_url'] = UrlHelper::img("edukasi/" . $row['img']); // Tambahkan URL lengkap
+            $sliderData[] = $row;
+        }
+
+        return $sliderData;
     }
 
     public function findAllBySearch($search, $limit, $offset)
@@ -388,6 +444,35 @@ class EdukasiModel
             }
         } else {
             echo "Tidak ada file yang dipilih atau terjadi kesalahan saat mengunggah.";
+            return false;
+        }
+    }
+
+    function generateSlug($text, $table = "jenis_edukasi")
+    {
+        $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', strtolower(trim($text)));
+        $slug = trim($slug, '-');
+
+        $originalSlug = $slug;
+        $count = 1;
+
+        if ($this->isSlugExists($slug, $table)) {
+            $slug = $originalSlug . '-' . $count;
+            $count++;
+        }
+
+        return $slug;
+    }
+
+    public function isSlugExists($slug, $table)
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM $table WHERE slug = :slug");
+        $stmt->bindParam(":slug", $slug);
+        $stmt->execute();
+
+        if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+            return true;
+        } else {
             return false;
         }
     }

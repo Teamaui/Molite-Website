@@ -43,8 +43,9 @@ class PenjadwalanController
 
         // Pagination
         $page = isset($_GET["page"]) ? $_GET["page"] : 1;
-        $limit = 1;
+        $limit = 5;
         $offset = ($page - 1) * $limit;
+        $startNumber = ($page - 1) * $limit + 1;
 
         if (isset($_GET["search"])) {
             $search = '%' . $_GET["search"] . '%';
@@ -65,7 +66,7 @@ class PenjadwalanController
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Penjadwalan/index", ["penjadwalan" => $penjadwalan, "pagination" => $pagination]);
+        ViewReader::view("/Penjadwalan/index", ["penjadwalan" => $penjadwalan, "pagination" => $pagination, "startNumber" => $startNumber]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
     public function create()
@@ -162,8 +163,9 @@ class PenjadwalanController
 
         // Pagination
         $page = isset($_GET["page"]) ? $_GET["page"] : 1;
-        $limit = 1;
+        $limit = 5;
         $offset = ($page - 1) * $limit;
+        $startNumber = ($page - 1) * $limit + 1;
 
         if (isset($_GET["search"])) {
             $search = '%' . $_GET["search"] . '%';
@@ -184,7 +186,7 @@ class PenjadwalanController
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Penjadwalan/posyandu", ["penjadwalan" => $penjadwalan, "pagination" => $pagination]);
+        ViewReader::view("/Penjadwalan/posyandu", ["penjadwalan" => $penjadwalan, "pagination" => $pagination, "startNumber" => $startNumber]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
     public function createPosyandu()

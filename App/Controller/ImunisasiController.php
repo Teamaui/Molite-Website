@@ -34,8 +34,9 @@ class ImunisasiController
 
         // Pagination
         $page = isset($_GET["page"]) ? $_GET["page"] : 1;
-        $limit = 1;
+        $limit = 5;
         $offset = ($page - 1) * $limit;
+        $startNumber = ($page - 1) * $limit + 1;
 
         if (isset($_GET["search"])) {
             $search = '%' . $_GET["search"] . '%';
@@ -56,7 +57,7 @@ class ImunisasiController
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Imunisasi/index", ["jenisImunisasi" => $jenisImunisasi, "pagination" => $pagination]);
+        ViewReader::view("/Imunisasi/index", ["jenisImunisasi" => $jenisImunisasi, "pagination" => $pagination, "startNumber" => $startNumber]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 
@@ -99,10 +100,10 @@ class ImunisasiController
         $styleCss2 = "styleAdminOne";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
-        
+
         // Pagination
         $page = isset($_GET["page"]) ? $_GET["page"] : 1;
-        $limit = 1;
+        $limit = 5;
         $offset = ($page - 1) * $limit;
 
         if (isset($_GET["search"])) {
@@ -116,6 +117,8 @@ class ImunisasiController
             $totalPages = ceil($totalRows / $limit);
         }
 
+        $startNumber = ($page - 1) * $limit + 1;
+
         $pagination = [
             'totalRows' => $totalRows,
             'totalPages' => $totalPages
@@ -126,7 +129,7 @@ class ImunisasiController
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Imunisasi/view", ["imunisasi" => $imunisasi, "jenisImunisasi" => $jenisImunisasi, "pagination" => $pagination]);
+        ViewReader::view("/Imunisasi/view", ["imunisasi" => $imunisasi, "jenisImunisasi" => $jenisImunisasi, "pagination" => $pagination , "startNumber" => $startNumber]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 

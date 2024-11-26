@@ -7,9 +7,7 @@
 
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  height: 200dvh;
   overflow-x: hidden;
-  margin-bottom: 50vh;
 }
 
 .topbar {
@@ -26,8 +24,8 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1400px;
   margin: 0 auto;
+  max-width: 1400px;
   padding: 0 20px;
 }
 
@@ -112,11 +110,15 @@ main {
   padding-bottom: 50px;
 }
 
+main .minu-u {
+  display: none;
+}
+
 main img.top {
   position: absolute;
   bottom: -80px;
   right: 0;
-  width: 400px;
+  width: 27em;
   transform: rotate(180deg);
 }
 
@@ -308,7 +310,6 @@ main a:hover i {
   margin-right: 1rem;
   transition: transform 0.3s ease, opacity 0.3s ease;
   background-color: #007bff;
-  display: flex;
   justify-content: center;
   align-items: center;
   font-size: 3rem;
@@ -380,19 +381,31 @@ main a:hover i {
 }
 
 .filter-artikel {
+  display: flex;
   margin: 1.5rem 0;
+  max-width: 600px;
+  overflow-x: auto;
 }
 
-.filter-artikel a {
+.filter-artikel button {
   text-decoration: none;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
+  margin: 0 0.2rem;
+  font-size: 1rem;
+  text-decoration: none;
   border: 2px solid #098db3;
   color: #098db3;
+  background-color: transparent;
   border-radius: 10px;
 }
 
-.filter-artikel a.active {
-  background-color: #c3e4ed;
+.filter-artikel button.active {
+  background-color: #098db3;
+  color: white;
+}
+
+.filter-artikel button:hover {
+  cursor: pointer;
 }
 
 .main-edukasi {
@@ -491,6 +504,7 @@ main a:hover i {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0 0.5rem;
 }
 
 .data-posyandu .card-posyandu .img {
@@ -573,48 +587,359 @@ main a:hover i {
   align-items: center;
 }
 
-/* @keyframes shake {
-  0% {
-    transform: translateY(0);
+#map {
+  max-width: 450px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Edukasi Belum Tersedia Message */
+.no-edukasi {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  background-color: #f8d7da;
+  border: 2px solid #f5c6cb;
+  border-radius: 10px;
+  margin: 30px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.no-edukasi p {
+  font-size: 1.5rem;
+  color: #721c24;
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+  padding: 0 20px;
+}
+
+/* Hover effect to enhance focus */
+.no-edukasi:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Media Query untuk layar kecil */
+@media (max-width: 868px) {
+  .footer-bottom {
+    font-size: .8rem;
+  }
+  .filter-artikel {
+    max-width: 100%;
+  }
+  .filter-artikel button {
+    text-decoration: none;
+    padding: 0.4rem 1rem;
+    font-size: 1rem;
+  }
+  .container .kolom h1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .footer h3 {
+    margin-bottom: 0.8rem;
+  }
+  .footer {
+    padding: 2rem;
+    width: 100%;
+  }
+  .footer .container {
+    width: 100%;
+  }
+  .footer .container {
+    grid-template-columns: repeat(1, 1fr);
   }
 
-  10% {
-    transform: translateY(-10px);
+  .data-posyandu .card-posyandu h1 {
+    margin-top: 0.4rem;
   }
 
-  20% {
-    transform: translateY(10px);
+  .data-posyandu .card-posyandu .img {
+    width: 5rem;
+    height: 5rem;
+    font-size: 2rem;
   }
 
-  30% {
-    transform: translateY(-10px);
+  .data-posyandu .container {
+    width: 100%;
   }
 
-  40% {
-    transform: translateY(10px);
+  .data-posyandu .card-posyandu h3 {
+    font-size: 1rem;
   }
 
-  50% {
-    transform: translateY(-5px);
+  .data-posyandu .card-posyandu h1 {
+    font-size: 2rem;
   }
 
-  60% {
-    transform: translateY(5px);
+  .edukasi {
+    padding: 0;
   }
 
-  70% {
-    transform: translateY(-3px);
+  .sub-edukasi {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+    row-gap: 0;
   }
 
-  80% {
-    transform: translateY(3px);
+  .sub-edukasi .edukasi .teks {
+    align-items: start;
+    padding-top: 0;
   }
 
-  90% {
-    transform: translateY(-1px);
+  .sub-edukasi .edukasi img {
+    width: 100px;
+    height: 100px;
   }
 
-  100% {
-    transform: translateY(0);
+  .sub-edukasi .edukasi h3 {
+    margin-top: 0.7rem;
+    font-size: 0.8rem;
+    line-height: 18px;
+    margin-bottom: 0.5rem;
   }
-} */
+
+  .sub-edukasi .edukasi p {
+    font-size: 0.7rem;
+  }
+
+  .main-edukasi h3 {
+    font-size: 1em;
+  }
+
+  .main-edukasi p {
+    font-size: 0.8em;
+  }
+
+  .main-edukasi .link-a a {
+    font-size: 0.8em;
+  }
+
+  .informasi-kesehatan h1 {
+    font-size: 1rem;
+  }
+  .container-card {
+    margin-top: 0.8rem;
+  }
+  .container-card .card {
+    flex: 0 0 100%;
+    margin: 0;
+    height: 70%;
+  }
+
+  .indicators {
+    width: 100%;
+    left: 25%;
+    transform: translate(-25%, -25%);
+  }
+
+  nav {
+    padding: 0;
+  }
+
+  .left-nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Menyembunyikan navigasi default */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #098db3;
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    margin: 0;
+    z-index: 1001;
+  }
+
+  .sub-left-nav {
+    display: flex;
+  }
+
+  /* Tampilkan navigasi ketika aktif */
+  .nav-links.active {
+    display: flex;
+  }
+
+  /* Menyusun tombol hamburger */
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 24px;
+    width: 30px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1002;
+  }
+
+  .hamburger div {
+    height: 3px;
+    background-color: white;
+    border-radius: 3px;
+  }
+
+  /* Adjust Topbar */
+  .topbar {
+    padding: 0.5rem 1rem;
+  }
+
+  /* Login button */
+
+  .login-btn a {
+    font-size: 14px;
+    padding: 8px 20px;
+  }
+
+  /* Text Logo */
+  .left-nav a {
+    font-size: 20px;
+  }
+
+  .nav-links li a {
+    font-size: 16px;
+    padding: 8px 12px;
+  }
+
+  /* Main content layout */
+  main {
+    margin: 0;
+    padding: 0;
+    margin-top: 54.4px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: fit-content;
+  }
+  .main-right img {
+    display: none;
+  }
+  main img.top {
+    display: none;
+  }
+  .main-left .left {
+    margin: 0;
+  }
+  .main-left {
+    width: 100%;
+    margin: 0;
+  }
+
+  .main-right {
+    display: none;
+  }
+
+  .login-btn {
+    margin: 0.1rem 0;
+    display: flex;
+    justify-content: end;
+    width: 280px;
+  }
+
+  .login-btn a {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+  .main-left .left {
+    padding: 2rem;
+    width: 100%;
+  }
+
+  .main-left .left h1 {
+    text-align: start;
+    margin: 0;
+    padding: 0;
+    font-size: 2rem;
+  }
+
+  .main-left .left p {
+    text-align: left;
+  }
+
+  .main-left .left a {
+    width: fit-content;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.7rem;
+    height: auto;
+  }
+
+  .main-left .left a i {
+    margin-left: 0;
+  }
+
+  .layanan {
+    padding: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+    height: fit-content;
+  }
+
+  .layanan .container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .container .left {
+    width: 100%;
+    margin: 0;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container .right {
+    width: 100%;
+    margin: 0;
+
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container .top {
+    margin: 0;
+
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .container .bottom {
+    margin: 0;
+
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .layanan .container i {
+    margin: 0;
+    padding: 0;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 60px;
+  }
+
+  .layanan .container h3 {
+    font-size: 1rem;
+  }
+
+  .layanan .container p {
+    font-size: 0.7rem;
+  }
+
+  /* Footer Grid */
+  .footer .container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+}

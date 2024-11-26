@@ -55,6 +55,8 @@ class LaporanController
             $totalPages = ceil($totalRows / $limit);
         }
 
+        $startNumber = ($page - 1) * $limit + 1;
+
         $pagination = [
             'totalRows' => $totalRows,
             'totalPages' => $totalPages
@@ -63,7 +65,7 @@ class LaporanController
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/laporan/index", ["pertumbuhan" => $pertumbuhan, "pagination" => $pagination]);
+        ViewReader::view("/laporan/index", ["pertumbuhan" => $pertumbuhan, "pagination" => $pagination, "startNumber" => $startNumber]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 }

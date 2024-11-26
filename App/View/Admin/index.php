@@ -31,10 +31,9 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
                 foreach ($admin as $am) : ?>
                     <tr>
-                        <td><?= $i++ ?></td>
+                        <td><?= $startNumber++ ?></td>
                         <td><?= $am["nik"] ?></td>
                         <td><?= $am["nama_admin"] ?></td>
                         <td>
@@ -46,7 +45,7 @@
                         </td>
                         <td><?= $am["email"] ?></td>
                         <td>
-                            <a class="view" id="viewAdmin" onclick="openModal()" href="#"><i class="bi bi-eye-fill"></i></a>
+                            <a class="view" id="viewAdmin" data-id="<?= $am["id_admin"] ?>" onclick="showDetailAdmin(this)" href="#"><i class="bi bi-eye-fill"></i></a>
                             <a class="edit" href="<?= UrlHelper::route("admin/edit/" . $am["id_admin"]) ?>"><i class="bi bi-pencil-fill"></i></a>
                             <a class="hapus" href="<?= UrlHelper::route("admin/delete/" . $am["id_admin"]) ?>"><i class="bi bi-trash"></i></a>
                         </td>
@@ -71,27 +70,27 @@
             <div class="list-group">
                 <div class="list-section">
                     <div class="list-item">
-                        <img src="<?= UrlHelper::img("profile/default.png") ?>" alt="">
+                        <img id="img-admin" src="<?= UrlHelper::img("profile/default.png") ?>" alt="">
                     </div>
                     <div class="list-item">
                         <h3>Nama</h3>
-                        <p>Tes</p>
+                        <p id="nama-admin"></p>
                     </div>
                     <div class="list-item">
                         <h3>NIK</h3>
-                        <p>Test</p>
+                        <p id="nik-admin"></p>
                     </div>
                     <div class="list-item">
                         <h3>Email</h3>
-                        <p>Test</p>
+                        <p id="email-admin"></p>
                     </div>
                     <div class="list-item">
                         <h3>Username</h3>
-                        <p>Test</p>
+                        <p id="username-admin">Test</p>
                     </div>
                     <div class="list-item">
                         <h3>Status Aktivasi</h3>
-                        <p>Test</p>
+                        <p class="badge" id="status-admin"></p>
                     </div>
                 </div>
             </div>

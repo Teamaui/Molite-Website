@@ -37,10 +37,9 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
                 foreach ($pertumbuhan as $ptn) : ?>
                     <tr>
-                        <td><?= $i++ ?></td>
+                        <td><?= $startNumber++ ?></td>
                         <td><?= $ptn["nama_anak"] ?></td>
                         <td><?= $ptn["berat_badan"] ?> gram</td>
                         <td><?= $ptn["tinggi_badan"] ?> cm</td>

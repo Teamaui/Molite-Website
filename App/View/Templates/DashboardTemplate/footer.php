@@ -7,6 +7,35 @@
 </div>
 
 <!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('open');
+    }
+    document.querySelectorAll('.hapus').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            e.preventDefault(); // Mencegah aksi default (navigasi langsung)
+            const deleteUrl = this.getAttribute('href'); // Ambil URL dari atribut href
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#098db3',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect ke URL penghapusan jika pengguna mengonfirmasi
+                    window.location.href = deleteUrl;
+                }
+            });
+        });
+    });
+</script>
 <script>
     function displayFileName() {
         const fileInput = document.getElementById('file-input');

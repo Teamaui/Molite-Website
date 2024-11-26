@@ -41,11 +41,10 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
                 $status = null;
                 foreach ($penjadwalan as $pjl) : ?>
                     <tr>
-                        <td><?= $i++ ?></td>
+                        <td><?= $startNumber++ ?></td>
                         <td><?= $pjl["pos"] ?></td>
                         <td><?= $pjl["tanggal"] ?></td>
                         <td><?= $pjl["jam"] ?></td>

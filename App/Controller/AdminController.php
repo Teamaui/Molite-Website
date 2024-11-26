@@ -34,8 +34,9 @@ class AdminController
         $superAdmin = $this->superAdminModel->findByEmail($_SESSION["email_super_admin"]);
         // Pagination
         $page = isset($_GET["page"]) ? $_GET["page"] : 1;
-        $limit = 2;
+        $limit = 5;
         $offset = ($page - 1) * $limit;
+        $startNumber = ($page - 1) * $limit + 1;
 
         if (isset($_GET["search"])) {
             $search = '%' . $_GET["search"] . '%';
@@ -56,7 +57,7 @@ class AdminController
         ViewReader::view("/Templates/SuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
         ViewReader::view("/Templates/SuperAdminTemplate/topbar", ["superAdmin" => $superAdmin]);
         ViewReader::view("/Templates/SuperAdminTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Admin/index", ["admin" => $admin,"pagination" => $pagination]);
+        ViewReader::view("/Admin/index", ["admin" => $admin,"pagination" => $pagination, "startNumber" => $startNumber]);
         ViewReader::view("/Templates/SuperAdminTemplate/footer");
     }
     public function create()

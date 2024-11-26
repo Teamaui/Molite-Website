@@ -157,7 +157,7 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
 }
 
 .sub-main-right button:hover {
-  background-color: #9ad0df;
+  opacity: .9;
 }
 
 .sub-main-right a {
@@ -227,6 +227,27 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
   color: #098db3;
   font-size: 1.1rem;
 }
+.a-pack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+a.a-daftar {
+  margin-top: 2rem;
+  display: inline;
+  width: fit-content;
+  text-align: center;
+}
+a.a-back {
+  margin-bottom: -2rem;
+  font-size: .9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+a.a-back:hover {
+  border-bottom: 1px solid #098db3;
+}
 
 @media (max-width: 1024px) {
   .main {
@@ -239,22 +260,41 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
 }
 
 @media (max-width: 768px) {
-  .main {
-    width: 95%;
+  a.a-back {
+    margin-top: 1rem;
   }
-}
+  .sub-main-right input {
+    font-size: 1rem;
+  }
+  .sub-main {
+    padding: 0;
+    padding-top: 2rem;
+  }
 
-@media (max-width: 576px) {
+  .sub-main-right p {
+    margin: 2rem 0;
+    margin-top: 0;
+  }
+
   .main {
     flex-direction: column;
     height: auto;
     width: 90%;
     box-sizing: border-box;
+    border-radius: .5rem;
+  }
+  .sub-main-right label {
+    font-size: 1rem;
   }
 
+  .sub-main-right a {
+    font-size: .8rem;
+  }
+  .label-sandi a {
+    font-size: 1rem;
+  }
   .main h2 {
-    margin-top: 3rem;
-    text-align: center;
+    display: none;
   }
 
   .sub-main-left {
@@ -262,5 +302,13 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
   }
   .sub-main-right {
     width: 100%;
+    margin: 0;
+    padding: 2rem 1rem;
+  }
+  .sub-main-right button {
+    margin-top: 1rem;
+  }
+  .sub-main-right h1, .sub-main-right p {
+    text-align: center;
   }
 }

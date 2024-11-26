@@ -9,7 +9,7 @@
                     <h3>Mo<span>lita</span></h3>
                     <p>Login sekarang untuk mulai memantau keamanan dan perkembangan <span class="txt1">Mo</span><span class="txt2">lita</span>.</p>
                 </div>
-                <p class="p1">Dibuat oleh Team Maui | Kelompok 2</p>
+                <!-- <p class="p1">Dibuat oleh Team Maui | Kelompok 2</p> -->
             </div>
         </div>
         <div class="sub-main-right">
@@ -43,7 +43,10 @@
                 </div>
                 <button type="submit">Masuk</button>
             </form>
-            <a href="<?= PathHelper::getPath() ?>/register">Belum punya akun? <span>Register</span></a>
+            <div class="a-pack">
+                <a class="a-daftar" href="<?= PathHelper::getPath() ?>/register">Belum punya akun? <span>Register</span></a>
+                <a class="a-back" href="<?= PathHelper::getPath() ?>">Kembali</a>
+            </div>
         </div>
     </div>
 </div>

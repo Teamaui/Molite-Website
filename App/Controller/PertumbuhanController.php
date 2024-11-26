@@ -37,8 +37,9 @@ class PertumbuhanController
 
         // Pagination
         $page = isset($_GET["page"]) ? $_GET["page"] : 1;
-        $limit = 1;
+        $limit = 5;
         $offset = ($page - 1) * $limit;
+        $startNumber = ($page - 1) * $limit + 1;
 
         if (isset($_GET["search"])) {
             $search = '%' . $_GET["search"] . '%';
@@ -59,7 +60,7 @@ class PertumbuhanController
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Pertumbuhan/index", ["pertumbuhan" => $pertumbuhan, "pagination" => $pagination]);
+        ViewReader::view("/Pertumbuhan/index", ["pertumbuhan" => $pertumbuhan, "pagination" => $pagination, "startNumber" => $startNumber]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
     public function create()

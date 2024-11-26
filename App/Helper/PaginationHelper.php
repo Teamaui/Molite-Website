@@ -7,7 +7,7 @@ class PaginationHelper
 
     public static function render($currentPage, $totalPages, $baseUrl)
     {
-        if ($totalPages <= 1) {
+        if ($totalPages < 1) {
             return '';
         }
 
@@ -38,7 +38,7 @@ class PaginationHelper
     }
 
     public static function renderMonth($currentPage, $totalPages, $baseUrl = '?page=', $month = null) {
-        if ($totalPages <= 1) {
+        if ($totalPages < 1) {
             return '';
         }
 
@@ -72,7 +72,7 @@ class PaginationHelper
     }
 
     public static function renderDate($currentPage, $totalPages, $baseUrl = '?page=', $startDate = null, $endDate = null) {
-        if ($totalPages <= 1) {
+        if ($totalPages < 1) {
             return '';
         }
 
@@ -106,7 +106,7 @@ class PaginationHelper
     }
 
     public static function renderSearch($currentPage, $totalPages, $baseUrl = '?page=', $search = null) {
-        if ($totalPages <= 1) {
+        if ($totalPages < 1) {
             return '';
         }
 

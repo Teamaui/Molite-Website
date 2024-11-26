@@ -32,14 +32,16 @@ class OrangTuaAdminController
         $title = "Molita | Data Orang Tua";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss3 = "styleSuperAdminOne";
 
         $superAdmin = $this->superAdminModel->findByEmail($_SESSION["email_super_admin"]);
         
 
         // Pagination
         $page = isset($_GET["page"]) ? $_GET["page"] : 1;
-        $limit = 1;
+        $limit = 5;
         $offset = ($page - 1) * $limit;
+        $startNumber = ($page - 1) * $limit + 1;
 
         if (isset($_GET["search"])) {
             $search = '%' . $_GET["search"] . '%';
@@ -57,10 +59,10 @@ class OrangTuaAdminController
             'totalPages' => $totalPages
         ];
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
         ViewReader::view("/Templates/SuperAdminTemplate/topbar", ["superAdmin" => $superAdmin]);
         ViewReader::view("/Templates/SuperAdminTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/orangTuaAdmin/index", ["orangTua" => $orangTua,"pagination" => $pagination]);
+        ViewReader::view("/orangTuaAdmin/index", ["orangTua" => $orangTua,"pagination" => $pagination, "startNumber" => $startNumber]);
         ViewReader::view("/Templates/SuperAdminTemplate/footer");
     }
 }

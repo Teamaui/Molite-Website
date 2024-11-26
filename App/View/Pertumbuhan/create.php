@@ -21,7 +21,7 @@
                     </div>
                     <div>
                         <label for="berat_badan">Berat Badan</label>
-                        <input type="number" step="any" min="0" id="berat_badan" placeholder="Masukkan Berat Badan (CM)..." name="berat_badan" required>
+                        <input type="number" step="any" min="0" id="berat_badan" placeholder="Masukkan Berat Badan (KG)..." name="berat_badan" required>
                     </div>
                 </div>
                 <div class="form-left">

@@ -1,5 +1,8 @@
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
+
+        <h1>Menu Utama</h1>
+
         <ul>
             <li><a href="<?= UrlHelper::route("dashboard"); ?>" onclick="setActive()"><i class="bi bi-house-door"></i> Dashboard</a></li>
             <li><a href="<?= UrlHelper::route("orang-tua"); ?>" onclick="setActive()"><i class="bi bi-person"></i> Data Orang Tua</a></li>

@@ -31,7 +31,7 @@ class OrangTuaModel
     public function findById($id)
     {
 
-        $query = "SELECT id_orang_tua, email, nama_ibu, nama_ayah, nik_ibu, nik_ayah, alamat, no_telepon FROM orang_tua WHERE id_orang_tua = :id_orang_tua";
+        $query = "SELECT * FROM orang_tua WHERE id_orang_tua = :id_orang_tua";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindParam("id_orang_tua", $id);

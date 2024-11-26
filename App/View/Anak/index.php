@@ -31,10 +31,10 @@
                 </tr>
             </thead>
             <tbody>
-                <?php $i = 1;
+                <?php
                 foreach ($anak as $a) : ?>
                     <tr>
-                        <td><?= $i++; ?></td>
+                        <td><?= $startNumber++; ?></td>
                         <td><?= $a["nama_anak"] ?></td>
                         <td><?= $a["tanggal_lahir"] ?></td>
                         <td><?= $a["tempat_lahir"] ?></td>

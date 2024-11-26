@@ -28,7 +28,6 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
                 $status = null;
                 foreach ($imunisasi as $imn) :
                     if ($imn["status_imunisasi"] == "Sudah") {
@@ -40,7 +39,7 @@
                     }
                 ?>
                     <tr>
-                        <td><?= $i++ ?></td>
+                        <td><?= $startNumber++ ?></td>
                         <td><?= $imn["nama_anak"] ?></td>
                         <td><?= $imn["tanggal_imunisasi"] ?></td>
                         <td>

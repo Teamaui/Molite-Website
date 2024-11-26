@@ -45,6 +45,7 @@ class AuthController
                     FlashMessageHelper::set("pesan_login_sukses", "Berhasil login akun");
                     $_SESSION["nama_pengguna"] = $userSuperAdmin["nama"];
                     $_SESSION["email_super_admin"] = $userSuperAdmin["email"];
+                    $_SESSION["id_super_admin"] = $userSuperAdmin["id_super_admin"];
                     $_SESSION["status_masuk_super_admin"] = true;
                     header("Location: " . PathHelper::getPath() . "/dashboard-super-admin");
                     exit;

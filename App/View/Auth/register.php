@@ -41,7 +41,9 @@
         </div>
         <button type="submit">Register</button>
     </form>
-    <a href="<?= PathHelper::getPath() ?>/login">Sudah punya akun? <span>Masuk</span></a>
+    <div class="a-pack">
+        <a href="<?= PathHelper::getPath() ?>/login">Sudah punya akun? <span>Masuk</span></a>
+    </div>
 </div>
 <!-- End Body -->
 <img src="<?= UrlHelper::img("assets/bg-corner.png") ?>" alt="" class="bottom-left">

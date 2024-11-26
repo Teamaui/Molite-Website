@@ -32,12 +32,11 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
                 foreach ($pertumbuhan as $ptn) : ?>
                     <tr>
-                        <td><?= $i++ ?></td>
+                        <td><?= $startNumber++ ?></td>
                         <td><?= $ptn["nama_anak"] ?></td>
-                        <td><?= $ptn["berat_badan"] ?> gram</td>
+                        <td><?= $ptn["berat_badan"] ?> kg</td>
                         <td><?= $ptn["tinggi_badan"] ?> cm</td>
                         <td><?= $ptn["lingkar_kepala"] ?> cm</td>
                         <td><?= $ptn["tanggal_pencatatan"] ?></td>

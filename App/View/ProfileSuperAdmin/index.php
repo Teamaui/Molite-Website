@@ -9,7 +9,7 @@
             <p class="alert-message-danger"><?= FlashMessageHelper::get("pesan_gagal"); ?></p>
         <?php endif; ?>
         <h1>Edit Profile</h1>
-        <form action="<?= UrlHelper::route("edit-profile/update") ?>" method="post" enctype="multipart/form-data">
+        <form action="<?= UrlHelper::route("edit-profile-admin/update") ?>" method="post" enctype="multipart/form-data">
             <div class="header-img">
                 <div class="img-left">
                     <input type="hidden" name="oldFoto" value="<?= $superAdmin["img"] ?>">
@@ -59,7 +59,7 @@
                     </div>
                 </div>
 
-                <button class="submit">Edit Profile</button>
+                <button class="submit" id="submit-edit-profile">Edit Profile</button>
             </div>
         </form>
     </div>

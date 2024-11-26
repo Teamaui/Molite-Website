@@ -28,10 +28,9 @@
             </thead>
             <tbody>
                 <?php
-                $i = 1;
                 foreach ($jenisImunisasi as $js) : ?>
                     <tr>
-                        <td><?= $i++; ?></td>
+                        <td><?= $startNumber++; ?></td>
                         <td><?= $js["nama_imunisasi"] ?></td>
                         <td><?= $js["deskripsi_imunisasi"]; ?></td>
                         <td>

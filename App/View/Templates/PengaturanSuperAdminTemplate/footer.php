@@ -149,6 +149,89 @@
             photoPreview.style.border = "none";
         }
     });
+
+    const submitEdit = document.getElementById('submit-edit-profile');
+
+    sandi1.addEventListener('keyup', () => {
+        if (sandi1.value.trim() !== "") {
+            submitEdit.disabled = true;
+
+            sandi2.addEventListener('input', validatePasswords);
+            sandi3.addEventListener('input', validatePasswords);
+        } else {
+            submitEdit.disabled = true;
+        }
+    });
+
+    function validatePasswords() {
+        if (
+            sandi2.value.length >= 8 &&
+            sandi2.value === sandi3.value
+        ) {
+            submitEdit.disabled = false;
+        } else {
+            submitEdit.disabled = true;
+        }
+    }
+
+    sandi1.addEventListener('input', () => {
+        if (sandi1.value.trim() !== "") {
+            sandi2.disabled = false;
+            sandi3.disabled = false;
+        } else {
+            sandi2.disabled = true;
+            sandi3.disabled = true;
+            sandi2.value = '';
+            sandi3.value = '';
+            resetValidation(sandi2);
+            resetValidation(sandi3);
+        }
+    });
+
+    sandi2.addEventListener('input', () => {
+        if (sandi2.value.length >= 8) {
+            setValid(sandi2);
+        } else {
+            setInvalid(sandi2);
+        }
+        validateForm();
+    });
+
+    sandi3.addEventListener('input', () => {
+        if (sandi3.value === sandi2.value && sandi3.value.length >= 8) {
+            setValid(sandi3);
+        } else {
+            setInvalid(sandi3);
+        }
+        validateForm();
+    });
+
+    function setValid(element) {
+        element.classList.add('valid');
+        element.classList.remove('invalid');
+    }
+
+    function setInvalid(element) {
+        element.classList.add('invalid');
+        element.classList.remove('valid');
+    }
+
+    function resetValidation(element) {
+        element.classList.remove('valid');
+        element.classList.remove('invalid');
+    }
+
+    function validateForm() {
+        if (
+            sandi2.classList.contains('valid') &&
+            sandi3.classList.contains('valid') &&
+            sandi2.value === sandi3.value
+        ) {
+            submitEdit.disabled = false;
+        } else {
+            submitEdit.disabled = true;
+        }
+    }
 </script>
 </body>
 
