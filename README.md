@@ -48,7 +48,7 @@ PHPMailer digunakan untuk mengirim email melalui protokol standar.
 
 SweetAlert2 adalah pustaka JavaScript yang digunakan untuk membuat kotak dialog interaktif.
 
-- **Website Resmi**: [https://sweetalert2.github.io]
+- **Website Resmi**: [https://sweetalert2.github.io](https://sweetalert2.github.io)
 - **Lisensi**: MIT License
 - **Copyright**: © SweetAlert2 Contributors
 
@@ -58,7 +58,7 @@ SweetAlert2 adalah pustaka JavaScript yang digunakan untuk membuat kotak dialog 
 
 Leaflet adalah pustaka JavaScript untuk membuat peta interaktif.
 
-- **Website Resmi**: [https://leafletjs.com]
+- **Website Resmi**: [https://leafletjs.com](https://leafletjs.com)
 - **Lisensi**: BSD 2-Clause "Simplified" License
 - **Copyright**: © Vladimir Agafonkin
 
@@ -68,7 +68,7 @@ Leaflet adalah pustaka JavaScript untuk membuat peta interaktif.
 
 OpenStreetMap menyediakan data peta yang digunakan dalam aplikasi ini.
 
-- **Website Resmi**: [https://www.openstreetmap.org]
+- **Website Resmi**: [https://www.openstreetmap.org](https://www.openstreetmap.org)
 - **Lisensi**: Open Database License (ODbL)
 - **Copyright**: © OpenStreetMap Contributors
 
