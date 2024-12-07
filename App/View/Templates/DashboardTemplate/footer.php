@@ -43,21 +43,36 @@
         const tabPanes = document.querySelectorAll(".tab-pane");
         const textEdu = document.querySelectorAll(".txt-edu");
 
-        tabButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                // Hapus kelas aktif dari semua tab dan konten
-                tabButtons.forEach((btn) => btn.classList.remove("active"));
-                tabPanes.forEach((pane) => pane.classList.remove("active"));
-                textEdu.forEach((edu) => edu.classList.toggle("active"));
+        // Pastikan elemen-elemen yang diperlukan ditemukan di halaman
+        if (tabButtons.length > 0 && tabPanes.length > 0 && textEdu.length > 0) {
+            tabButtons.forEach((button, index) => {
+                button.addEventListener("click", () => {
+                    // Hapus kelas aktif dari semua tab dan konten
+                    tabButtons.forEach((btn) => btn.classList.remove("active"));
+                    tabPanes.forEach((pane) => pane.classList.remove("active"));
+                    textEdu.forEach((edu) => edu.classList.remove("active"));
 
-                // Tambahkan kelas aktif ke tab dan konten yang dipilih
-                button.classList.add("active");
-                const target = button.getAttribute("data-tab");
-                document.getElementById(target).classList.add("active");
+                    // Tambahkan kelas aktif ke tab, konten, dan teks edukasi yang sesuai
+                    button.classList.add("active");
+                    const target = button.getAttribute("data-tab");
+                    const targetPane = document.getElementById(target);
+
+                    if (targetPane) {
+                        targetPane.classList.add("active");
+                    } else {
+                        console.error(`Tab pane dengan ID '${target}' tidak ditemukan.`);
+                    }
+
+                    // Aktifkan teks edukasi yang sesuai dengan tab
+                    if (textEdu[index]) {
+                        textEdu[index].classList.add("active");
+                    }
+                });
             });
-        });
+        } else {
+            console.error("Elemen tab-btn, tab-pane, atau txt-edu tidak ditemukan di halaman.");
+        }
     });
-
 
     const overlay = document.getElementById('overlay');
     const sidebar = document.getElementById('sidebar');
