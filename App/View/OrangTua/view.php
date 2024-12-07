@@ -38,6 +38,10 @@
                         <p><?= $orangTua[0]["alamat"] ?></p>
                     </div>
                     <div class="list-item">
+                        <h3>Posyandu</h3>
+                        <p><?= $orangTua[0]["pos"] ?></p>
+                    </div>
+                    <div class="list-item">
                         <h3>Status Aktivasi</h3>
                         <p>
                             <?php

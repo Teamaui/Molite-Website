@@ -1,7 +1,7 @@
 /* General Body */
 body {
   font-family: "Arial", sans-serif;
-  background-color: #f4f7fb;
+  background-color: white;
   margin: 0;
   padding: 0;
 }
@@ -15,9 +15,7 @@ body {
   max-width: 1200px;
   margin: 100px auto;
   padding: 0 20px;
-  background-color: white;
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Edukasi Section */
@@ -69,7 +67,7 @@ body {
   max-height: 500px;
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 30px;
+  margin-bottom: 29px;
 }
 
 /* Main Text (Description) */
@@ -78,7 +76,15 @@ body {
   color: #7f8c8d;
   text-align: justify;
   line-height: 1.8;
-  margin-bottom: 30px;
+}
+
+.main-teks p:first-of-type {
+  margin: 0;
+  font-size: .8rem;
+}
+
+.main-teks p:last-of-type {
+  margin-bottom: 2rem;
 }
 
 /* Responsive Design */

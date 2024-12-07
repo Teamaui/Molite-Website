@@ -8,7 +8,7 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100dvw;
   background-color: #f7f7f7;
   height: 70px;
   display: flex;
@@ -64,7 +64,7 @@ body {
   right: 20;
   background-color: white;
   min-width: 150px;
-  box-shadow: 0px 8px 16px rgba(9, 141, 179, 0.1);
+  box-shadow: 0px 0px 16px rgba(9, 141, 179, 0.1);
   z-index: 1;
   border-radius: 0.3rem;
 }
@@ -139,10 +139,10 @@ body {
 .main-content {
   background-image: url(../img/bg_main.png);
   background-size: cover;
-  min-height: calc(100dvh - 70px);
+  min-height: calc(100dvh - 120px);
   width: 100%;
   margin-left: 250px;
-  margin-top: 50px;
+  margin-top: 70px;
   /* below the topbar */
   padding: 20px;
 }
@@ -216,17 +216,37 @@ body {
   margin-top: 2rem;
 }
 
-.sidebar h1 {
+.sidebar h3 {
   display: none;
 }
 
+#sidebar button {
+  display: none;
+}
+
+.sidebar .div {
+  display: none;
+  align-items: center;
+  margin: 1rem 0;
+  margin-left: 0.5rem;
+}
 
 @media (max-width: 768px) {
+  .sidebar {
+    position: relative;
+    overflow: visible !important;
+    z-index: 10;
+  }
+
+  .sidebar .div {
+    display: flex;
+  }
+
   .main-content {
     margin: 0;
   }
 
-  .sidebar h1 {
+  .sidebar h3 {
     display: block;
     color: #098db3;
     text-align: center;
@@ -238,17 +258,41 @@ body {
     margin: 0;
   }
 
+  .below-a {
+    position: absolute;
+    bottom: 2.5rem;
+  }
+
   .sidebar {
     position: fixed;
     top: 0;
-    left: -250px; /* Hidden by default */
+    left: -270px; /* Hidden by default */
     width: 250px;
     height: 100%;
     color: #fff;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    background-color: #f7f7f7;
     transition: all 0.3s ease;
     z-index: 1000;
     overflow-y: auto;
+  }
+
+  .sidebar.active {
+    left: 0; /* Tampilkan sidebar */
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Efek gelap */
+    z-index: 999;
+    display: none; /* Sembunyikan overlay secara default */
+  }
+
+  .overlay.active {
+    display: block; /* Tampilkan overlay */
   }
 
   .sidebar.open {
@@ -260,16 +304,15 @@ body {
     padding: 0;
     margin: 0;
   }
-
   .sidebar ul li a {
     text-decoration: none;
     display: block;
-    padding: 15px;
-    font-size: 16px;
+    font-size: 1rem;
   }
 
   .sidebar ul li a i {
     margin-right: 10px;
+    font-size: 1.2rem;
   }
 
   /* Close button */
@@ -281,14 +324,37 @@ body {
     cursor: pointer;
   }
 
+  .topbar {
+    padding: 0 1rem;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .topbar-left .app-name {
+    margin: 0;
+  }
+
+  .topbar-left img {
+    display: none;
+  }
+
   /* Sidebar toggle button */
   .toggle-btn {
     background-color: transparent;
     border: none;
-    padding: 10px 15px;
     font-size: 2rem;
     cursor: pointer;
+    padding: 0;
+    padding-bottom: 0.3rem;
     border-radius: 5px;
     color: #098db3;
   }
+  .user-name {
+    margin-right: 1.7rem;
+  }
+
+  /* --------------BATAS DASHBOARD */
 }

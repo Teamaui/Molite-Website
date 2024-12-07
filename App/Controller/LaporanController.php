@@ -31,6 +31,7 @@ class LaporanController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "styleAdminLaporan";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
@@ -62,10 +63,10 @@ class LaporanController
             'totalPages' => $totalPages
         ];
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/laporan/index", ["pertumbuhan" => $pertumbuhan, "pagination" => $pagination, "startNumber" => $startNumber]);
+        ViewReader::view("/Laporan/index", ["pertumbuhan" => $pertumbuhan, "pagination" => $pagination, "startNumber" => $startNumber]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 }

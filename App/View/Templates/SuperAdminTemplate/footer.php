@@ -7,7 +7,27 @@
 </div>
 
 <!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    const overlay = document.getElementById('overlay');
+    const sidebar = document.getElementById('sidebar');
+    const btnDropdown = document.querySelector(".sidebar button");
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+        btnDropdown.style.display = "block";
+    }
+
+    function toggleCloseSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        btnDropdown.style.display = "none";
+    }
+
+    // Tambahkan event listener untuk overlay
+    overlay.addEventListener('click', toggleCloseSidebar);
+
     function displayFileName() {
         const fileInput = document.getElementById('file-input');
         const fileName = document.getElementById('file-name');
@@ -25,6 +45,29 @@
             return [];
         }
     }
+
+    document.querySelectorAll('.hapus').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            e.preventDefault(); // Mencegah aksi default (navigasi langsung)
+            const deleteUrl = this.getAttribute('href'); // Ambil URL dari atribut href
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#098db3',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect ke URL penghapusan jika pengguna mengonfirmasi
+                    window.location.href = deleteUrl;
+                }
+            });
+        });
+    });
 </script>
 <script>
     function lineChart(labels, dataBeratBadan, dataTinggiBadan, dataLingkarKepala) {
@@ -193,7 +236,6 @@
     async function mainLineChart() {
         let dataPertumbuhan = await fetchData('http://localhost/Molita/Public/index.php/molita-api/get-pertumbuhan');
         dataPertumbuhan = dataPertumbuhan.data;
-        console.log(dataPertumbuhan);
         // Label bulan yang ingin digunakan
         const labels = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 

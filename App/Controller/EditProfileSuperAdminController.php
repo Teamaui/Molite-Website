@@ -29,10 +29,11 @@ class EditProfileSuperAdminController
         $title = "Molita | Dashboard";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "stylePengaturanAdmin";
+        $styleCss4 = "styleMediaSuperAdmin";
 
         $superAdmin = $this->superAdminModel->findByEmail($_SESSION["email_super_admin"]);
 
-        ViewReader::view("/Templates/PengaturanSuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/PengaturanSuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/PengaturanSuperAdminTemplate/topbar", ["superAdmin" => $superAdmin]);
         ViewReader::view("/Templates/PengaturanSuperAdminTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/ProfileSuperAdmin/index", ["superAdmin" => $superAdmin]);

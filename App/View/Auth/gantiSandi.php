@@ -37,10 +37,64 @@
                     <span class="toggle-password" id="toggle-ganti-password2"><i class="bi bi-eye-slash-fill"></i></span>
                 </div>
 
-                <button type="submit">Ganti Sandi</button>
+                <button type="submit" id="submit-change-key">Ganti Sandi</button>
             </form>
-            <a href="<?= PathHelper::getPath() ?>/login">Kembali ke halaman masuk? <span>Masuk</span></a>
+            <a href="<?= UrlHelper::route("/login") ?>">Kembali ke halaman masuk? <span>Masuk</span></a>
         </div>
     </div>
 </div>
 <!-- End Body -->
+<script>
+    const gantiSandi1 = document.getElementById("gantiSandi1");
+    const gantiSandi2 = document.getElementById("gantiSandi2");
+    const submitChangeKey = document.getElementById("submit-change-key");
+
+    gantiSandi1.addEventListener("input", () => {
+        if (gantiSandi1.value.length >= 8) {
+            setValid(gantiSandi1);
+        } else {
+            setInvalid(gantiSandi1);
+        }
+        validateForm();
+    });
+
+    gantiSandi2.addEventListener("input", () => {
+        if (
+            gantiSandi2.value === gantiSandi1.value &&
+            gantiSandi2.value.length >= 8
+        ) {
+            setValid(gantiSandi2);
+        } else {
+            setInvalid(gantiSandi2);
+        }
+        validateForm();
+    });
+
+    function setValid(element) {
+        element.classList.add("valid");
+        element.classList.remove("invalid");
+    }
+
+    function setInvalid(element) {
+        element.classList.add("invalid");
+        element.classList.remove("valid");
+    }
+
+    function resetValidation(element) {
+        element.classList.remove("valid");
+        element.classList.remove("invalid");
+    }
+
+    function validateForm() {
+        if (
+            gantiSandi1.classList.contains("valid") &&
+            gantiSandi2.classList.contains("valid")
+        ) {
+            submitEdit.disabled = false;
+        } else {
+            submitEdit.disabled = true;
+        }
+    }
+
+    console.log("AMANAA")
+</script>

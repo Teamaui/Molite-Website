@@ -3,7 +3,11 @@
 <img src="<?= UrlHelper::img("assets/bg-corner.png") ?>" alt="" class="top-right">
 
 <div class="main otp">
-    <?php if (FlashMessageHelper::has("pesan_sukses")) : ?>
+    <?php
+
+            use Routes\Route;
+
+ if (FlashMessageHelper::has("pesan_sukses")) : ?>
         <p class="alert-message-success"><?= FlashMessageHelper::get("pesan_sukses"); ?></p>
     <?php endif; ?>
 
@@ -12,7 +16,7 @@
     <?php endif; ?>
     <h1>Verifikasi OTP</h1>
     <h2>Kode akan dikirim ke email</h2>
-    <p>abdullahmuchsin96@gmail.com</p>
+    <p><?= $admin["email"] ?></p>
 
     <form action="<?= UrlHelper::route("otp-lupa-sandi") ?>" method="post">
         <div class="card-code">
@@ -27,7 +31,7 @@
         <p class="time">00.30</p>
 
         <div class="link-kode">
-            <a href="">Belum menerima kode? <span>Kirim ulang kode</span></a>
+            <a href="<?= UrlHelper::route("/resend-otp/" . $admin["id_admin"]) ?>">Belum menerima kode? <span>Kirim ulang kode</span></a>
         </div>
 
         <button type="submit">Verifikasi</button>

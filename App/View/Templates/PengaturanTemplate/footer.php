@@ -8,6 +8,25 @@
 
 <!-- JavaScript -->
 <script>
+    const overlay = document.getElementById('overlay');
+    const sidebar = document.getElementById('sidebar');
+    const btnDropdown = document.querySelector(".sidebar button");
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+        btnDropdown.style.display = "block";
+    }
+
+    function toggleCloseSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        btnDropdown.style.display = "none";
+    }
+
+    // Tambahkan event listener untuk overlay
+    overlay.addEventListener('click', toggleCloseSidebar);
+
     function togglePassword(input, icon) {
         const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
         input.setAttribute('type', type);
@@ -42,7 +61,7 @@
 
 
     function toggleDropdown() {
-        var dropdown = document.getElementById("dropdownMenu");
+        const dropdown = document.getElementById("dropdownMenu");
         if (dropdown.style.display === "block") {
             dropdown.style.display = "none";
         } else {
@@ -154,7 +173,7 @@
 
     sandi1.addEventListener('keyup', () => {
         if (sandi1.value.trim() !== "") {
-            submitEdit.disabled = true; 
+            submitEdit.disabled = true;
 
             sandi2.addEventListener('input', validatePasswords);
             sandi3.addEventListener('input', validatePasswords);
@@ -166,11 +185,11 @@
     function validatePasswords() {
         if (
             sandi2.value.length >= 8 &&
-            sandi2.value === sandi3.value 
+            sandi2.value === sandi3.value
         ) {
             submitEdit.disabled = false;
         } else {
-            submitEdit.disabled = true; 
+            submitEdit.disabled = true;
         }
     }
 

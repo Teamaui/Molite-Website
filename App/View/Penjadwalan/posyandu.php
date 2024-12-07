@@ -34,26 +34,27 @@
                     <!-- username	password	email	nama_ibu	nama_ayah	NIK_ibu	NIK_ayah	alamat	no_telepon -->
                     <th>No</th>
                     <th>Pos</th>
-                    <th>Tanggal Posyandu</th>
-                    <th>Jam Posyandu</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                <?php
-                $status = null;
-                foreach ($penjadwalan as $pjl) : ?>
+                <?php if (empty($posyandu)) : ?>
                     <tr>
-                        <td><?= $startNumber++ ?></td>
-                        <td><?= $pjl["pos"] ?></td>
-                        <td><?= $pjl["tanggal"] ?></td>
-                        <td><?= $pjl["jam"] ?></td>
-                        <td>
-                            <a class="edit" href="<?= UrlHelper::route("penjadwalan/posyandu/edit/" . $pjl["id_jadwal_posyandu"]) ?>"><i class="bi bi-pencil-fill"></i></a>
-                            <a class="hapus" href="<?= UrlHelper::route("penjadwalan/posyandu/delete/" . $pjl["id_jadwal_posyandu"]) ?>"><i class="bi bi-trash"></i></a>
-                        </td>
+                        <td colspan="5" style="text-align: center;">Data tidak tersedia</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php else : ?>
+                    <?php foreach ($posyandu as $psy) : ?>
+                        <tr>
+                            <td><?= $startNumber++ ?></td>
+                            <td><?= $psy["pos"] ?></td>
+                            <td>
+                                <a class="view" href="<?= UrlHelper::route("penjadwalan/posyandu/view/" . $psy["id_posyandu"]) ?>"><i class="bi bi-eye-fill"></i></a>
+                                <a class="edit" href="<?= UrlHelper::route("penjadwalan/posyandu/edit/" . $psy["id_posyandu"]) ?>"><i class="bi bi-pencil-fill"></i></a>
+                                <a class="hapus" href="<?= UrlHelper::route("penjadwalan/posyandu/delete/" . $psy["id_posyandu"]) ?>"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
         <?php if (isset($_GET["search"])) : ?>

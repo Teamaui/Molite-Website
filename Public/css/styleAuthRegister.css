@@ -199,6 +199,14 @@ a span {
 .a-pack a {
   width: fit-content;
 }
+
+.valid {
+  border: 2px solid rgb(130, 233, 130);
+}
+.invalid {
+  border: 2px solid red;
+}
+
 @media (max-width: 768px) {
   p {
     font-size: 1rem;

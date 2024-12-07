@@ -25,11 +25,12 @@ class EditProfilController
     {
         $title = "Molita | Dashboard";
         $styleCss = "styleMainAdmin";
-        $styleCss2 = "stylePengaturanAdmin";
+        $styleCss2 = "stylePengaturanAdmin";    
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
-        ViewReader::view("/Templates/PengaturanTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/PengaturanTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/PengaturanTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/PengaturanTemplate/sidebar");
         ViewReader::view("/Profile/index", ["admin" => $admin]);

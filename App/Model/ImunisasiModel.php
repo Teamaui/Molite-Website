@@ -75,7 +75,7 @@ class ImunisasiModel
 
     public function findByIdAnak($id)
     {
-        $query = "SELECT jadwal_imunisasi.*, anak.*, jenis_imunisasi.* FROM jadwal_imunisasi JOIN daftar_imunisasi ON daftar_imunisasi.id_jadwal_imunisasi = jadwal_imunisasi.id_jadwal_imunisasi JOIN anak ON anak.id_anak = daftar_imunisasi.id_anak JOIN jenis_imunisasi ON jenis_imunisasi.id_jenis_imunisasi = jadwal_imunisasi.id_jenis_imunisasi WHERE anak.id_anak = :id_anak";
+        $query = "SELECT jadwal_imunisasi.*, anak.*, jenis_imunisasi.* FROM jadwal_imunisasi LEFT JOIN daftar_imunisasi ON daftar_imunisasi.id_jadwal_imunisasi = jadwal_imunisasi.id_jadwal_imunisasi LEFT JOIN anak ON anak.id_anak = daftar_imunisasi.id_anak LEFT JOIN jenis_imunisasi ON jenis_imunisasi.id_jenis_imunisasi = jadwal_imunisasi.id_jenis_imunisasi WHERE anak.id_anak = :id_anak";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":id_anak", $id);
         $stmt->execute();
@@ -109,6 +109,16 @@ class ImunisasiModel
         $stmt->bindParam(":id_jenis_imunisasi", $data["id_jenis_imunisasi"]);
         $stmt->bindParam(":nama_imunisasi", $data["nama_imunisasi"]);
         $stmt->bindParam(":deskripsi_imunisasi", $data["deskripsi_imunisasi"]);
+
+        return $stmt->execute();
+    }
+
+    public function deleteImunisasiById($idImunisasi)
+    {
+        $sql = "DELETE FROM jenis_imunisasi WHERE id_jenis_imunisasi = :id_jenis_imunisasi";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":id_jenis_imunisasi", $idImunisasi);
 
         return $stmt->execute();
     }

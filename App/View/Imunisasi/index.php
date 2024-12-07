@@ -27,18 +27,24 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                foreach ($jenisImunisasi as $js) : ?>
+                <?php if (empty($jenisImunisasi)) : ?>
                     <tr>
-                        <td><?= $startNumber++; ?></td>
-                        <td><?= $js["nama_imunisasi"] ?></td>
-                        <td><?= $js["deskripsi_imunisasi"]; ?></td>
-                        <td>
-                            <a class="edit" href="<?= UrlHelper::route("imunisasi/edit/" . $js["id_jenis_imunisasi"]) ?>"><i class="bi bi-pencil-fill"></i></a>
-                            <a class="view" href="<?= UrlHelper::route("imunisasi/view/" . $js["id_jenis_imunisasi"]) ?>"><i class="bi bi-eye-fill"></i></a>
-                        </td>
+                        <td colspan="4" style="text-align: center;">Data tidak tersedia</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php else : ?>
+                    <?php foreach ($jenisImunisasi as $js) : ?>
+                        <tr>
+                            <td><?= $startNumber++; ?></td>
+                            <td><?= $js["nama_imunisasi"] ?></td>
+                            <td><?= $js["deskripsi_imunisasi"]; ?></td>
+                            <td>
+                                <a class="view" href="<?= UrlHelper::route("imunisasi/view/" . $js["id_jenis_imunisasi"]) ?>"><i class="bi bi-eye-fill"></i></a>
+                                <a class="edit" href="<?= UrlHelper::route("imunisasi/edit/" . $js["id_jenis_imunisasi"]) ?>"><i class="bi bi-pencil-fill"></i></a>
+                                <a class="hapus" href="<?= UrlHelper::route("imunisasi/delete/" . $js["id_jenis_imunisasi"]) ?>"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
         <?php if (isset($_GET["search"])) : ?>

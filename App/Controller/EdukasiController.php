@@ -25,6 +25,7 @@ class EdukasiController
         $title = "Molita | Data Edukasi";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
@@ -50,7 +51,7 @@ class EdukasiController
             'totalPages' => $totalPages
         ];
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Edukasi/index", ["edukasi" => $edukasi, "pagination" => $pagination, "startNumber" => $startNumber]);
@@ -62,10 +63,11 @@ class EdukasiController
         $title = "Molita | Tambah Jenis Edukasi";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Edukasi/create");
@@ -94,6 +96,7 @@ class EdukasiController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "styleAdminMode";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $jenisEdukasi = $this->edukasiModel->findJenisEdukasiById($id);
@@ -120,7 +123,7 @@ class EdukasiController
             'totalPages' => $totalPages
         ];
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Edukasi/detailJenis", ["edukasi" => $edukasi, "jenisEdukasi" => $jenisEdukasi, "pagination" => $pagination, "startNumber" => $startNumber]);
@@ -154,12 +157,13 @@ class EdukasiController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "styleAdminMode";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $idJenisEdukasi = $id;
         $edukasi = $this->edukasiModel->findEdukasiById($id);
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Edukasi/view", ["edukasi" => $edukasi, "idJenisEdukasi" => $idJenisEdukasi]);
@@ -172,11 +176,12 @@ class EdukasiController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "styleAdminMode";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $jenisEdukasi = $this->edukasiModel->findJenisEdukasiById($id);
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Edukasi/editJenis", ["jenisEdukasi" => $jenisEdukasi]);
@@ -207,11 +212,12 @@ class EdukasiController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "styleAdminMode";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $edukasi = $this->edukasiModel->findEdukasiById($id);
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Edukasi/editDetailEdukasi", ["edukasi" => $edukasi]);
@@ -236,6 +242,19 @@ class EdukasiController
         } else {
             FlashMessageHelper::set("pesan_gagal", "Gagal update Edukasi!");
             header("Location: " . UrlHelper::route("edukasi/detail-edukasi/" . $data["id_jenis_edukasi"]));
+            exit;
+        }
+    }
+
+    public function destroyJenisEdukasi($id)
+    {
+        if ($this->edukasiModel->deleteJenisEdukasi($id)) {
+            FlashMessageHelper::set("pesan_sukses", "Berhasil menghapus data jenis edukasi!");
+            header("Location: " . UrlHelper::route("/edukasi"));
+            exit;
+        } else {
+            FlashMessageHelper::set("pesan_gagal", "Gagal menghapus data jenis edukasi!");
+            header("Location: " . UrlHelper::route("/edukasi"));
             exit;
         }
     }

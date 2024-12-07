@@ -31,7 +31,6 @@ require_once __DIR__ . "/../App/Helper/PdfHelper.php";
 require_once __DIR__ . "/../App/Helper/PaginationHelper.php";
 require_once __DIR__ . "/../App/Helper/UrlHelper.php";
 require_once __DIR__ . "/../App/Helper/FlashMessageHelper.php";
-require_once __DIR__ . "/../App/Helper/PathHelper.php";
 require_once __DIR__ . "/../App/Helper/DatabaseHelper.php";
 require_once __DIR__ . "/../App/Helper/ViewHeader.php";
 require_once __DIR__ . "/../App/Helper/GenerateCodeHelper.php";
@@ -90,7 +89,7 @@ Route::add("POST", "/edit-profile-admin/update", EditProfileSuperAdminController
 
 // Beranda
 Route::add("GET", "/", BerandaController::class, "index");
-Route::add("GET", "/edukasi/([0-9a-zA-Z]*)", BerandaController::class, "edukasi");
+Route::add("GET", "/e/([0-9a-zA-Z]*)", BerandaController::class, "edukasi");
 
 // Login
 Route::add("GET", "/login", AuthController::class, "index");
@@ -101,11 +100,13 @@ Route::add("GET", "/register", AuthController::class, "register");
 Route::add("POST", "/register", AuthController::class, "register");
 
 // Lupa Sandi
+Route::add("GET", "/resend-otp/([0-9a-zA-Z]*)", AuthController::class, "reSendOtp");
 Route::add("GET", "/lupa-sandi", AuthController::class, "lupaSandi");
 Route::add("POST", "/lupa-sandi", AuthController::class, "sendOtp");
 Route::add("GET", "/otp-lupa-sandi/([0-9a-zA-Z]*)", AuthController::class, "otpLupaSandi");
 Route::add("POST", "/otp-lupa-sandi", AuthController::class, "storeOtpLupaSandi");
 Route::add("POST", "/ganti-sandi", AuthController::class, "gantiSandi");
+Route::add("GET", "/aktivasi-akun/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", AuthController::class, "aktivasiAkun");
 
 // Dashboard
 Route::add("GET", "/dashboard", DashboardController::class, "index");
@@ -139,6 +140,7 @@ Route::add("GET", "/imunisasi/create", ImunisasiController::class, "create");
 Route::add("POST", "/imunisasi/store", ImunisasiController::class, "store");
 Route::add("GET", "/imunisasi/view/([0-9a-zA-Z]*)", ImunisasiController::class, "view");
 Route::add("GET", "/imunisasi/edit/([0-9a-zA-Z]*)", ImunisasiController::class, "edit");
+Route::add("GET", "/imunisasi/delete/([0-9a-zA-Z]*)", ImunisasiController::class, "destroy");
 Route::add("POST", "/imunisasi/update", ImunisasiController::class, "update");
 
 // Pertumbuhan
@@ -158,9 +160,14 @@ Route::add("GET", "/penjadwalan/posyandu", PenjadwalanController::class, "posyan
 Route::add("GET", "/penjadwalan/posyandu/create", PenjadwalanController::class, "createPosyandu");
 Route::add("POST", "/penjadwalan/posyandu/store", PenjadwalanController::class, "storePosyandu");
 Route::add("GET", "/penjadwalan/posyandu/edit/([0-9a-zA-Z]*)", PenjadwalanController::class, "editPosyandu");
+Route::add("GET", "/penjadwalan/posyandu/view/([0-9a-zA-Z]*)", PenjadwalanController::class, "viewPosyandu");
 Route::add("POST", "/penjadwalan/posyandu/update", PenjadwalanController::class, "updatePosyandu");
 Route::add("GET", "/penjadwalan/posyandu/delete/([0-9a-zA-Z]*)", PenjadwalanController::class, "destroyPosyandu");
 Route::add("GET", "/penjadwalan/delete/([0-9a-zA-Z]*)", PenjadwalanController::class, "destroy");
+Route::add("POST", "/penjadwalan/posyandu/view/store", PenjadwalanController::class, "storeJadwalPosyandu");
+Route::add("GET", "/penjadwalan/posyandu/view/delete/([0-9a-zA-Z]*)", PenjadwalanController::class, "destroyJadwalPosyandu");
+Route::add("GET", "/penjadwalan/posyandu/view/edit/([0-9a-zA-Z]*)", PenjadwalanController::class, "editJadwalPosyandu");
+Route::add("POST", "/penjadwalan/posyandu/view/update", PenjadwalanController::class, "updateJadwalPosyandu");
 
 // Edukasi
 Route::add("GET", "/edukasi", EdukasiController::class, "index");
@@ -170,6 +177,7 @@ Route::add("GET", "/edukasi/detail-edukasi/([0-9a-zA-Z]*)", EdukasiController::c
 Route::add("POST", "/edukasi/detail-edukasi/store", EdukasiController::class, "storeDetailJenis");
 Route::add("GET", "/edukasi/view/([0-9a-zA-Z]*)", EdukasiController::class, "view");
 Route::add("GET", "/edukasi/edit-jenis/([0-9a-zA-Z]*)", EdukasiController::class, "editJenis");
+Route::add("GET", "/edukasi/delete-jenis/([0-9a-zA-Z]*)", EdukasiController::class, "destroyJenisEdukasi");
 Route::add("POST", "/edukasi/update-jenis", EdukasiController::class, "updateJenis");
 Route::add("GET", "/edukasi/edit-detail-edukasi/([0-9a-zA-Z]*)", EdukasiController::class, "editDetailEdukasi");
 Route::add("POST", "/edukasi/detail-edukasi/update", EdukasiController::class, "updateDetailEdukasi");
@@ -205,6 +213,23 @@ Route::add("GET", "/molita-api/get-edukasi", ApiController::class, "getDataEduka
 Route::add("POST", "/molita-api/update-like-user-edukasi", ApiController::class, "likeUserEdukasi");
 Route::add("GET", "/molita-api/get-admin/([0-9a-zA-Z]*)", ApiController::class, "getDataAdminById");
 Route::add("GET", "/molita-api/get-orang-tua/([0-9a-zA-Z]*)", ApiController::class, "getDataOrangTuaById");
+Route::add("GET", "/molita-api/get-jenis-edukasi", ApiController::class, "getDataJenisEdukasi");
+Route::add("GET", "/molita-api/get-edukasi-slug", ApiController::class, "getDataEdukasiBySlug");
+Route::add("POST", "/molita-api/get-anak-imunisasi", ApiController::class, "getAnakByIdOrangTua");
+Route::add("POST", "/molita-api/get-anak-posyandu", ApiController::class, "getPosyanduByIdOrangTua");
+Route::add("POST", "/molita-api/get-imunisasi-by-anak", ApiController::class, "getImunisasiAnak");
+Route::add("POST", "/molita-api/get-orang-tua", ApiController::class, "getDataOrangTuaByIdToMobile");
+Route::add("POST", "/molita-api/get-pertumbuhan", ApiController::class, "getPertumbuhanByAnak");
+Route::add("POST", "/molita-api/get-anak-orang-tua", ApiController::class, "getAnakOrangTua");
+Route::add("POST", "/molita-api/get-all-data-anak-orang-tua", ApiController::class, "getAllDataAnakByOrangTua");
+Route::add("GET", "/molita-api/get-edukasi-order-like", ApiController::class, "getEdukasiOrderLike");
+Route::add("POST", "/molita-api/send-email-orang-tua", ApiController::class, "sendEmailOrangTua");
+Route::add("POST", "/molita-api/cek-otp-orang-tua", ApiController::class, "cekOtpOrangTua");
+Route::add("POST", "/molita-api/ubah-sandi-orang-tua", ApiController::class, "ubahSandiOrangTua");
+Route::add("POST", "/molita-api/ganti-sandi-orang-tua", ApiController::class, "gantiSandiOrangTua");
+Route::add("POST", "/molita-api/get-like-edukasi", ApiController::class, "getLikeEdukasi");
+Route::add("GET", "/molita-api/get-edukasi-new", ApiController::class, "getEdukasiNew");
+
 
 // Logout
 Route::add("GET", "/logout", AuthController::class, "logout");

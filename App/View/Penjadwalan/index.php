@@ -41,31 +41,39 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                $status = null;
-                foreach ($penjadwalan as $pjl) :
-                    if ($pjl["status_imunisasi"] == "Sudah") {
-                        $status = "success";
-                    } else if ($pjl["status_imunisasi"] == "Tertunda") {
-                        $status = "warning";
-                    } else {
-                        $status = "error";
-                    }
-                ?>
+                <?php if (empty($penjadwalan)) : ?>
                     <tr>
-                        <td><?= $startNumber++ ?></td>
-                        <td><?= $pjl["nama_anak"] ?></td>
-                        <td><?= $pjl["nama_imunisasi"] ?></td>
-                        <td><?= $pjl["tanggal_imunisasi"] ?></td>
-                        <td>
-                            <div class="badge <?= $status ?>"><?= $pjl["status_imunisasi"] ?></div>
-                        </td>
-                        <td>
-                            <a class="edit" href="<?= UrlHelper::route("penjadwalan/edit/" . $pjl["id_jadwal_imunisasi"]) ?>"><i class="bi bi-pencil-fill"></i></a>
-                            <a class="hapus" href="<?= UrlHelper::route("penjadwalan/delete/" . $pjl["id_jadwal_imunisasi"]) ?>"><i class="bi bi-trash"></i></a>
-                        </td>
+                        <td colspan="6" style="text-align: center;">Data tidak tersedia</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php else : ?>
+                    <?php
+                    $status = null;
+
+                    foreach ($penjadwalan as $pjl) :
+
+                        if ($pjl["status_imunisasi"] == "Sudah") {
+                            $status = "success";
+                        } else if ($pjl["status_imunisasi"] == "Tertunda") {
+                            $status = "warning";
+                        } else {
+                            $status = "error";
+                        }
+                    ?>
+                        <tr>
+                            <td><?= $startNumber++ ?></td>
+                            <td><?= $pjl["nama_anak"] ?></td>
+                            <td><?= isset($pjl["nama_imunisasi"]) ? $pjl["nama_imunisasi"] : "-" ?></td>
+                            <td><?= $pjl["tanggal_imunisasi"] ?></td>
+                            <td>
+                                <div class="badge <?= $status ?>"><?= $pjl["status_imunisasi"] ?></div>
+                            </td>
+                            <td>
+                                <a class="edit" href="<?= UrlHelper::route("penjadwalan/edit/" . $pjl["id_jadwal_imunisasi"]) ?>"><i class="bi bi-pencil-fill"></i></a>
+                                <a class="hapus" href="<?= UrlHelper::route("penjadwalan/delete/" . $pjl["id_jadwal_imunisasi"]) ?>"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
         <?php if (isset($_GET["search"])) : ?>

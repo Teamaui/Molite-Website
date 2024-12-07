@@ -29,27 +29,29 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                $status = null;
-
-                foreach ($orangTua as $ot) :
-
-                    if ($ot["status_aktivasi"] == "Aktif") {
-                        $status = "success";
-                    } else {
-                        $status = "error";
-                    } ?>
+                <?php if (empty($orangTua)) : ?>
                     <tr>
-                        <td><?= $startNumber++ ?></td>
-                        <td><?= $ot["email"] ?></td>
-                        <td><?= $ot["nama_ibu"] ?></td>
-                        <td><?= $ot["nama_ayah"] ?></td>
-                        <td><?= $ot["alamat"] ?></td>
-                        <td>
-                            <a class="view" id="viewAdmin" data-id="<?= $ot["id_orang_tua"] ?>" onclick="showDetailOrangtua(this)" href="#"><i class="bi bi-eye-fill"></i></a>
-                        </td>
+                        <td colspan="6" style="text-align: center;">Data tidak tersedia</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php else : ?>
+                    <?php foreach ($orangTua as $ot) :
+                        if ($ot["status_aktivasi"] == "Aktif") {
+                            $status = "success";
+                        } else {
+                            $status = "error";
+                        } ?>
+                        <tr>
+                            <td><?= $startNumber++ ?></td>
+                            <td><?= $ot["email"] ?></td>
+                            <td><?= $ot["nama_ibu"] ?></td>
+                            <td><?= $ot["nama_ayah"] ?></td>
+                            <td><?= $ot["alamat"] ?></td>
+                            <td>
+                                <a class="view" id="viewAdmin" data-id="<?= $ot["id_orang_tua"] ?>" onclick="showDetailOrangtua(this)" href="#"><i class="bi bi-eye-fill"></i></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
         <?php if (isset($_GET["search"])) : ?>

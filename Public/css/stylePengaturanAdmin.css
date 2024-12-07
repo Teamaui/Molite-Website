@@ -132,13 +132,17 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
 .toggle-password:hover {
   cursor: pointer;
 }
-
 .password-container {
   display: flex;
+  width: 100%;
 }
-
-.password-container input {
-  width: calc(40% - 3rem);
+.password-icon {
+  display: flex;
+  width: 100%;
+}
+.password-icon input {
+  width: 57dvh;
+  margin-left: 3.6%;
 }
 
 .table-container .alert-message-success {

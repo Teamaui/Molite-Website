@@ -15,7 +15,7 @@
             <div class="form-left">
                 <div>
                     <label for="nik">NIK</label>
-                    <input type="text" id="nik" placeholder="Masukkan NIK..." name="nik"  required>
+                    <input type="text" id="nik" placeholder="Masukkan NIK..." name="nik" required>
                 </div>
                 <div>
                     <label for="username">Username</label>
@@ -39,10 +39,10 @@
                 </div>
             </div>
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" id="submit-register">Registrasi</button>
     </form>
     <div class="a-pack">
-        <a href="<?= PathHelper::getPath() ?>/login">Sudah punya akun? <span>Masuk</span></a>
+        <a href="<?= UrlHelper::route("/login") ?>">Sudah punya akun? <span>Masuk</span></a>
     </div>
 </div>
 <!-- End Body -->

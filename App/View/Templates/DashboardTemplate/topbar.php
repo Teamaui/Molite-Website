@@ -3,7 +3,6 @@
         <div class="topbar-left">
             <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
             <div class="app-name"><img src="<?= UrlHelper::img("logo.png"); ?>" width="27" alt=""><span class="mo">Mo</span><span class="lita">lita</span></div>
-
         </div>
         <div class="user-section">
             <div class="user-name" onclick="toggleDropdown()"><?= $admin["nama_admin"] ?> ▼</div>

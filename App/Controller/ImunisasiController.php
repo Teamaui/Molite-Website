@@ -29,6 +29,7 @@ class ImunisasiController
         $title = "Molita | Data Imunisasi";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
@@ -54,7 +55,7 @@ class ImunisasiController
             'totalPages' => $totalPages
         ];
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Imunisasi/index", ["jenisImunisasi" => $jenisImunisasi, "pagination" => $pagination, "startNumber" => $startNumber]);
@@ -66,10 +67,11 @@ class ImunisasiController
         $title = "Molita | Tambah Data Imunisasi";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Imunisasi/create");
@@ -98,6 +100,7 @@ class ImunisasiController
         $title = "Molita | Tambah Data Imunisasi";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
@@ -126,10 +129,10 @@ class ImunisasiController
 
         $jenisImunisasi = $this->imunisasiModel->findJenisImunisasiById($id);
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Imunisasi/view", ["imunisasi" => $imunisasi, "jenisImunisasi" => $jenisImunisasi, "pagination" => $pagination , "startNumber" => $startNumber]);
+        ViewReader::view("/Imunisasi/view", ["imunisasi" => $imunisasi, "jenisImunisasi" => $jenisImunisasi, "pagination" => $pagination, "startNumber" => $startNumber]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 
@@ -138,11 +141,12 @@ class ImunisasiController
         $title = "Molita | Edit Data Imunisasi";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
-
+        $styleCss4 = "styleMediaAdmin";
+        
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $imunisasi = $this->imunisasiModel->findJenisImunisasiById($id);
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Imunisasi/edit", ["imunisasi" => $imunisasi]);
@@ -163,6 +167,19 @@ class ImunisasiController
             exit;
         } else {
             FlashMessageHelper::set("pesan_gagal", "Gagal update data Imunisasi!");
+            header("Location: " . UrlHelper::route("/imunisasi"));
+            exit;
+        }
+    }
+
+    public function destroy(string $idImunisasi)
+    {
+        if ($this->imunisasiModel->deleteImunisasiById($idImunisasi)) {
+            FlashMessageHelper::set("pesan_sukses", "Berhasil menghapus data Imunisasi!");
+            header("Location: " . UrlHelper::route("/imunisasi"));
+            exit;
+        } else {
+            FlashMessageHelper::set("pesan_gagal", "Gagal menghapus data Imunisasi!");
             header("Location: " . UrlHelper::route("/imunisasi"));
             exit;
         }

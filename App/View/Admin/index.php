@@ -30,28 +30,32 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                foreach ($admin as $am) : ?>
+                <?php if (empty($admin)) : ?>
                     <tr>
-                        <td><?= $startNumber++ ?></td>
-                        <td><?= $am["nik"] ?></td>
-                        <td><?= $am["nama_admin"] ?></td>
-                        <td>
-                            <?php if ($am["username"]) : ?>
-                                <?= $am["username"] ?>
-                            <?php else : ?>
-                                -
-                            <?php endif; ?>
-                        </td>
-                        <td><?= $am["email"] ?></td>
-                        <td>
-                            <a class="view" id="viewAdmin" data-id="<?= $am["id_admin"] ?>" onclick="showDetailAdmin(this)" href="#"><i class="bi bi-eye-fill"></i></a>
-                            <a class="edit" href="<?= UrlHelper::route("admin/edit/" . $am["id_admin"]) ?>"><i class="bi bi-pencil-fill"></i></a>
-                            <a class="hapus" href="<?= UrlHelper::route("admin/delete/" . $am["id_admin"]) ?>"><i class="bi bi-trash"></i></a>
-                        </td>
+                        <td colspan="6" style="text-align: center;">Data tidak tersedia</td>
                     </tr>
-                <?php endforeach ?>
-
+                <?php else : ?>
+                    <?php foreach ($admin as $am) : ?>
+                        <tr>
+                            <td><?= $startNumber++ ?></td>
+                            <td><?= $am["nik"] ?></td>
+                            <td><?= $am["nama_admin"] ?></td>
+                            <td>
+                                <?php if ($am["username"]) : ?>
+                                    <?= $am["username"] ?>
+                                <?php else : ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
+                            <td><?= $am["email"] ?></td>
+                            <td>
+                                <a class="view" id="viewAdmin" data-id="<?= $am["id_admin"] ?>" onclick="showDetailAdmin(this)" href="#"><i class="bi bi-eye-fill"></i></a>
+                                <a class="edit" href="<?= UrlHelper::route("admin/edit/" . $am["id_admin"]) ?>"><i class="bi bi-pencil-fill"></i></a>
+                                <a class="hapus" href="<?= UrlHelper::route("admin/delete/" . $am["id_admin"]) ?>"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
         <?php if (isset($_GET["search"])) : ?>

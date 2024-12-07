@@ -30,32 +30,34 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                $status = null;
-
-                foreach ($orangTua as $ot) :
-
-                    if ($ot["status_aktivasi"] == "Aktif") {
-                        $status = "success";
-                    } else {
-                        $status = "error";
-                    } ?>
+                <?php if (empty($orangTua)) : ?>
                     <tr>
-                        <td><?= $startNumber++ ?></td>
-                        <td><?= $ot["email"] ?></td>
-                        <td><?= $ot["nama_ibu"] ?></td>
-                        <td><?= $ot["nama_ayah"] ?></td>
-                        <td><?= $ot["alamat"] ?></td>
-                        <td>
-                            <div class="badge <?= $status ?>"><?= $ot["status_aktivasi"] ?></div>
-                        </td>
-                        <td>
-                            <a class="view" href="<?= UrlHelper::route("orang-tua/view/" . $ot["id_orang_tua"]) ?>"><i class="bi bi-eye-fill"></i></a>
-                            <a class="edit" href="<?= UrlHelper::route("orang-tua/edit/" . $ot["id_orang_tua"]) ?>"><i class="bi bi-pencil-fill"></i></a>
-                            <a class="hapus" href="<?= UrlHelper::route("orang-tua/delete/" . $ot["id_orang_tua"]) ?>"><i class="bi bi-trash"></i></a>
-                        </td>
+                        <td colspan="7" style="text-align: center;">Data tidak tersedia</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php else : ?>
+                    <?php foreach ($orangTua as $ot) :
+                        if ($ot["status_aktivasi"] == "Aktif") {
+                            $status = "success";
+                        } else {
+                            $status = "error";
+                        } ?>
+                        <tr>
+                            <td><?= $startNumber++ ?></td>
+                            <td><?= $ot["email"] ?></td>
+                            <td><?= $ot["nama_ibu"] ?></td>
+                            <td><?= $ot["nama_ayah"] ?></td>
+                            <td><?= $ot["alamat"] ?></td>
+                            <td>
+                                <div class="badge <?= $status ?>"><?= $ot["status_aktivasi"] ?></div>
+                            </td>
+                            <td>
+                                <a class="view" href="<?= UrlHelper::route("orang-tua/view/" . $ot["id_orang_tua"]) ?>"><i class="bi bi-eye-fill"></i></a>
+                                <a class="edit" href="<?= UrlHelper::route("orang-tua/edit/" . $ot["id_orang_tua"]) ?>"><i class="bi bi-pencil-fill"></i></a>
+                                <a class="hapus" href="<?= UrlHelper::route("orang-tua/delete/" . $ot["id_orang_tua"]) ?>"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
         <?php if (isset($_GET["search"])) : ?>

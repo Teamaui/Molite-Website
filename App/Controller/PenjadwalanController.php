@@ -38,6 +38,7 @@ class PenjadwalanController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "styleAdminMode";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
@@ -63,7 +64,7 @@ class PenjadwalanController
             'totalPages' => $totalPages
         ];
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Penjadwalan/index", ["penjadwalan" => $penjadwalan, "pagination" => $pagination, "startNumber" => $startNumber]);
@@ -75,12 +76,13 @@ class PenjadwalanController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "styleAdminMode";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $anak = $this->anakModel->findAll();
         $imunisasi = $this->imunisasiModel->findAll();
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Penjadwalan/create", ["anak" => $anak, "imunisasi" => $imunisasi]);
@@ -115,13 +117,14 @@ class PenjadwalanController
         $title = "Molita | Edit Data Orang Tua";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $anak = $this->anakModel->findAll();
         $imunisasi = $this->imunisasiModel->findAll();
         $penjadwalan = $this->penjadwalanModel->findAllPenjadwalanById($id);
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/penjadwalan/edit", ["penjadwalan" => $penjadwalan, "anak" => $anak, "imunisasi" => $imunisasi]);
@@ -158,6 +161,7 @@ class PenjadwalanController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "styleAdminMode";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
@@ -169,11 +173,11 @@ class PenjadwalanController
 
         if (isset($_GET["search"])) {
             $search = '%' . $_GET["search"] . '%';
-            $penjadwalan = $this->penjadwalanModel->findAllBySearchPosyandu($search, $limit, $offset);
+            $posyandu = $this->penjadwalanModel->findAllBySearchPosyandu($search, $limit, $offset);
             $totalRows = $this->penjadwalanModel->getTotalRowsPosyandu($search);
             $totalPages = ceil($totalRows / $limit);
         } else {
-            $penjadwalan = $this->penjadwalanModel->getPaginationDataPosyandu($limit, $offset);
+            $posyandu = $this->penjadwalanModel->getPaginationDataPosyandu($limit, $offset);
             $totalRows = $this->penjadwalanModel->getTotalRowsPosyandu();
             $totalPages = ceil($totalRows / $limit);
         }
@@ -183,10 +187,10 @@ class PenjadwalanController
             'totalPages' => $totalPages
         ];
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Penjadwalan/posyandu", ["penjadwalan" => $penjadwalan, "pagination" => $pagination, "startNumber" => $startNumber]);
+        ViewReader::view("/Penjadwalan/posyandu", ["posyandu" => $posyandu, "pagination" => $pagination, "startNumber" => $startNumber]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
     public function createPosyandu()
@@ -195,10 +199,11 @@ class PenjadwalanController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "styleAdminMode";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Penjadwalan/createPosyandu");
@@ -208,8 +213,6 @@ class PenjadwalanController
     {
         $data = [
             "nama_pos" => $_POST["nama_pos"],
-            "tanggal" => $_POST["tanggal"],
-            "jam" => $_POST["jam"],
         ];
 
         if ($this->penjadwalanModel->insertDataPosyandu($data)) {
@@ -228,11 +231,12 @@ class PenjadwalanController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "styleAdminMode";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
-        $posyandu = $this->penjadwalanModel->findAllPosyanduBydId($id);
+        $posyandu = $this->penjadwalanModel->findPosyanduBydId($id);
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Penjadwalan/editPosyandu", ["posyandu" => $posyandu]);
@@ -242,10 +246,8 @@ class PenjadwalanController
     public function updatePosyandu(): void
     {
         $data = [
-            "id_jadwal_posyandu" => $_POST["id_jadwal_posyandu"],
+            "id_posyandu" => $_POST["id_posyandu"],
             "pos" => $_POST["nama_pos"],
-            "tanggal" => $_POST["tanggal"],
-            "jam" => $_POST["jam"],
         ];
 
         if ($this->penjadwalanModel->updateDataPosyandu($data)) {
@@ -255,6 +257,104 @@ class PenjadwalanController
         } else {
             FlashMessageHelper::set("pesan_gagal", "Gagal update Jadwal Posyandu!");
             header("Location: " . UrlHelper::route("/penjadwalan/posyandu"));
+            exit;
+        }
+    }
+
+    public function viewPosyandu($id)
+    {
+        $title = "Molita | View Posyandu";
+        $styleCss = "styleMainAdmin";
+        $styleCss2 = "styleAdminOne";
+        $styleCss4 = "styleMediaAdmin";
+
+        $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
+
+        // Pagination
+        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+        $limit = 5;
+        $offset = ($page - 1) * $limit;
+
+        if (isset($_GET["search"])) {
+            $search = '%' . $_GET["search"] . '%';
+            $posyandu = $this->penjadwalanModel->findAllBySearchPosyanduById($id, $search, $limit, $offset);
+            $totalRows = $this->penjadwalanModel->getTotalRowsPosyanduById($id, $search);
+            $totalPages = ceil($totalRows / $limit);
+        } else {
+            $posyandu = $this->penjadwalanModel->getPaginationDataPosyanduById($id, $limit, $offset);
+            $totalRows = $this->penjadwalanModel->getTotalRowsPosyanduById($id);
+            $totalPages = ceil($totalRows / $limit);
+        }
+
+        $startNumber = ($page - 1) * $limit + 1;
+
+        $pagination = [
+            'totalRows' => $totalRows,
+            'totalPages' => $totalPages,
+            'id_posyandu' => $id
+        ];
+
+        $jenisPosyandu = $this->penjadwalanModel->findPosyanduBydId($id);
+
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
+        ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
+        ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
+        ViewReader::view("/Penjadwalan/jadwalPosyandu", ["posyandu" => $posyandu, "jenisPosyandu" => $jenisPosyandu, "pagination" => $pagination, "startNumber" => $startNumber]);
+        ViewReader::view("/Templates/DashboardTemplate/footer");
+    }
+
+    public function storeJadwalPosyandu(): void
+    {
+        $data = [
+            "id_posyandu" => $_POST["id_posyandu"],
+            "tanggal" => $_POST["tanggal"],
+            "jam_mulai" => $_POST["jam_mulai"],
+            "jam_selesai" => $_POST["jam_selesai"],
+        ];
+        if ($this->penjadwalanModel->insertDataJadwalPosyandu($data)) {
+            FlashMessageHelper::set("pesan_sukses", "Berhasil menambahkan data Jadwal Posyandu!");
+            header("Location: " . UrlHelper::route("/penjadwalan/posyandu/view/" . $data["id_posyandu"]));
+            exit;
+        } else {
+            header("Location: " . UrlHelper::route("/penjadwalan/posyandu/create"));
+            exit;
+        }
+    }
+
+    public function editJadwalPosyandu($id)
+    {
+        $title = "Molita | Data Pertumbuhan";
+        $styleCss = "styleMainAdmin";
+        $styleCss2 = "styleAdminOne";
+        $styleCss3 = "styleAdminMode";
+        $styleCss4 = "styleMediaAdmin";
+
+        $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
+        $jadwalPosyandu = $this->penjadwalanModel->findJadwalPosyanduBydId($id);
+
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, "styleCss4" => $styleCss4]);
+        ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
+        ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
+        ViewReader::view("/Penjadwalan/editJadwalPosyandu", ["jadwalPosyandu" => $jadwalPosyandu]);
+        ViewReader::view("/Templates/DashboardTemplate/footer");
+    }
+
+    public function updateJadwalPosyandu(): void
+    {
+        $data = [
+            "id_jadwal_posyandu" => $_POST["id_jadwal_posyandu"],
+            "id_posyandu" => $_POST["id_posyandu"],
+            "tanggal" => $_POST["tanggal"],
+            "jam_mulai" => $_POST["jam_mulai"],
+            "jam_selesai" => $_POST["jam_selesai"],
+        ];
+
+        if ($this->penjadwalanModel->updateDataJadwalPosyandu($data)) {
+            FlashMessageHelper::set("pesan_sukses", "Berhasil edit data Jadwal Posyandu!");
+            header("Location: " . UrlHelper::route("/penjadwalan/posyandu/view/" . $data["id_posyandu"]));
+            exit;
+        } else {
+            header("Location: " . UrlHelper::route("/penjadwalan/posyandu/create"));
             exit;
         }
     }
@@ -281,6 +381,19 @@ class PenjadwalanController
         } else {
             FlashMessageHelper::set("pesan_gagal", "Gagal menghapus data Jadwal Posyandu!");
             header("Location: " . UrlHelper::route("/penjadwalan/posyandu"));
+            exit;
+        }
+    }
+
+    public function destroyJadwalPosyandu(string $idJadwal)
+    {
+        if ($this->penjadwalanModel->deleteJadwalPosyandu($idJadwal)) {
+            FlashMessageHelper::set("pesan_sukses", "Berhasil menghapus data Jadwal Posyandu!");
+            header("Location: " . UrlHelper::route("/penjadwalan/posyandu/view"));
+            exit;
+        } else {
+            FlashMessageHelper::set("pesan_gagal", "Gagal menghapus data Jadwal Posyandu!");
+            header("Location: " . UrlHelper::route("/penjadwalan/posyandu/view"));
             exit;
         }
     }

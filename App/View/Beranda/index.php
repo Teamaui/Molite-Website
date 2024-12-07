@@ -120,7 +120,7 @@ $selectedJenisEdukasi = isset($_GET["jenisEdukasi"]) ? $_GET["jenisEdukasi"] : "
         unset($edukasi[0]); ?>
         <?php if ($edukasiMain["judul_edukasi"] != null) : ?>
             <div class="main-edukasi">
-                <a href="<?= UrlHelper::route("edukasi/" . $edukasiMain["id_edukasi"]) ?>">
+                <a href="<?= UrlHelper::route("e/" . $edukasiMain["id_edukasi"]) ?>">
                     <img src="<?= UrlHelper::img("edukasi/" . $edukasiMain["img"]) ?>" alt="">
                     <h3><?= $edukasiMain["judul_edukasi"] ?></h3>
                     <p><?php
@@ -132,7 +132,7 @@ $selectedJenisEdukasi = isset($_GET["jenisEdukasi"]) ? $_GET["jenisEdukasi"] : "
                         echo implode(" ", $deskripsiEdukasi) . ".........";
                         ?></p>
                     <div class="link-a">
-                        <a href="<?= UrlHelper::route("edukasi/" . $edukasiMain["id_edukasi"]) ?>">Baca selengkapnya</a>
+                        <a href="<?= UrlHelper::route("e/" . $edukasiMain["id_edukasi"]) ?>">Baca selengkapnya</a>
                     </div>
                 </a>
             </div>
@@ -144,15 +144,22 @@ $selectedJenisEdukasi = isset($_GET["jenisEdukasi"]) ? $_GET["jenisEdukasi"] : "
         <?php endif; ?>
 
         <div class="sub-edukasi">
-            <?php foreach ($edukasi as $edu) : ?>
-                <a href="<?= UrlHelper::route("edukasi/" . $edu["id_edukasi"]) ?>" class="edukasi">
-                    <img src="<?= UrlHelper::img("edukasi/" . $edu["img"]) ?>" alt="">
-                    <div class="teks">
-                        <h3><?= $edu["judul_edukasi"] ?></h3>
-                        <p><?= TimeHelper::timeAgo($edu["created_at"]) ?></p>
-                    </div>
-                </a>
-            <?php endforeach; ?>
+            <?php
+            $number = 1;
+            foreach ($edukasi as $edu) :
+                if ($number < 7) :
+            ?>
+                    <a href="<?= UrlHelper::route("e/" . $edu["id_edukasi"]) ?>" class="edukasi">
+                        <img src="<?= UrlHelper::img("edukasi/" . $edu["img"]) ?>" alt="">
+                        <div class="teks">
+                            <h3><?= $edu["judul_edukasi"] ?></h3>
+                            <p><?= TimeHelper::timeAgo($edu["created_at"]) ?></p>
+                        </div>
+                    </a>
+            <?php
+                endif;
+                $number++;
+            endforeach; ?>
         </div>
     </div>
 </div>

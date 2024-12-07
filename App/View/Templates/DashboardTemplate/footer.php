@@ -9,10 +9,75 @@
 <!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const jamMulaiInput = document.getElementById('jam_mulai');
+        const jamSelesaiInput = document.getElementById('jam_selesai');
+        const errorMessage = document.getElementById('error-message');
+        const btnJam = document.getElementById('btn-jam');
+
+        function validateTime() {
+            const jamMulai = jamMulaiInput.value;
+            const jamSelesai = jamSelesaiInput.value;
+
+            // Validasi jika jam mulai lebih besar dari jam selesai
+            if (jamMulai && jamSelesai && jamMulai >= jamSelesai) {
+                errorMessage.style.display = 'block';
+                jamSelesaiInput.setCustomValidity('Jam selesai harus lebih besar dari jam mulai.');
+                btnJam.disabled = true;
+            } else {
+                errorMessage.style.display = 'none';
+                jamSelesaiInput.setCustomValidity('');
+                btnJam.disabled = false;
+            }
+        }
+
+        // Event listener untuk memantau perubahan pada kedua input
+        jamMulaiInput.addEventListener('input', validateTime);
+        jamSelesaiInput.addEventListener('input', validateTime);
+    });
+
+
+    // script.js
+    document.addEventListener("DOMContentLoaded", () => {
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        const tabPanes = document.querySelectorAll(".tab-pane");
+        const textEdu = document.querySelectorAll(".txt-edu");
+
+        tabButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                // Hapus kelas aktif dari semua tab dan konten
+                tabButtons.forEach((btn) => btn.classList.remove("active"));
+                tabPanes.forEach((pane) => pane.classList.remove("active"));
+                textEdu.forEach((edu) => edu.classList.toggle("active"));
+
+                // Tambahkan kelas aktif ke tab dan konten yang dipilih
+                button.classList.add("active");
+                const target = button.getAttribute("data-tab");
+                document.getElementById(target).classList.add("active");
+            });
+        });
+    });
+
+
+    const overlay = document.getElementById('overlay');
+    const sidebar = document.getElementById('sidebar');
+    const btnDropdown = document.querySelector(".sidebar button");
+
     function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
         sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+        btnDropdown.style.display = "block";
     }
+
+    function toggleCloseSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        btnDropdown.style.display = "none";
+    }
+
+    // Tambahkan event listener untuk overlay
+    overlay.addEventListener('click', toggleCloseSidebar);
+
     document.querySelectorAll('.hapus').forEach(function(element) {
         element.addEventListener('click', function(e) {
             e.preventDefault(); // Mencegah aksi default (navigasi langsung)
@@ -222,7 +287,6 @@
     async function mainLineChart() {
         let dataPertumbuhan = await fetchData('http://localhost/Molita/Public/index.php/molita-api/get-pertumbuhan');
         dataPertumbuhan = dataPertumbuhan.data;
-        console.log(dataPertumbuhan);
         // Label bulan yang ingin digunakan
         const labels = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="<?= UrlHelper::css($styleCss) ?>">
     <link rel="stylesheet" href="<?= UrlHelper::css($styleCss2) ?>">
     <link rel="stylesheet" href="<?= UrlHelper::css($styleCss3) ?>">
+    <link rel="stylesheet" href="<?= UrlHelper::css($styleCss4) ?>">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.js"></script>
     <title><?= $title ?></title>

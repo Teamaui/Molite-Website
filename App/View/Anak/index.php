@@ -31,22 +31,29 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                foreach ($anak as $a) : ?>
+                <?php if (empty($anak)) : ?>
                     <tr>
-                        <td><?= $startNumber++; ?></td>
-                        <td><?= $a["nama_anak"] ?></td>
-                        <td><?= $a["tanggal_lahir"] ?></td>
-                        <td><?= $a["tempat_lahir"] ?></td>
-                        <td><?= $a["jenis_kelamin"] ?></td>
-                        <td><?= $a["nama_ibu"] ?></td>
-                        <td>
-                            <a class="view" href="<?= UrlHelper::route("anak/view/" . $a["id_anak"]) ?>"><i class="bi bi-eye-fill"></i></a>
-                            <a class="edit" href="<?= UrlHelper::route("anak/edit/" . $a["id_anak"]) ?>"><i class="bi bi-pencil-fill"></i></a>
-                            <a class="hapus" href="<?= UrlHelper::route("anak/delete/" . $a["id_anak"]) ?>"><i class="bi bi-trash"></i></a>
-                        </td>
+                        <td colspan="7" style="text-align: center;">Data tidak tersedia</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php else : ?>
+                    <?php foreach ($anak as $a) : ?>
+                        <tr>
+                            <td><?= $startNumber++; ?></td>
+                            <td><?= $a["nama_anak"] ?></td>
+                            <td><?= $a["tanggal_lahir"] ?></td>
+                            <td><?= $a["tempat_lahir"] ?></td>
+                            <td><?= $a["jenis_kelamin"] ?></td>
+                            <td>
+                                <?= isset($a["nama_ibu"]) ? $a["nama_ayah"] . " & " . $a["nama_ibu"] : "-" ?>
+                            </td>
+                            <td>
+                                <a class="view" href="<?= UrlHelper::route("anak/view/" . $a["id_anak"]) ?>"><i class="bi bi-eye-fill"></i></a>
+                                <a class="edit" href="<?= UrlHelper::route("anak/edit/" . $a["id_anak"]) ?>"><i class="bi bi-pencil-fill"></i></a>
+                                <a class="hapus" href="<?= UrlHelper::route("anak/delete/" . $a["id_anak"]) ?>"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
         <?php if (isset($_GET["search"])) : ?>

@@ -44,8 +44,8 @@
                 <button type="submit">Masuk</button>
             </form>
             <div class="a-pack">
-                <a class="a-daftar" href="<?= PathHelper::getPath() ?>/register">Belum punya akun? <span>Register</span></a>
-                <a class="a-back" href="<?= PathHelper::getPath() ?>">Kembali</a>
+                <a class="a-daftar" href="<?= UrlHelper::route("/register") ?>">Belum punya akun? <span>Registrasi</span></a>
+                <a class="a-back" href="<?= UrlHelper::route("") ?>">Kembali</a>
             </div>
         </div>
     </div>

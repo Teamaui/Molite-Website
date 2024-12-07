@@ -32,6 +32,7 @@ class PertumbuhanController
         $title = "Molita | Data Pertumbuhan";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
@@ -57,7 +58,7 @@ class PertumbuhanController
             'totalPages' => $totalPages
         ];
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Pertumbuhan/index", ["pertumbuhan" => $pertumbuhan, "pagination" => $pagination, "startNumber" => $startNumber]);
@@ -68,12 +69,13 @@ class PertumbuhanController
         $title = "Molita | Tambah Data Pertumbuhan";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $anak = $this->anakModel->findAll();
         $pertumbuhan = $this->pertumbuhanModel->findAll();
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Pertumbuhan/create", ["pertumbuhan" => $pertumbuhan, "anak" => $anak]);
@@ -106,12 +108,13 @@ class PertumbuhanController
         $title = "Molita | Edit Data Pertumbuhan";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $anak = $this->anakModel->findAll();
         $pertumbuhan = $this->pertumbuhanModel->findById($id);
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/pertumbuhan/edit", ["pertumbuhan" => $pertumbuhan, "anak" => $anak]);

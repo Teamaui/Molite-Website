@@ -1,6 +1,6 @@
 <!-- Main Content -->
 <div class="main-content">
-    <div class="table-container">
+    <div class="table-container profile">
         <?php if (FlashMessageHelper::has("pesan_sukses")) : ?>
             <p class="alert-message-success"><?= FlashMessageHelper::get("pesan_sukses"); ?></p>
         <?php endif; ?>
@@ -40,22 +40,28 @@
                 <div>
                     <div class="password-container">
                         <label for="sandi1">Sandi Sekarang</label>
-                        <input type="password" id="sandi1" placeholder="Masukkan Sandi Sekarang..." name="password_sekarang">
-                        <span class="toggle-password" id="toggle-password1"><i class="bi bi-eye-slash-fill"></i></span>
+                        <div class="password-icon">
+                            <input type="password" id="sandi1" placeholder="Masukkan Sandi Sekarang..." name="password_sekarang">
+                            <span class="toggle-password" id="toggle-password1"><i class="bi bi-eye-slash-fill"></i></span>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <div class="password-container">
                         <label for="sandi2">Ganti Sandi</label>
-                        <input type="password" id="sandi2" placeholder="Masukkan Sandi Baru..." name="new_password">
-                        <span class="toggle-password" id="toggle-password2"><i class="bi bi-eye-slash-fill"></i></span>
+                        <div class="password-icon">
+                            <input type="password" id="sandi2" placeholder="Masukkan Sandi Baru..." name="new_password">
+                            <span class="toggle-password" id="toggle-password2"><i class="bi bi-eye-slash-fill"></i></span>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <div class="password-container">
                         <label for="sandi3">Konfirmasi Sandi</label>
-                        <input type="password" id="sandi3" placeholder="Masukkan Konfirmasi Sandi..." name="repeat_password">
-                        <span class="toggle-password" id="toggle-password3"><i class="bi bi-eye-slash-fill"></i></span>
+                        <div class="password-icon">
+                            <input type="password" id="sandi3" placeholder="Masukkan Konfirmasi Sandi..." name="repeat_password">
+                            <span class="toggle-password" id="toggle-password3"><i class="bi bi-eye-slash-fill"></i></span>
+                        </div>
                     </div>
                 </div>
 

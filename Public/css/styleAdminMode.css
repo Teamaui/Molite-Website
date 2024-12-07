@@ -28,10 +28,6 @@ textarea {
   height: 300px;
 }
 
-.table-container:last-child {
-  margin-bottom: 200px;
-}
-
 body {
   font-family: Arial, sans-serif;
   margin: 0;

@@ -31,7 +31,7 @@
                         <select name="id_orang_tua" id="id_orang_tua">
                             <option value="null">---Pilih Orang Tua---</option>
                             <?php foreach ($orangTua as $ot) : ?>
-                                <option value="<?= $ot["id_orang_tua"] ?>"><?= $ot["nama_ibu"] ?></option>
+                                <option value="<?= $ot["id_orang_tua"] ?>"><?= $ot["nama_ayah"] ?> & <?= $ot["nama_ibu"] ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>

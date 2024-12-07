@@ -32,7 +32,7 @@
 
                 <button type="submit">Ganti Sandi</button>
             </form>
-            <a href="<?= PathHelper::getPath() ?>/login">Kembali ke halaman masuk? <span>Masuk</span></a>
+            <a href="<?= UrlHelper::route("/login") ?>">Kembali ke halaman masuk? <span>Masuk</span></a>
         </div>
     </div>
 </div>

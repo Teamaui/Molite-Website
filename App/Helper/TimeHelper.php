@@ -36,4 +36,115 @@ class TimeHelper
             return $years . " Tahun yang lalu";
         }
     }
+
+    public static function formatTanggalIndonesia($timestamp)
+    {
+        // Mengatur zona waktu ke Jakarta (WIB)
+        date_default_timezone_set('Asia/Jakarta');
+
+        // Daftar nama hari dalam bahasa Indonesia
+        $hari = [
+            'Minggu',
+            'Senin',
+            'Selasa',
+            'Rabu',
+            'Kamis',
+            'Jumat',
+            'Sabtu'
+        ];
+
+        // Daftar nama bulan dalam bahasa Indonesia
+        $bulan = [
+            1 => 'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'Mei',
+            'Jun',
+            'Jul',
+            'Agu',
+            'Sep',
+            'Okt',
+            'Nov',
+            'Des'
+        ];
+
+        // Konversi timestamp menjadi waktu
+        $time = strtotime($timestamp);
+
+        // Ambil nama hari, tanggal, bulan, tahun, dan waktu
+        $namaHari = $hari[date('w', $time)];
+        $tanggal = date('j', $time);
+        $namaBulan = $bulan[(int)date('n', $time)];
+        $tahun = date('Y', $time);
+        $jam = date('H:i', $time);
+
+        // Gabungkan semuanya menjadi format yang diinginkan
+        return "$namaHari, $tanggal $namaBulan $tahun $jam WIB";
+    }
+
+    public static function formatTanggal($tanggal)
+    {
+        // Array bulan dalam bahasa Indonesia
+        $bulanIndonesia = [
+            1 => 'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
+        ];
+
+        // Memecah tanggal menjadi bagian-bagian
+        $tanggalArray = explode('-', $tanggal);
+
+        // Pastikan format tanggal valid
+        if (count($tanggalArray) === 3) {
+            $tahun = $tanggalArray[0];
+            $bulan = (int)$tanggalArray[1]; // Ubah ke integer untuk index bulan
+            $hari = $tanggalArray[2];
+
+            // Format menjadi "25 Desember 2024"
+            return "{$hari} {$bulanIndonesia[$bulan]} {$tahun}";
+        }
+
+        // Jika format salah, kembalikan teks default
+        return "Format tanggal tidak valid";
+    }
+
+    public static function formatWaktuIndonesia($waktu) {
+        // Memecah waktu menjadi bagian-bagian
+        $waktuArray = explode(':', $waktu);
+    
+        // Pastikan format waktu valid
+        if (count($waktuArray) === 3) {
+            $jam = (int)$waktuArray[0];
+            $menit = $waktuArray[1];
+            $detik = $waktuArray[2];
+    
+            // Tentukan waktu (Pagi/Siang/Sore/Malam)
+            if ($jam >= 0 && $jam < 12) {
+                $periode = "Pagi";
+            } elseif ($jam >= 12 && $jam < 15) {
+                $periode = "Siang";
+            } elseif ($jam >= 15 && $jam < 18) {
+                $periode = "Sore";
+            } else {
+                $periode = "Malam";
+            }
+    
+            // Format menjadi "08:10 Pagi"
+            return sprintf("%02d:%02d", $jam, $menit);
+        }
+    
+        // Jika format salah, kembalikan teks default
+        return "Format waktu tidak valid";
+    }
+    
 }

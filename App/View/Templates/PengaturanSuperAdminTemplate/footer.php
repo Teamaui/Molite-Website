@@ -8,6 +8,25 @@
 
 <!-- JavaScript -->
 <script>
+    const overlay = document.getElementById('overlay');
+    const sidebar = document.getElementById('sidebar');
+    const btnDropdown = document.querySelector(".sidebar button");
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+        btnDropdown.style.display = "block";
+    }
+
+    function toggleCloseSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        btnDropdown.style.display = "none";
+    }
+
+    // Tambahkan event listener untuk overlay
+    overlay.addEventListener('click', toggleCloseSidebar);
+
     function togglePassword(input, icon) {
         const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
         input.setAttribute('type', type);

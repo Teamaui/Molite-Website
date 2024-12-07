@@ -1,10 +1,25 @@
 <?php
 
+/**
+ * Script untuk mengirim email menggunakan PHPMailer.
+ *
+ * @copyright  Copyright (c) 2024
+ * @license    LGPL 2.1 (https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+ * 
+ * PHPMailer adalah library open source untuk mengirim email melalui protokol SMTP.
+ * Untuk detail lebih lanjut, kunjungi: https://github.com/PHPMailer/PHPMailer
+ * 
+ * Hak cipta untuk kode asli PHPMailer dimiliki oleh tim pengembang PHPMailer.
+ * Script ini memodifikasi PHPMailer untuk kebutuhan khusus pengguna.
+ */
+
 namespace Model;
 
 use App\Helper\DatabaseHelper;
+use Exception;
 use FlashMessageHelper;
 use PDO;
+use PHPMailer\PHPMailer\PHPMailer;
 use UrlHelper;
 
 class AdminModel
@@ -80,22 +95,49 @@ class AdminModel
         }
     }
 
-    public function insertAdmin(array $data): bool
+    public function insertAdmin(array $data, string $idAdmin): bool
     {
-        if ($this->cekAdminByUsername($data["username"])) {
+        $dataToken = [
+            "email" => $data["email"],
+            "subject" => "Akun Anda Menunggu Aktivasi, Klik di Sini!"
+        ];
+
+        if ($this->isAktivasi($idAdmin)) {
+            FlashMessageHelper::set("pesan_register_gagal", "Akun Anda sudah memiliki token aktivasi. Silakan aktivasi melalui email atau tunggu 15 menit sebelum melakukan registrasi ulang.");
+            return false;
+        } else if ($this->cekAdminByUsername($data["username"])) {
             FlashMessageHelper::set("pesan_register_gagal", "Username sudah digunakan, silakan coba yang lain.");
             return false;
-        } else {
+        }
+
+        try {
+            // Mengamankan password
             $sandiAman = password_hash($data["sandi1"], PASSWORD_DEFAULT);
 
-            $sql = "UPDATE admin SET username = :username, status_aktivasi = :status_aktivasi, password = :password WHERE nik = :nik";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindValue(":status_aktivasi", "Aktif");
-            $stmt->bindParam(":username", $data["username"]);
-            $stmt->bindParam(":password", $sandiAman);
-            $stmt->bindParam(":nik", $data["nik"]);
+            // Mengirim email aktivasi
+            if ($this->sendEmail($dataToken)) {
+                // Query untuk update data admin
+                $sql = "UPDATE admin SET username = :username, password = :password WHERE nik = :nik";
+                $stmt = $this->db->prepare($sql);
 
-            return $stmt->execute();
+                // Binding parameter dengan parameter yang benar
+                $stmt->bindParam(":username", $data["username"], PDO::PARAM_STR);
+                $stmt->bindParam(":password", $sandiAman, PDO::PARAM_STR);
+                $stmt->bindParam(":nik", $data["nik"], PDO::PARAM_STR);
+
+                // Eksekusi query
+                $stmt->execute();
+
+                return true;
+            } else {
+                FlashMessageHelper::set("pesan_register_gagal", "Aktivasi akun gagal. Tautan mungkin sudah kedaluwarsa atau tidak valid. Silakan coba lagi atau hubungi dukungan.");
+                return false;
+            }
+        } catch (Exception $e) {
+            // Log error atau tampilkan pesan kesalahan
+            error_log("Error: " . $e->getMessage());
+
+            return false;
         }
     }
 
@@ -231,6 +273,57 @@ class AdminModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function isAktivasi($idAdmin) {
+        $query = "SELECT * FROM aktivasi_token_admin WHERE id_admin = :id_admin";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_admin", $idAdmin);
+
+        $stmt->execute();
+
+        if($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function aktivasiAkun($idAdmin, $token)
+    {
+        $query = "SELECT * FROM aktivasi_token_admin WHERE token = :token AND id_admin = :id_admin";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_admin", $idAdmin);
+        $stmt->bindParam(":token", $token);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            try {
+                $this->db->beginTransaction();
+
+                $query = "UPDATE admin SET status_aktivasi = :status_aktivasi WHERE id_admin = :id_admin";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindValue(":status_aktivasi", "Aktif");
+                $stmt->bindParam(":id_admin", $idAdmin);
+                $stmt->execute();
+
+                $query = "DELETE FROM aktivasi_token_admin WHERE token = :token AND id_admin = :id_admin";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindParam(":id_admin", $idAdmin);
+                $stmt->bindParam(":token", $token);
+                $stmt->execute();
+
+                $this->db->commit();
+
+                return true;
+            } catch (Exception $e) {
+                $this->db->rollBack();
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public function updateImg($oldImg, $foto)
     {
         // Direktori tempat menyimpan foto
@@ -350,5 +443,115 @@ class AdminModel
         }
 
         return $newId;
+    }
+
+    public function sendEmail($data)
+    {
+
+        $mail = new PHPMailer(true);
+
+        try {
+            $this->db->beginTransaction();
+
+            $stmt = $this->db->prepare("SELECT * FROM admin WHERE email = :email");
+            $stmt->bindParam(":email", $data["email"]);
+            $stmt->execute();
+            $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+            if ($admin["id_admin"]) {
+                $this->clearOtpAdminById($admin["id_admin"]);
+
+                $idToken = $this->generateAutoIncrementIDAdminAktivasi();
+                $kodeToken = bin2hex(random_bytes(32 / 2));
+
+                $sql = "INSERT INTO aktivasi_token_admin (id_token, id_admin, token) VALUES (:id_token, :id_admin, :token)";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindParam(":id_token", $idToken);
+                $stmt->bindParam(":id_admin", $admin["id_admin"]);
+                $stmt->bindParam(":token", $kodeToken);
+
+                $stmt->execute();
+
+                $template = file_get_contents(__DIR__ . "/../View/Respon/aktivasiTemplate.php");
+
+                $placeholders = [
+                    "{{USER_NAME}}" => $admin["nama_admin"],
+                    "{{USER_ID}}" => $admin["id_admin"],
+                    "{{ACTIVATION_TOKEN}}" => $kodeToken
+                ];
+
+                $emailBody = strtr($template, $placeholders);
+
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'teamaui29@gmail.com';
+                $mail->Password = 'nuil goun mqje uwbj';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+
+                $mail->setFrom('teamaui29@gmail.com', 'Molita');
+                $mail->addAddress($data["email"]);
+                $mail->isHTML(true);
+                $mail->Subject = $data["subject"];
+                $mail->Body = $emailBody;
+
+                $mail->send();
+
+                $this->db->commit();
+                return $admin;
+            } else {
+                FlashMessageHelper::set("pesan_gagal", "Email yang anda masukkan belum terdaftar!");
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            echo "<div class='error'>Email gagal dikirim. Kesalahan: {$mail->ErrorInfo}</div>";
+            FlashMessageHelper::set("pesan_gagal", "Gagal Register!");
+            return false;
+        }
+    }
+
+    private function generateAutoIncrementIDAdminAktivasi()
+    {
+        // Query untuk mengambil nilai terakhir dari kolom ID di tabel orang tua
+        $query = "SELECT id_token FROM aktivasi_token_admin ORDER BY id_token DESC LIMIT 1";
+        $stmt = $this->db->prepare($query);
+
+        // Eksekusi query
+        if ($stmt->execute()) {
+            // Ambil hasil query
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Cek apakah ada ID terakhir
+            if ($row && isset($row['id_token'])) {
+                $lastId = $row['id_token'];
+
+                // Ambil bagian numerik dari format ID (contoh: AKA0000000001 -> 1)
+                $num = (int)substr($lastId, 3);
+
+                // Tambah 1 untuk ID selanjutnya
+                $newNum = $num + 1;
+
+                // Format ulang ID dengan leading zeros
+                $newId = 'AKA' . str_pad($newNum, 10, '0', STR_PAD_LEFT);
+            } else {
+                // Jika tidak ada ID sebelumnya, mulai dari AKA0000000001
+                $newId = 'AKA0000000001';
+            }
+        } else {
+            // Jika query gagal dieksekusi, kembalikan nilai kosong atau lakukan penanganan error
+            $newId = null; // atau throw new Exception("Gagal mengeksekusi query");
+        }
+
+        return $newId;
+    }
+
+    public function clearOtpAdminById($id)
+    {
+        $stmt = $this->db->prepare("DELETE FROM aktivasi_token_admin WHERE id_admin = :id_admin");
+        $stmt->bindParam(":id_admin", $id);
+        $stmt->execute();
     }
 }

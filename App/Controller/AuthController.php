@@ -47,29 +47,35 @@ class AuthController
                     $_SESSION["email_super_admin"] = $userSuperAdmin["email"];
                     $_SESSION["id_super_admin"] = $userSuperAdmin["id_super_admin"];
                     $_SESSION["status_masuk_super_admin"] = true;
-                    header("Location: " . PathHelper::getPath() . "/dashboard-super-admin");
+                    header("Location: " . UrlHelper::route("dashboard-super-admin"));
                     exit;
                 } else {
                     FlashMessageHelper::set("pesan_login_gagal", "Sandi salah");
-                    header("Location: " . PathHelper::getPath() . "/login");
+                    header("Location: " . UrlHelper::route("/login"));
                 }
             } else {
                 if ($userData = $this->admin->findAdminByUniqueNikOrEmail($nik_atau_email)) {
                     if (password_verify($sandi, $userData["password"])) {
-                        FlashMessageHelper::set("pesan_login_sukses", "Berhasil login akun");
-                        $_SESSION["username"] = $userData["username"];
-                        $_SESSION["id_admin"] = $userData["id_admin"];
-                        $_SESSION["nik"] = $userData["nik"];
-                        $_SESSION["status_masuk"] = true;
-                        header("Location: " . PathHelper::getPath() . "/dashboard");
-                        exit;
+
+                        if(!$this->admin->isAktivasi($userData["id_admin"])) {
+                            FlashMessageHelper::set("pesan_login_sukses", "Berhasil login akun");
+                            $_SESSION["username"] = $userData["username"];
+                            $_SESSION["id_admin"] = $userData["id_admin"];
+                            $_SESSION["nik"] = $userData["nik"];
+                            $_SESSION["status_masuk"] = true;
+                            header("Location: " . UrlHelper::route("/dashboard"));
+                            exit;
+                        } else {
+                            FlashMessageHelper::set("pesan_login_gagal", "Akun belum teraktivasi");
+                            header("Location: " . UrlHelper::route("/login"));
+                        }
                     } else {
                         FlashMessageHelper::set("pesan_login_gagal", "Sandi salah");
-                        header("Location: " . PathHelper::getPath() . "/login");
+                        header("Location: " . UrlHelper::route("/login"));
                     }
                 } else {
-                    FlashMessageHelper::set("pesan_login_gagal", "NIK tidak terdaftar");
-                    header("Location: " . PathHelper::getPath() . "/login");
+                    FlashMessageHelper::set("pesan_login_gagal", "NIK atau Email tidak terdaftar");
+                    header("Location: " . UrlHelper::route("/login"));
                 }
             }
         }
@@ -96,24 +102,24 @@ class AuthController
 
                 if ($admin = $this->admin->findAdminByUniqueNik($data["nik"])) {
                     if ($admin["status_aktivasi"] != "Aktif") {
-                        if ($this->admin->insertAdmin($data)) {
-                            FlashMessageHelper::set("pesan_register_sukses", "Berhasil membuat akun! silahkan login");
-                            header("Location: " . PathHelper::getPath() . "/login");
+                        if ($this->admin->insertAdmin($data, $admin["id_admin"])) {
+                            FlashMessageHelper::set("pesan_register_sukses", "Email aktivasi telah dikirim! Silakan periksa email Anda dan klik tautan aktivasi untuk menyelesaikan proses.");
+                            header("Location: " . UrlHelper::route("/login"));
                             exit;
                         } else {
-                            header("Location: " . PathHelper::getPath() . "/register");
+                            header("Location: " . UrlHelper::route("/register"));
                         }
                     } else {
                         FlashMessageHelper::set("pesan_register_gagal", "Akun Sudah Aktif Silahkan Masuk");
-                        header("Location: " . PathHelper::getPath() . "/register");
+                        header("Location: " . UrlHelper::route("/register"));
                     }
                 } else {
                     FlashMessageHelper::set("pesan_register_gagal", "Akun Tidak Terdaftar");
-                    header("Location: " . PathHelper::getPath() . "/register");
+                    header("Location: " . UrlHelper::route("/register"));
                 }
             } else {
                 FlashMessageHelper::set("pesan_register_gagal", "Password tidak sama");
-                header("Location: " . PathHelper::getPath() . "/register");
+                header("Location: " . UrlHelper::route("/register"));
             }
         }
     }
@@ -137,9 +143,20 @@ class AuthController
 
         if ($admin = $this->otpModel->sendEmail($data)) {
             FlashMessageHelper::set("pesan_sukses", "Kode OTP berhasil dikirim ke email Anda, Silakan periksa email tersebut untuk melanjutkan proses reset password");
-            header("Location: " . PathHelper::getPath() . "/otp-lupa-sandi/" . $admin["id_admin"]);
+            header("Location: " . UrlHelper::route("/otp-lupa-sandi/" . $admin["id_admin"]));
         } else {
-            header("Location: " . PathHelper::getPath() . "/lupa-sandi");
+            header("Location: " . UrlHelper::route("/lupa-sandi"));
+        }
+    }
+
+    public function aktivasiAkun($idAdmin, $token)
+    {
+        if ($this->admin->aktivasiAkun($idAdmin, $token)) {
+            FlashMessageHelper::set("pesan_register_sukses", "Akun Anda berhasil diaktifkan! Anda sekarang dapat masuk menggunakan akun Anda.");
+            header("Location: " . UrlHelper::route("/login"));
+        } else {
+            FlashMessageHelper::set("pesan_register_gagal", "Tautan aktivasi tidak valid. Silakan periksa email Anda atau minta tautan baru.");
+            header("Location: " . UrlHelper::route("/login"));
         }
     }
 
@@ -148,12 +165,12 @@ class AuthController
         $title = "Molita | Register";
         $styleCss = "styleLupaSandi";
 
-        if ($this->otpModel->getOtpAdminById($id)) {
+        if ($data = $this->otpModel->getOtpAdminById($id)) {
             ViewReader::view("Templates/AuthTemplate/auth_header", ["title" => $title, "styleCss" => $styleCss]);
-            ViewReader::view("Auth/otpLupaSandi", ["idAdmin" => $id]);
+            ViewReader::view("Auth/otpLupaSandi", ["idAdmin" => $id, "admin" => $data]);
             ViewReader::view("Templates/AuthTemplate/auth_footer");
         } else {
-            header("Location: " . PathHelper::getPath() . "/lupa-sandi");
+            header("Location: " . UrlHelper::route("/lupa-sandi"));
         }
     }
 
@@ -173,7 +190,7 @@ class AuthController
             ViewReader::view("Templates/AuthTemplate/auth_footer");
         } else {
             FlashMessageHelper::set("pesan_gagal", "Kode OTP yang anda masukkan salah!");
-            header("Location: " . PathHelper::getPath() . "/otp-lupa-sandi/" . $data["id_admin"]);
+            header("Location: " . UrlHelper::route("/otp-lupa-sandi/" . $data["id_admin"]));
         }
     }
 
@@ -188,11 +205,11 @@ class AuthController
         if ($data["sandi1"] == $data["sandi2"]) {
             if ($this->otpModel->updateSandiAdmin($data)) {
                 FlashMessageHelper::set("pesan_register_sukses", "Sandi berhasil diperbarui! Silakan login!");
-                header("Location: " . PathHelper::getPath() . "/login");
+                header("Location: " . UrlHelper::route("/login"));
                 exit;
             } else {
                 FlashMessageHelper::set("pesan_login_gagal", "Sandi salah");
-                header("Location: " . PathHelper::getPath() . "/login");
+                header("Location: " . UrlHelper::route("/login"));
             }
         } else {
             FlashMessageHelper::set("pesan_gagal", "Sandi tidak sama! Coba lagi!");
@@ -203,6 +220,21 @@ class AuthController
             ViewReader::view("Templates/AuthTemplate/auth_header", ["title" => $title, "styleCss" => $styleCss]);
             ViewReader::view("Auth/gantiSandi", ["idAdmin" => $data["id_admin"]]);
             ViewReader::view("Templates/AuthTemplate/auth_footer");
+        }
+    }
+
+    public function reSendOtp($idAdmin)
+    {
+        $data = [
+            "id_admin" => $idAdmin,
+            "subject" => "Reset Kata Sandi Anda - Kode OTP Anda di Sini"
+        ];
+
+        if ($admin = $this->otpModel->reSendOtp($data)) {
+            FlashMessageHelper::set("pesan_sukses", "Kode OTP berhasil dikirim ke email Anda");
+            header("Location: " . UrlHelper::route("/otp-lupa-sandi/" . $admin["id_admin"]));
+        } else {
+            header("Location: " . UrlHelper::route("/lupa-sandi"));
         }
     }
 

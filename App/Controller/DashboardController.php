@@ -28,12 +28,13 @@ class DashboardController
         $title = "Molita | Dashboard";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleDashboard";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $totalData = $this->dashboardModel->getAllRowsData();
         $statusImunisasi = $this->dashboardModel->getStatusImunisasi();
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, 'styleCss2' => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, 'styleCss2' => $styleCss2, 'styleCss4' => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar");
         ViewReader::view("/Dashboard/index", ["admin" => $admin, "totalData" => $totalData, "statusImunisasi" => $statusImunisasi]);

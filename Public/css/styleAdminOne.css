@@ -33,7 +33,6 @@
   font-weight: normal;
 }
 
-
 .table-button .laporan {
   display: flex;
   height: 2.5rem;
@@ -107,6 +106,7 @@ table {
   border-collapse: collapse;
   background-color: transparent;
   border: 1px solid #098db3;
+  overflow-y: auto;
 }
 
 thead th {
@@ -156,33 +156,6 @@ table td .hapus:hover {
 
 tbody tr:hover {
   background-color: #9ad0df;
-}
-
-@media (max-width: 600px) {
-  thead {
-    display: none;
-  }
-  tbody tr {
-    display: block;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #ddd;
-  }
-  tbody td {
-    display: block;
-    text-align: right;
-    font-size: 14px;
-    padding: 10px;
-    position: relative;
-  }
-  tbody td::before {
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  .table-button input[type="text"] {
-    padding: 10px 10px 10px 35px;
-  }
 }
 
 .main-container {
@@ -425,7 +398,6 @@ trix-editor {
   height: 2.2rem;
   padding: 0.3rem 0.7rem;
   box-sizing: border-box;
-  width: 300px;
   display: flex;
   align-items: center;
 }
@@ -437,8 +409,8 @@ trix-editor {
 .btn-cetak-laporan {
   margin-bottom: 0.7rem;
 }
-.btn-cetak-laporan a {
-  width: 30%;
+.btn-cetak-laporan a.cetak {
+  width: fit-content;
   height: 2.2rem;
   padding: 0.6rem 1.5rem;
   height: 2.7rem;
@@ -491,4 +463,98 @@ trix-editor {
   color: #ccc;
   border-color: #ccc;
   pointer-events: none;
+}
+
+.tabs-nav {
+  display: flex;
+  overflow-x: auto;
+  min-width: 30%;
+  width: fit-content;
+}
+
+.txt-edu {
+  display: none;
+}
+
+.txt-edu.active {
+  display: block;
+  background-color: transparent;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 15px;
+  text-align: center;
+  font-size: 16px;
+  color: #098db3;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+
+.table-container hr {
+  margin-top: 0;
+  border-color: #59B0CA;
+}
+
+.tab-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.tab-btn.active {
+  font-weight: bold;
+  color: #098db3;
+  border-bottom: 2px solid #098db3;
+  background-color: transparent;
+}
+
+.tab-pane.active {
+  background-color: transparent;
+}
+.tab-pane {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.tab-pane table {
+  overflow-y: auto;
+}
+.tab-pane.active {
+  display: block;
+}
+
+.form-left .jam {
+  display: flex;
+}
+
+.form-left .garis {
+  margin: 0 1rem;
+  display: flex;
+  justify-content: center;
+  padding-top: .6rem;
+}
+.tabs-content.main-container {
+  box-shadow: none;
+  padding: 0;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsiveness */
+@media (max-width: 600px) {
+  .tab-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .tabs-content {
+    padding: 15px;
+  }
 }

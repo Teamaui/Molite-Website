@@ -30,6 +30,7 @@ class AdminController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "styleSuperAdminOne";
+        $styleCss4 = "styleMediaSuperAdmin";
 
         $superAdmin = $this->superAdminModel->findByEmail($_SESSION["email_super_admin"]);
         // Pagination
@@ -54,10 +55,10 @@ class AdminController
             'totalPages' => $totalPages
         ];
 
-        ViewReader::view("/Templates/SuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/SuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, 'styleCss4' => $styleCss4]);
         ViewReader::view("/Templates/SuperAdminTemplate/topbar", ["superAdmin" => $superAdmin]);
         ViewReader::view("/Templates/SuperAdminTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/Admin/index", ["admin" => $admin,"pagination" => $pagination, "startNumber" => $startNumber]);
+        ViewReader::view("/Admin/index", ["admin" => $admin, "pagination" => $pagination, "startNumber" => $startNumber]);
         ViewReader::view("/Templates/SuperAdminTemplate/footer");
     }
     public function create()
@@ -65,10 +66,11 @@ class AdminController
         $title = "Molita | Tambah Data Admin";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss4 = "styleMediaSuperAdmin";
 
         $superAdmin = $this->superAdminModel->findByEmail($_SESSION["email_super_admin"]);
 
-        ViewReader::view("/Templates/SuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/SuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, 'styleCss4' => $styleCss4]);
         ViewReader::view("/Templates/SuperAdminTemplate/topbar", ["superAdmin" => $superAdmin]);
         ViewReader::view("/Templates/SuperAdminTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Admin/create");
@@ -99,11 +101,12 @@ class AdminController
         $title = "Molita | Edit Data Admin";
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
+        $styleCss4 = "styleMediaSuperAdmin";
 
         $superAdmin = $this->superAdminModel->findByEmail($_SESSION["email_super_admin"]);
         $admin = $this->adminModel->findAdminByUniqueId($id);
 
-        ViewReader::view("/Templates/SuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/SuperAdminTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, 'styleCss4' => $styleCss4]);
         ViewReader::view("/Templates/SuperAdminTemplate/topbar", ["superAdmin" => $superAdmin]);
         ViewReader::view("/Templates/SuperAdminTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Admin/edit", ["admin" => $admin]);

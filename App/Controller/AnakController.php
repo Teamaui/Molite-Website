@@ -36,6 +36,7 @@ class AnakController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "null";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
 
@@ -61,7 +62,7 @@ class AnakController
             'totalPages' => $totalPages
         ];
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Anak/index", ["anak" => $anak, "pagination" => $pagination, "startNumber" => $startNumber]);
@@ -74,11 +75,12 @@ class AnakController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "null";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $orangTuaModel = $this->orangTuaModel->findAll();
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Anak/create", ["orangTua" => $orangTuaModel]);
@@ -113,12 +115,13 @@ class AnakController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "null";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $anak = $this->anakModel->findById($id);
         $orangTuaModel = $this->orangTuaModel->findAll();
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/anak/edit", ["anak" => $anak, "orangTua" => $orangTuaModel]);
@@ -154,12 +157,13 @@ class AnakController
         $styleCss = "styleMainAdmin";
         $styleCss2 = "styleAdminOne";
         $styleCss3 = "styleAdminAnak";
+        $styleCss4 = "styleMediaAdmin";
 
         $admin = $this->adminModel->findAdminByUniqueId($_SESSION["id_admin"]);
         $imunisasi = $this->imunisasiModel->findByIdAnak($id);
         $anak = $this->anakModel->findById($id);
 
-        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3]);
+        ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss3" => $styleCss3, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
         ViewReader::view("/Anak/view", ["anak" => $anak, "imunisasi" => $imunisasi]);

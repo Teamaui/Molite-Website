@@ -1,6 +1,6 @@
 <!-- Main Content -->
 <div class="main-content">
-    <h1>Daftar Edukasi</h1>
+    <h1>Daftar Jenis Edukasi</h1>
     <div class="table-container">
         <?php if (FlashMessageHelper::has("pesan_sukses")) : ?>
             <p class="alert-message-success"><?= FlashMessageHelper::get("pesan_sukses"); ?></p>
@@ -28,18 +28,24 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                foreach ($edukasi as $edk) : ?>
+                <?php if (empty($edukasi)) : ?>
                     <tr>
-                        <td><?= $startNumber++ ?></td>
-                        <td><?= $edk["nama_edukasi"] ?></td>
-                        <td><?= $edk["jumlah_edukasi"] ?></td>
-                        <td>
-                            <a class="view" href="<?= UrlHelper::route("edukasi/detail-edukasi/" . $edk["id_jenis_edukasi"]) ?>"><i class="bi bi-eye-fill"></i></a>
-                            <a class="edit" href="<?= UrlHelper::route("edukasi/edit-jenis/" . $edk["id_jenis_edukasi"]) ?>"><i class="bi bi-pencil-fill"></i></a>
-                        </td>
+                        <td colspan="4" style="text-align: center;">Data tidak tersedia</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php else : ?>
+                    <?php foreach ($edukasi as $edk) : ?>
+                        <tr>
+                            <td><?= $startNumber++ ?></td>
+                            <td><?= $edk["nama_edukasi"] ?></td>
+                            <td><?= $edk["jumlah_edukasi"] ?></td>
+                            <td>
+                                <a class="view" href="<?= UrlHelper::route("edukasi/detail-edukasi/" . $edk["id_jenis_edukasi"]) ?>"><i class="bi bi-eye-fill"></i></a>
+                                <a class="edit" href="<?= UrlHelper::route("edukasi/edit-jenis/" . $edk["id_jenis_edukasi"]) ?>"><i class="bi bi-pencil-fill"></i></a>
+                                <a class="hapus" href="<?= UrlHelper::route("edukasi/delete-jenis/" . $edk["id_jenis_edukasi"]) ?>"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
         <?php if (isset($_GET["search"])) : ?>

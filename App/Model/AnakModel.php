@@ -16,7 +16,7 @@ class AnakModel
 
     public function findAll()
     {
-        $query = "SELECT anak.id_anak, anak.nama_anak, anak.tanggal_lahir, anak.tempat_lahir, anak.jenis_kelamin, anak.id_orang_tua, orang_tua.nama_ibu FROM anak INNER JOIN orang_tua ON anak.id_orang_tua = orang_tua.id_orang_tua";
+        $query = "SELECT anak.id_anak, anak.nama_anak, anak.tanggal_lahir, anak.tempat_lahir, anak.jenis_kelamin, anak.id_orang_tua, orang_tua.nama_ibu, orang_tua.nama_ayah FROM anak LEFT JOIN orang_tua ON anak.id_orang_tua = orang_tua.id_orang_tua";
 
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -26,14 +26,14 @@ class AnakModel
 
     public function findAllBySearch($search, $limit, $offset)
     {
-        $query = "SELECT anak.id_anak, anak.nama_anak, anak.tanggal_lahir, anak.tempat_lahir, anak.jenis_kelamin, anak.id_orang_tua, orang_tua.nama_ibu 
+        $query = "SELECT anak.id_anak, anak.nama_anak, anak.tanggal_lahir, anak.tempat_lahir, anak.jenis_kelamin, anak.id_orang_tua, orang_tua.nama_ibu, orang_tua.nama_ayah 
           FROM anak 
-          INNER JOIN orang_tua ON anak.id_orang_tua = orang_tua.id_orang_tua
+          LEFT JOIN orang_tua ON anak.id_orang_tua = orang_tua.id_orang_tua
           WHERE anak.nama_anak LIKE :search 
           OR anak.tanggal_lahir LIKE :search
           OR anak.tempat_lahir LIKE :search
           OR anak.jenis_kelamin LIKE :search
-          OR orang_tua.nama_ibu LIKE :search LIMIT :limit OFFSET :offset";
+          OR orang_tua.nama_ibu LIKE :search OR orang_tua.nama_ayah LIKE :search LIMIT :limit OFFSET :offset";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":search", $search);
@@ -46,12 +46,73 @@ class AnakModel
 
     public function findById($id)
     {
-        $query = "SELECT anak.id_anak, anak.nama_anak, anak.tanggal_lahir, anak.tempat_lahir, anak.jenis_kelamin, anak.id_orang_tua, orang_tua.* FROM anak INNER JOIN orang_tua ON anak.id_orang_tua = orang_tua.id_orang_tua WHERE anak.id_anak = :id_anak";
+        $query = "SELECT anak.id_anak, anak.nama_anak, anak.tanggal_lahir, anak.tempat_lahir, anak.jenis_kelamin, anak.id_orang_tua, orang_tua.* FROM anak LEFT JOIN orang_tua ON anak.id_orang_tua = orang_tua.id_orang_tua WHERE anak.id_anak = :id_anak";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":id_anak", $id);
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
+    public function findByIdOrangTua($id){
+        $query = "SELECT anak.* FROM anak JOIN orang_tua ON orang_tua.id_orang_tua = anak.id_orang_tua WHERE orang_tua.id_orang_tua = :id_orang_tua";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_orang_tua", $id);
+        $stmt->execute();
+
+        if($stmt->rowCount() < 1) {
+            return [$stmt->fetchAll(PDO::FETCH_ASSOC)];
+        } else {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+    }
+
+    public function findAllDataByIdOrangTua($id){
+        $query = "SELECT 
+                    anak.id_anak,
+                    anak.nama_anak AS nama_anak,
+                    anak.tanggal_lahir,
+                    COALESCE(jenis_imunisasi.nama_imunisasi, NULL) AS nama_imunisasi,
+                    COALESCE(pertumbuhan.berat_badan, NULL) AS berat_badan,
+                    COALESCE(pertumbuhan.tinggi_badan, NULL) AS tinggi_badan,
+                    COALESCE(pertumbuhan.lingkar_kepala, NULL) AS lingkar_kepala,
+                    COALESCE(pertumbuhan.tanggal_pencatatan, NULL) AS tanggal_pencatatan
+                FROM 
+                    orang_tua
+                JOIN 
+                    anak ON anak.id_orang_tua = orang_tua.id_orang_tua
+                LEFT JOIN 
+                    daftar_imunisasi ON daftar_imunisasi.id_anak = anak.id_anak
+                LEFT JOIN 
+                    jadwal_imunisasi ON daftar_imunisasi.id_jadwal_imunisasi = jadwal_imunisasi.id_jadwal_imunisasi
+                LEFT JOIN 
+                    jenis_imunisasi ON jenis_imunisasi.id_jenis_imunisasi = jadwal_imunisasi.id_jenis_imunisasi
+                LEFT JOIN 
+                    pertumbuhan ON pertumbuhan.id_anak = anak.id_anak
+                WHERE 
+                    orang_tua.id_orang_tua = :id_orang_tua
+                AND 
+                    (
+                        pertumbuhan.tanggal_pencatatan IS NULL OR 
+                        pertumbuhan.tanggal_pencatatan = (
+                            SELECT MAX(p2.tanggal_pencatatan) 
+                            FROM pertumbuhan p2 
+                            WHERE p2.id_anak = anak.id_anak
+                        )
+                    )
+                GROUP BY 
+                    anak.id_anak;";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_orang_tua", $id);
+        $stmt->execute();
+
+        if($stmt->rowCount() < 1) {
+            return [$stmt->fetchAll(PDO::FETCH_ASSOC)];
+        } else {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
     }
 
     public function insertData(array $data): bool
@@ -98,7 +159,7 @@ class AnakModel
     // PAGINATION
     public function getPaginationData($limit, $offset)
     {
-        $query = "SELECT anak.id_anak, anak.nama_anak, anak.tanggal_lahir, anak.tempat_lahir, anak.jenis_kelamin, anak.id_orang_tua, orang_tua.nama_ibu FROM anak INNER JOIN orang_tua ON anak.id_orang_tua = orang_tua.id_orang_tua LIMIT :limit OFFSET :offset";
+        $query = "SELECT anak.id_anak, anak.nama_anak, anak.tanggal_lahir, anak.tempat_lahir, anak.jenis_kelamin, anak.id_orang_tua, orang_tua.nama_ibu, orang_tua.nama_ayah FROM anak LEFT JOIN orang_tua ON anak.id_orang_tua = orang_tua.id_orang_tua LIMIT :limit OFFSET :offset";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":limit", $limit, PDO::PARAM_INT);
@@ -112,12 +173,12 @@ class AnakModel
     {
         if ($search) {
             $query =  "SELECT COUNT(*) as total FROM anak
-                INNER JOIN orang_tua ON anak.id_orang_tua = orang_tua.id_orang_tua
+                LEFT JOIN orang_tua ON anak.id_orang_tua = orang_tua.id_orang_tua
                 WHERE anak.nama_anak LIKE :search 
                 OR anak.tanggal_lahir LIKE :search
                 OR anak.tempat_lahir LIKE :search
                 OR anak.jenis_kelamin LIKE :search
-                OR orang_tua.nama_ibu LIKE :search";
+                OR orang_tua.nama_ibu  LIKE :search OR orang_tua.nama_ayah LIKE :search";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(":search", $search);
             $stmt->execute();

@@ -45,6 +45,15 @@
                         <label for="nomor_telepon">Nomor Telepon</label>
                         <input type="text" id="nomor_telepon" placeholder="Masukkan Nomor Telepon..." name="nomor_telepon" required>
                     </div>
+                    <div>
+                        <label for="id_posyandu">Posyandu</label>
+                        <select name="id_posyandu" id="id_posyandu">
+                            <option value="null">---Pilih Posyandu---</option>
+                            <?php foreach ($posyandu as $py) : ?>
+                                <option value="<?= $py["id_posyandu"] ?>"><?= $py["pos"] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
             </div>
             <button type="submit">Tambah Data</button>

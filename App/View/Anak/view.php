@@ -22,11 +22,11 @@
                 </div>
                 <div class="list-item">
                     <h3>Nama Ayah</h3>
-                    <p><?= $anak["nama_ayah"] ?></p>
+                    <p><?= isset($a["nama_ayah"]) ? $a["nama_ayah"] : "-" ?></p>
                 </div>
                 <div class="list-item">
                     <h3>Nama Ibu</h3>
-                    <p><?= $anak["nama_ibu"] ?></p>
+                    <p><?= isset($a["nama_ibu"]) ? $a["nama_ibu"] : "-" ?></p>
                 </div>
             </div>
         </div>
@@ -37,35 +37,42 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Anak</th>
                             <th>Jenis Imunisasi</th>
+                            <th>Tempat Imunisasi</th>
                             <th>Jadwal Pencatatan</th>
                             <th>Status Imunisasi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        $i = 1;
-                        $status = null;
-                        foreach ($imunisasi as $imn) :
-                            if ($imn["status_imunisasi"] == "Sudah") {
-                                $status = "success";
-                            } else if ($imn["status_imunisasi"] == "Tertunda") {
-                                $status = "warning";
-                            } else {
-                                $status = "error";
-                            }
-                        ?>
+                        <?php if (empty($imunisasi)) : ?>
                             <tr>
-                                <td><?= $i++ ?></td>
-                                <td><?= $imn["nama_anak"] ?></td>
-                                <td><?= $imn["nama_imunisasi"] ?></td>
-                                <td><?= $imn["tanggal_imunisasi"] ?></td>
-                                <td>
-                                    <div class="badge <?= $status ?>"><?= $imn["status_imunisasi"] ?></div>
-                                </td>
+                                <td colspan="5" style="text-align: center;">Data tidak tersedia</td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php else : ?>
+                            <?php
+                            $i = 1;
+                            $status = null;
+
+                            foreach ($imunisasi as $imn) :
+
+                                if ($imn["status_imunisasi"] == "Sudah") {
+                                    $status = "success";
+                                } else if ($imn["status_imunisasi"] == "Tertunda") {
+                                    $status = "warning";
+                                } else {
+                                    $status = "error";
+                                } ?>
+                                <tr>
+                                    <td><?= $i++ ?></td>
+                                    <td><?= isset($imn["nama_imunisasi"]) ? $imn["nama_imunisasi"] : "-" ?></td>
+                                    <td><?= $imn["tempat_imunisasi"] ?></td>
+                                    <td><?= $imn["tanggal_imunisasi"] ?></td>
+                                    <td>
+                                        <div class="badge <?= $status ?>"><?= $imn["status_imunisasi"] ?></div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>

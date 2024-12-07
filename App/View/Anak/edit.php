@@ -33,9 +33,9 @@
                             <option value="null">---Pilih Orang Tua---</option>
                             <?php foreach ($orangTua as $ot) : ?>
                                 <?php if ($anak["id_orang_tua"] == $ot["id_orang_tua"]) : ?>
-                                    <option value="<?= $ot["id_orang_tua"] ?>" selected><?= $ot["nama_ibu"] ?></option>
+                                    <option value="<?= $ot["id_orang_tua"] ?>" selected><?= $ot["nama_ayah"] ?> & <?= $ot["nama_ibu"] ?></option>
                                 <?php else : ?>
-                                    <option value="<?= $ot["id_orang_tua"] ?>"><?= $ot["nama_ibu"] ?></option>
+                                    <option value="<?= $ot["id_orang_tua"] ?>"><?= $ot["nama_ayah"] ?> & <?= $ot["nama_ibu"] ?></option>
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         </select>

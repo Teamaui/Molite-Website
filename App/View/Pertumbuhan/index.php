@@ -31,21 +31,26 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                foreach ($pertumbuhan as $ptn) : ?>
+                <?php if (empty($pertumbuhan)) : ?>
                     <tr>
-                        <td><?= $startNumber++ ?></td>
-                        <td><?= $ptn["nama_anak"] ?></td>
-                        <td><?= $ptn["berat_badan"] ?> kg</td>
-                        <td><?= $ptn["tinggi_badan"] ?> cm</td>
-                        <td><?= $ptn["lingkar_kepala"] ?> cm</td>
-                        <td><?= $ptn["tanggal_pencatatan"] ?></td>
-                        <td>
-                            <a class="edit" href="<?= UrlHelper::route("pertumbuhan/edit/" . $ptn["id_pertumbuhan"]) ?>"><i class="bi bi-pencil-fill"></i></a>
-                            <a class="hapus" href="<?= UrlHelper::route("pertumbuhan/delete/" . $ptn["id_pertumbuhan"]) ?>"><i class="bi bi-trash"></i></a>
-                        </td>
+                        <td colspan="7" style="text-align: center;">Data tidak tersedia</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php else : ?>
+                    <?php foreach ($pertumbuhan as $ptn) : ?>
+                        <tr>
+                            <td><?= $startNumber++ ?></td>
+                            <td><?= $ptn["nama_anak"] ?></td>
+                            <td><?= $ptn["berat_badan"] ?> kg</td>
+                            <td><?= $ptn["tinggi_badan"] ?> cm</td>
+                            <td><?= $ptn["lingkar_kepala"] ?> cm</td>
+                            <td><?= $ptn["tanggal_pencatatan"] ?></td>
+                            <td>
+                                <a class="edit" href="<?= UrlHelper::route("pertumbuhan/edit/" . $ptn["id_pertumbuhan"]) ?>"><i class="bi bi-pencil-fill"></i></a>
+                                <a class="hapus" href="<?= UrlHelper::route("pertumbuhan/delete/" . $ptn["id_pertumbuhan"]) ?>"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
         <?php if (isset($_GET["search"])) : ?>

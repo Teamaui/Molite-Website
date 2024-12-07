@@ -248,6 +248,13 @@ a.a-back {
 a.a-back:hover {
   border-bottom: 1px solid #098db3;
 }
+form .password-container .valid {
+  border: 2px solid rgb(130, 233, 130);
+}
+form .password-container .invalid {
+  border: 2px solid red;
+}
+
 
 @media (max-width: 1024px) {
   .main {

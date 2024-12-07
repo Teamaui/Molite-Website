@@ -15,7 +15,7 @@
             <p class="alert-message-danger"><?= FlashMessageHelper::get("pesan_gagal"); ?></p>
         <?php endif; ?>
         <div class="table-button">
-            <form action="<?= UrlHelper::route("cetak-laporan") ?>" method="GET">
+            <form class="laporan" action="<?= UrlHelper::route("cetak-laporan") ?>" method="GET">
                 <div class="laporan">
                     <input type="date" id="start_date" name="start_date" required>
                     <input type="date" id="end_date" name="end_date" required>
@@ -36,28 +36,34 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                foreach ($pertumbuhan as $ptn) : ?>
+                <?php if (empty($pertumbuhan)) : ?>
                     <tr>
-                        <td><?= $startNumber++ ?></td>
-                        <td><?= $ptn["nama_anak"] ?></td>
-                        <td><?= $ptn["berat_badan"] ?> gram</td>
-                        <td><?= $ptn["tinggi_badan"] ?> cm</td>
-                        <td><?= $ptn["lingkar_kepala"] ?> cm</td>
-                        <td><?= $ptn["tanggal_pencatatan"] ?></td>
+                        <td colspan="6" style="text-align: center;">Data tidak tersedia</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php else : ?>
+                    <?php foreach ($pertumbuhan as $ptn) : ?>
+                        <tr>
+                            <td><?= $startNumber++ ?></td>
+                            <td><?= $ptn["nama_anak"] ?></td>
+                            <td><?= $ptn["berat_badan"] ?> gram</td>
+                            <td><?= $ptn["tinggi_badan"] ?> cm</td>
+                            <td><?= $ptn["lingkar_kepala"] ?> cm</td>
+                            <td><?= $ptn["tanggal_pencatatan"] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
 
         </table>
-        <?php if (isset($_GET["start_date"]) && isset($_GET["end_date"])) : ?>
-            <?= PaginationHelper::renderDate((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('cetak-laporan?page='), $_GET["start_date"], $_GET["end_date"]) ?>
-        <?php else : ?>
-            <?= PaginationHelper::render((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('cetak-laporan?page=')) ?>
-        <?php endif; ?>
-
         <div class="btn-cetak-laporan">
-            <a href="<?= UrlHelper::route("cetak-laporan/cetak?" . $_SERVER["QUERY_STRING"]) ?>">Cetak</a>
+            <a class="cetak" href="<?= UrlHelper::route("cetak-laporan/cetak?" . $_SERVER["QUERY_STRING"]) ?>">Cetak</a>
+
+            <?php if (isset($_GET["start_date"]) && isset($_GET["end_date"])) : ?>
+                <?= PaginationHelper::renderDate((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('cetak-laporan?page='), $_GET["start_date"], $_GET["end_date"]) ?>
+            <?php else : ?>
+                <?= PaginationHelper::render((isset($_GET["page"]) ? $_GET["page"] : 1), $pagination["totalPages"], UrlHelper::route('cetak-laporan?page=')) ?>
+            <?php endif; ?>
+
         </div>
     </div>
 </div>

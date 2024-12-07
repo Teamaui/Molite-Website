@@ -66,12 +66,8 @@ if (tombolSandiRegister2 && iconSandiRegister2 && sandi_register2) {
 }
 
 // Ganti Sandi
-const tombolGantiSandi1 = document.querySelector(
-  "#toggle-ganti-password1"
-);
-const iconGantiSandi1 = document.querySelector(
-  "#toggle-ganti-password1 i"
-);
+const tombolGantiSandi1 = document.querySelector("#toggle-ganti-password1");
+const iconGantiSandi1 = document.querySelector("#toggle-ganti-password1 i");
 const sandi_ganti1 = document.querySelector("#gantiSandi1");
 
 if (tombolGantiSandi1 && iconGantiSandi1 && sandi_ganti1) {
@@ -80,16 +76,62 @@ if (tombolGantiSandi1 && iconGantiSandi1 && sandi_ganti1) {
   );
 }
 
-const tombolGantiSandi2 = document.querySelector(
-  "#toggle-ganti-password2"
-);
-const iconGantiSandi2 = document.querySelector(
-  "#toggle-ganti-password2 i"
-);
-const ganti_sandi2 = document.querySelector("#gantiSandi2");
+const tombolGantiSandi2 = document.querySelector("#toggle-ganti-password2");
+const iconGantiSandi2 = document.querySelector("#toggle-ganti-password2 i");
+const sandi_ganti2 = document.querySelector("#gantiSandi2");
 
-if (tombolGantiSandi2 && iconGantiSandi2 && ganti_sandi2) {
+if (tombolGantiSandi2 && iconGantiSandi2 && sandi_ganti2) {
   tombolGantiSandi2.addEventListener("click", () =>
-    togglePassword(ganti_sandi2, iconGantiSandi2)
+    togglePassword(sandi_ganti2, iconGantiSandi2)
   );
 }
+
+const submitEdit = document.getElementById("submit-register");
+
+sandi_register1.addEventListener("input", () => {
+  if (sandi_register1.value.length >= 8) {
+    setValid(sandi_register1);
+  } else {
+    setInvalid(sandi_register1);
+  }
+  validateForm();
+});
+
+sandi_register2.addEventListener("input", () => {
+  if (
+    sandi_register2.value === sandi_register1.value &&
+    sandi_register2.value.length >= 8
+  ) {
+    setValid(sandi_register2);
+  } else {
+    setInvalid(sandi_register2);
+  }
+  validateForm();
+});
+
+function setValid(element) {
+  element.classList.add("valid");
+  element.classList.remove("invalid");
+}
+
+function setInvalid(element) {
+  element.classList.add("invalid");
+  element.classList.remove("valid");
+}
+
+function resetValidation(element) {
+  element.classList.remove("valid");
+  element.classList.remove("invalid");
+}
+
+function validateForm() {
+  if (
+    sandi_register1.classList.contains("valid") &&
+    sandi_register2.classList.contains("valid")
+  ) {
+    submitEdit.disabled = false;
+  } else {
+    submitEdit.disabled = true;
+  }
+}
+

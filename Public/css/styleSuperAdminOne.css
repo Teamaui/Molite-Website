@@ -22,7 +22,7 @@
 
 .modal-content {
   position: relative;
-  max-height: 500px;
+  max-height: 700px;
   width: 35%;
 }
 
@@ -49,7 +49,7 @@
 .list-item {
   border-bottom: 1px solid #e0e0e0;
   transition: background-color 0.3s ease;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 .list-item:last-child {
@@ -60,7 +60,7 @@
   margin: 0;
   font-size: 1.2em;
   color: #098db3;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 .list-item p {
@@ -83,7 +83,7 @@
   margin-top: 0.5rem;
   padding-bottom: 0.3rem;
   border-bottom: 2px solid #098db3;
-  margin-bottom:1rem;
+  margin-bottom: 1rem;
 }
 
 .list-item img {
@@ -93,4 +93,158 @@
 .list-item:has(img) {
   border: none;
   margin-bottom: 1rem;
+}
+.sidebar h3 {
+  display: none;
+}
+
+#sidebar button {
+  display: none;
+}
+
+.sidebar .div {
+  display: none;
+  align-items: center;
+  margin: 1rem 0;
+  margin-left: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .close-btn {
+    top: -48px !important;
+  }
+  .modal-container {
+    width: 90%;
+    max-height: 120%;
+  }
+  .modal-content {
+    width: 90%;
+    height: 100%;
+  }
+  .sidebar {
+    position: relative;
+    overflow: visible !important;
+    z-index: 10;
+  }
+
+  .sidebar .div {
+    display: flex;
+  }
+
+  .main-content {
+    margin: 0;
+    margin-bottom: 1rem;
+  }
+
+  .sidebar h3 {
+    display: block;
+    color: #098db3;
+    text-align: center;
+  }
+
+  .topbar-left button {
+    display: block;
+    position: relative;
+    margin: 0;
+  }
+
+  .below-a {
+    position: absolute;
+    bottom: 2.5rem;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -270px; /* Hidden by default */
+    width: 250px;
+    height: 100%;
+    color: #fff;
+    background-color: #f7f7f7;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+
+  .sidebar.active {
+    left: 0; /* Tampilkan sidebar */
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Efek gelap */
+    z-index: 999;
+    display: none; /* Sembunyikan overlay secara default */
+  }
+
+  .overlay.active {
+    display: block; /* Tampilkan overlay */
+  }
+
+  .sidebar.open {
+    left: 0; /* Show sidebar */
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .sidebar ul li a {
+    text-decoration: none;
+    display: block;
+    font-size: 1rem;
+  }
+
+  .sidebar ul li a i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+
+  /* Close button */
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .topbar {
+    padding: 0 1rem;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .topbar-left .app-name {
+    margin: 0;
+  }
+
+  .topbar-left img {
+    display: none;
+  }
+
+  /* Sidebar toggle button */
+  .toggle-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    padding-bottom: 0.3rem;
+    border-radius: 5px;
+    color: #098db3;
+  }
+  .user-name {
+    margin-right: 1.7rem;
+  }
+
+  /* --------------BATAS DASHBOARD */
 }

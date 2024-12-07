@@ -42,7 +42,7 @@ class OrangTuaModel
 
     public function findAllDataById($id)
     {
-        $query = "SELECT orang_tua.*, anak.* FROM orang_tua LEFT JOIN anak ON anak.id_orang_tua = orang_tua.id_orang_tua WHERE orang_tua.id_orang_tua = :id_orang_tua";
+        $query = "SELECT orang_tua.*, anak.*, jenis_posyandu.* FROM orang_tua LEFT JOIN anak ON anak.id_orang_tua = orang_tua.id_orang_tua LEFT JOIN jenis_posyandu ON orang_tua.id_posyandu = jenis_posyandu.id_posyandu WHERE orang_tua.id_orang_tua = :id_orang_tua";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":id_orang_tua", $id);
@@ -83,7 +83,7 @@ class OrangTuaModel
             return false;
         } else {
             $idAnak = $this->generateAutoIncrementID();
-            $sql = "INSERT INTO orang_tua (id_orang_tua, email, nama_ibu, nama_ayah, nik_ibu, nik_ayah, alamat, no_telepon) VALUES (:id_orang_tua, :email, :nama_ibu, :nama_ayah, :nik_ibu, :nik_ayah, :alamat, :no_telepon)";
+            $sql = "INSERT INTO orang_tua (id_orang_tua, email, nama_ibu, nama_ayah, nik_ibu, nik_ayah, alamat, no_telepon, id_posyandu) VALUES (:id_orang_tua, :email, :nama_ibu, :nama_ayah, :nik_ibu, :nik_ayah, :alamat, :no_telepon, :id_posyandu)";
 
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(":id_orang_tua", $idAnak);
@@ -94,6 +94,7 @@ class OrangTuaModel
             $stmt->bindParam(":nik_ayah", $data["nik_ayah"]);
             $stmt->bindParam(":alamat", $data["alamat"]);
             $stmt->bindParam(":no_telepon", $data["nomor_telepon"]);
+            $stmt->bindParam(":id_posyandu", $data["id_posyandu"]);
 
             return $stmt->execute();
         }
@@ -101,7 +102,7 @@ class OrangTuaModel
 
     public function updateData(array $data): bool
     {
-        $sql = "UPDATE orang_tua SET email = :email, nama_ibu = :nama_ibu, nama_ayah = :nama_ayah, alamat = :alamat, nik_ibu = :nik_ibu, nik_ayah = :nik_ayah, no_telepon = :nomor_telepon WHERE id_orang_tua = :id_orang_tua";
+        $sql = "UPDATE orang_tua SET email = :email, nama_ibu = :nama_ibu, nama_ayah = :nama_ayah, alamat = :alamat, nik_ibu = :nik_ibu, nik_ayah = :nik_ayah, no_telepon = :nomor_telepon, id_posyandu = :id_posyandu WHERE id_orang_tua = :id_orang_tua";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(":id_orang_tua", $data["id_orang_tua"]);
@@ -112,36 +113,75 @@ class OrangTuaModel
         $stmt->bindParam(":nik_ibu", $data["nik_ibu"]);
         $stmt->bindParam(":nik_ayah", $data["nik_ayah"]);
         $stmt->bindParam(":nomor_telepon", $data["nomor_telepon"]);
+        $stmt->bindParam(":id_posyandu", $data["id_posyandu"]);
 
         return $stmt->execute();
     }
 
     public function registerOrangTua(array $data): bool
     {
-        $sql = "UPDATE orang_tua SET username = :username, password = :password, status_aktivasi = :status_aktivasi, token_orang_tua = :token_orang_tua WHERE nik_ibu = :nik_ibu OR nik_ayah = :nik_ayah";
+        $sql = "UPDATE orang_tua SET email = :email, username = :username, password = :password, status_aktivasi = :status_aktivasi, token_orang_tua = :token_orang_tua WHERE email = :email";
 
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(":nik_ibu", $data["nik"]);
-        $stmt->bindParam(":nik_ayah", $data["nik"]);
+        $stmt->bindParam(":email", $data["email"]);
         $stmt->bindParam(":username", $data["username"]);
         $stmt->bindParam(":password", $data["password"]);
         $stmt->bindParam(":token_orang_tua", $data["token"]);
         $stmt->bindValue(":status_aktivasi", "Aktif");
 
-        return $stmt->execute();
+        $stmt->execute();
+
+        if ($stmt->rowCount() < 1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    public function loginOrangTua(array $data): array
+    public function loginOrangTua(array $data)
     {
         try {
-            $query = "SELECT username, email, password, status_aktivasi FROM orang_tua WHERE (nik_ibu = :nik_ibu OR nik_ayah = :nik_ayah)";
+            $query = "SELECT * FROM orang_tua WHERE email = :email";
             $stmt = $this->db->prepare($query);
-            $stmt->bindParam(":nik_ibu", $data["nik"]);
-            $stmt->bindParam(":nik_ayah", $data["nik"]);
+            $stmt->bindParam(":email", $data["email"]);
             $stmt->execute();
 
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount() < 1) {
+                return false;
+            } else {
+                return $stmt->fetch(PDO::FETCH_ASSOC);;
+            }
         } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function gantiSandi($data)
+    {
+        $passwordHash = password_hash($data["sandiBaru"], PASSWORD_DEFAULT);
+        $query = "SELECT * FROM orang_tua WHERE id_orang_tua = :id_orang_tua";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam("id_orang_tua", $data["id_orang_tua"]);
+        $stmt->execute();
+
+        $orangTua = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($orangTua["id_orang_tua"] && password_verify($data["sandiLama"], $orangTua["password"])) {
+            $sql = "UPDATE orang_tua SET password = :password WHERE id_orang_tua = :id_orang_tua";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":password", $passwordHash);
+            $stmt->bindParam(":id_orang_tua", $data["id_orang_tua"]);
+
+            $stmt->execute();
+
+            if ($stmt->rowCount() < 1) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
             return false;
         }
     }

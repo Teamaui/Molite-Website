@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Helper\DatabaseHelper;
+use Exception;
 use FlashMessageHelper;
 use PDO;
 use UrlHelper;
@@ -39,6 +40,57 @@ class EdukasiModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function findAllEdukasiOrderLike()
+    {
+        $query = "SELECT edukasi.*, COUNT(like_edukasi.id_like_edukasi) AS total_like
+                FROM edukasi
+                LEFT JOIN like_edukasi ON edukasi.id_edukasi = like_edukasi.id_edukasi
+                GROUP BY edukasi.id_edukasi, edukasi.judul_edukasi
+                ORDER BY total_like DESC;";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+         // Array untuk menampung hasil
+         $sliderData = [];
+
+         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+             $row['image_url'] = UrlHelper::img("edukasi/" . $row['img']); // Tambahkan URL lengkap
+             $sliderData[] = $row;
+         }
+ 
+         return $sliderData;
+    }
+
+    public function getLikeEdukasi($id)
+    {
+        $query = "SELECT * FROM like_edukasi WHERE id_orang_tua = :id_orang_tua";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":id_orang_tua", $id);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getEdukasiNew()
+    {
+        $query = "SELECT * FROM edukasi ORDER BY edukasi.created_at DESC";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+        // Array untuk menampung hasil
+        $sliderData = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $row['image_url'] = UrlHelper::img("edukasi/" . $row['img']); // Tambahkan URL lengkap
+            $sliderData[] = $row;
+        }
+
+        return $sliderData;
+    }
+
     public function findAllJenisEdukasi()
     {
         $query = "SELECT * FROM jenis_edukasi";
@@ -68,7 +120,15 @@ class EdukasiModel
         $stmt->bindParam(":slug", $slug);
         $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Array untuk menampung hasil
+        $sliderData = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $row['image_url'] = UrlHelper::img("edukasi/" . $row['img']); // Tambahkan URL lengkap
+            $sliderData[] = $row;
+        }
+
+        return $sliderData;
     }
     public function findJenisEdukasiById($id)
     {
@@ -106,10 +166,12 @@ class EdukasiModel
 
     public function updateDataJenisEdukasi($data): bool
     {
-        $query = "UPDATE jenis_edukasi SET nama_edukasi = :nama_edukasi WHERE id_jenis_edukasi = :id_jenis_edukasi";
+        $slug = $this->generateSlug($data["nama_edukasi"]);
+        $query = "UPDATE jenis_edukasi SET nama_edukasi = :nama_edukasi, slug = :slug WHERE id_jenis_edukasi = :id_jenis_edukasi";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":id_jenis_edukasi", $data["id_jenis_edukasi"]);
         $stmt->bindParam(":nama_edukasi", $data["nama_edukasi"]);
+        $stmt->bindParam(":slug", $slug);
 
         return $stmt->execute();
     }
@@ -173,12 +235,28 @@ class EdukasiModel
 
     public function updateLikeEdukasi($data)
     {
-        $query = "UPDATE edukasi SET like_user = :like_user WHERE id_edukasi = :id_edukasi";
+        $query = "SELECT * FROM like_edukasi WHERE id_edukasi = :id_edukasi AND id_orang_tua = :id_orang_tua";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(":like_user", $data["like_user"]);
         $stmt->bindParam(":id_edukasi", $data["id_edukasi"]);
+        $stmt->bindParam(":id_orang_tua", $data["id_orang_tua"]);
+        $stmt->execute();
 
-        return $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+            $query = "DELETE FROM like_edukasi WHERE id_edukasi = :id_edukasi AND id_orang_tua = :id_orang_tua";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_edukasi", $data["id_edukasi"]);
+            $stmt->bindParam(":id_orang_tua", $data["id_orang_tua"]);
+            $stmt->execute();
+            
+            return true;
+        } else {
+            $query = "INSERT like_edukasi (id_edukasi, id_orang_tua) VALUES(:id_edukasi, :id_orang_tua)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_edukasi", $data["id_edukasi"]);
+            $stmt->bindParam(":id_orang_tua", $data["id_orang_tua"]);
+            return $stmt->execute();
+        }
+        
     }
 
     public function deleteDetailEdukasi($id)
@@ -188,6 +266,31 @@ class EdukasiModel
         $stmt->bindParam(":id_edukasi", $id);
 
         return $stmt->execute();
+    }
+
+    public function deleteJenisEdukasi($id)
+    {
+        try {
+            $this->db->beginTransaction();
+
+            $query = "DELETE FROM edukasi WHERE id_jenis_edukasi = :id_jenis_edukasi";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_jenis_edukasi", $id);
+            $stmt->execute();
+
+
+            $query = "DELETE FROM jenis_edukasi WHERE id_jenis_edukasi = :id_jenis_edukasi";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_jenis_edukasi", $id);
+            $stmt->execute();
+
+            $this->db->commit();
+
+            return true;
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            return false;
+        }
     }
 
     public function getTotalRowsEdukasi($search = false)
@@ -454,11 +557,9 @@ class EdukasiModel
         $slug = trim($slug, '-');
 
         $originalSlug = $slug;
-        $count = 1;
 
-        if ($this->isSlugExists($slug, $table)) {
-            $slug = $originalSlug . '-' . $count;
-            $count++;
+        if ($num = $this->isSlugExists($slug, $table)) {
+            $slug = $originalSlug . '-' . $num;
         }
 
         return $slug;
@@ -466,12 +567,12 @@ class EdukasiModel
 
     public function isSlugExists($slug, $table)
     {
-        $stmt = $this->db->prepare("SELECT COUNT(*) FROM $table WHERE slug = :slug");
+        $stmt = $this->db->prepare("SELECT COUNT(*) as num FROM $table WHERE slug = :slug");
         $stmt->bindParam(":slug", $slug);
         $stmt->execute();
 
-        if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-            return true;
+        if ($num = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            return $num["num"];
         } else {
             return false;
         }

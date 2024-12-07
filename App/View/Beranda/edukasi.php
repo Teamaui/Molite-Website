@@ -17,6 +17,10 @@
                 <img src="<?= UrlHelper::img('edukasi/' . $edukasi["img"]) ?>" alt="Edukasi Image">
             </div>
             <div class="main-teks">
+
+                <p><?= TimeHelper::formatTanggalIndonesia($edukasi["created_at"]) ?></p>
+                <hr>
+                <br>
                 <p><?= $edukasi["deskripsi_edukasi"] ?></p>
             </div>
             <div class="edukasi-aksi">

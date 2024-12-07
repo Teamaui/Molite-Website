@@ -11,6 +11,7 @@
 .container-top {
   height: 100%;
   margin-bottom: 1rem;
+  overflow-y: hidden;
 }
 .container-bottom {
   height: 80%;
