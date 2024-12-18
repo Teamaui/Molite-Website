@@ -56,9 +56,15 @@ nav {
   text-decoration: none;
   font-size: 17px;
   padding: 0 8px;
-  border-radius: 5px;
   color: white;
-  border-radius: 10rem;
+  transition: 0.3s;
+  margin-top: 2px;
+  border-bottom: transparent solid 2px;
+}
+
+.nav-links li a:hover {
+  padding-bottom: 5px;
+  border-bottom: #ffffff solid 2px;
 }
 
 .login-btn a {
@@ -130,10 +136,6 @@ main img.bottom {
   transform: rotate(180deg);
 }
 
-.main-left {
-  width: 45%;
-}
-
 .main-left .left {
   margin-left: 5rem;
 }
@@ -153,7 +155,6 @@ main img.bottom {
 }
 
 .main-right {
-  width: 30%;
   padding: 2rem;
   text-align: center;
 }
@@ -191,7 +192,7 @@ main a:hover i {
 }
 
 .shake {
-  width: 270px;
+  width: 600px;
   animation: shake 7s infinite;
 }
 
@@ -396,6 +397,8 @@ main a:hover i {
   border: 2px solid #098db3;
   color: #098db3;
   background-color: transparent;
+  width: fit-content;
+  white-space: nowrap;
   border-radius: 10px;
 }
 
@@ -419,6 +422,7 @@ main a:hover i {
   overflow: hidden;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
+  object-fit: cover;
 }
 
 .main-edukasi h3 {
@@ -455,6 +459,7 @@ main a:hover i {
   max-width: 300px;
   border-radius: 1rem;
   margin-right: 1.5rem;
+  object-fit: cover;
 }
 
 .sub-edukasi .edukasi {
@@ -518,6 +523,10 @@ main a:hover i {
   font-size: 3rem;
   color: rgb(244, 248, 251);
   margin-bottom: 0.5rem;
+}
+
+.data-posyandu .card-posyandu .img img {
+  object-fit: cover;
 }
 
 .data-posyandu .card-posyandu h1 {
@@ -623,7 +632,7 @@ main a:hover i {
 /* Media Query untuk layar kecil */
 @media (max-width: 868px) {
   .footer-bottom {
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
   .filter-artikel {
     max-width: 100%;

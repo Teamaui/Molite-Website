@@ -303,7 +303,7 @@
         let dataPertumbuhan = await fetchData('http://localhost/Molita/Public/index.php/molita-api/get-pertumbuhan');
         dataPertumbuhan = dataPertumbuhan.data;
         // Label bulan yang ingin digunakan
-        const labels = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        const labels = ["Januari", "Pebruari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
         // Array untuk menyimpan data berat badan, tinggi badan, dan lingkar kepala
         const dataBeratBadan = new Array(labels.length).fill(0);

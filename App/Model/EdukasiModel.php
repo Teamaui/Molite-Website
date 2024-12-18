@@ -180,7 +180,6 @@ class EdukasiModel
     {
         $idEdukasi = $this->generateAutoIncrementIDEdukasi();
 
-        var_dump($data);
         if (empty($data["foto"]["name"])) {
             // id_admin nik nama_admin email username password status_aktivasi
             $sql = "INSERT edukasi (id_edukasi, id_jenis_edukasi, judul_edukasi, deskripsi_edukasi) VALUES (:id_edukasi,  :id_jenis_edukasi, :judul_edukasi, :deskripsi_edukasi)";

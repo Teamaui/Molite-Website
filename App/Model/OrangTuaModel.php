@@ -6,6 +6,7 @@ use App\Helper\DatabaseHelper;
 use Exception;
 use FlashMessageHelper;
 use PDO;
+use PDOException;
 
 class OrangTuaModel
 {
@@ -72,50 +73,58 @@ class OrangTuaModel
 
     public function insertData(array $data): bool
     {
-        if ($this->cekOrangTuaByEmail($data["email"])) {
-            FlashMessageHelper::set("pesan_gagal", "Email sudah digunakan, silakan coba yang lain.");
-            return false;
-        } else if ($this->cekOrangTuaByNikIbu($data["nik_ibu"])) {
-            FlashMessageHelper::set("pesan_gagal", "NIK Ibu sudah digunakan, silakan coba yang lain.");
-            return false;
-        } else if ($this->cekOrangTuaByNikAyah($data["nik_ayah"])) {
-            FlashMessageHelper::set("pesan_gagal", "NIK Ayah sudah digunakan, silakan coba yang lain.");
-            return false;
-        } else {
-            $idAnak = $this->generateAutoIncrementID();
-            $sql = "INSERT INTO orang_tua (id_orang_tua, email, nama_ibu, nama_ayah, nik_ibu, nik_ayah, alamat, no_telepon, id_posyandu) VALUES (:id_orang_tua, :email, :nama_ibu, :nama_ayah, :nik_ibu, :nik_ayah, :alamat, :no_telepon, :id_posyandu)";
+        try {
+            if ($this->cekOrangTuaByEmail($data["email"])) {
+                FlashMessageHelper::set("pesan_gagal", "Email sudah digunakan, silakan coba yang lain.");
+                return false;
+            } else if ($this->cekOrangTuaByNikIbu($data["nik_ibu"])) {
+                FlashMessageHelper::set("pesan_gagal", "NIK Ibu sudah digunakan, silakan coba yang lain.");
+                return false;
+            } else if ($this->cekOrangTuaByNikAyah($data["nik_ayah"])) {
+                FlashMessageHelper::set("pesan_gagal", "NIK Ayah sudah digunakan, silakan coba yang lain.");
+                return false;
+            } else {
+                $idAnak = $this->generateAutoIncrementID();
+                $sql = "INSERT INTO orang_tua (id_orang_tua, email, nama_ibu, nama_ayah, nik_ibu, nik_ayah, alamat, no_telepon, id_posyandu) VALUES (:id_orang_tua, :email, :nama_ibu, :nama_ayah, :nik_ibu, :nik_ayah, :alamat, :no_telepon, :id_posyandu)";
 
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(":id_orang_tua", $idAnak);
-            $stmt->bindParam(":email", $data["email"]);
-            $stmt->bindParam(":nama_ibu", $data["nama_ibu"]);
-            $stmt->bindParam(":nama_ayah", $data["nama_ayah"]);
-            $stmt->bindParam(":nik_ibu", $data["nik_ibu"]);
-            $stmt->bindParam(":nik_ayah", $data["nik_ayah"]);
-            $stmt->bindParam(":alamat", $data["alamat"]);
-            $stmt->bindParam(":no_telepon", $data["nomor_telepon"]);
-            $stmt->bindParam(":id_posyandu", $data["id_posyandu"]);
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindParam(":id_orang_tua", $idAnak);
+                $stmt->bindParam(":email", $data["email"]);
+                $stmt->bindParam(":nama_ibu", $data["nama_ibu"]);
+                $stmt->bindParam(":nama_ayah", $data["nama_ayah"]);
+                $stmt->bindParam(":nik_ibu", $data["nik_ibu"]);
+                $stmt->bindParam(":nik_ayah", $data["nik_ayah"]);
+                $stmt->bindParam(":alamat", $data["alamat"]);
+                $stmt->bindParam(":no_telepon", $data["nomor_telepon"]);
+                $stmt->bindParam(":id_posyandu", $data["id_posyandu"]);
 
-            return $stmt->execute();
+                return $stmt->execute();
+            }
+        } catch (PDOException $e) {
+            return false;
         }
     }
 
     public function updateData(array $data): bool
     {
-        $sql = "UPDATE orang_tua SET email = :email, nama_ibu = :nama_ibu, nama_ayah = :nama_ayah, alamat = :alamat, nik_ibu = :nik_ibu, nik_ayah = :nik_ayah, no_telepon = :nomor_telepon, id_posyandu = :id_posyandu WHERE id_orang_tua = :id_orang_tua";
+        try {
+            $sql = "UPDATE orang_tua SET email = :email, nama_ibu = :nama_ibu, nama_ayah = :nama_ayah, alamat = :alamat, nik_ibu = :nik_ibu, nik_ayah = :nik_ayah, no_telepon = :nomor_telepon, id_posyandu = :id_posyandu WHERE id_orang_tua = :id_orang_tua";
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(":id_orang_tua", $data["id_orang_tua"]);
-        $stmt->bindParam(":email", $data["email"]);
-        $stmt->bindParam(":nama_ibu", $data["nama_ibu"]);
-        $stmt->bindParam(":nama_ayah", $data["nama_ayah"]);
-        $stmt->bindParam(":alamat", $data["alamat"]);
-        $stmt->bindParam(":nik_ibu", $data["nik_ibu"]);
-        $stmt->bindParam(":nik_ayah", $data["nik_ayah"]);
-        $stmt->bindParam(":nomor_telepon", $data["nomor_telepon"]);
-        $stmt->bindParam(":id_posyandu", $data["id_posyandu"]);
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":id_orang_tua", $data["id_orang_tua"]);
+            $stmt->bindParam(":email", $data["email"]);
+            $stmt->bindParam(":nama_ibu", $data["nama_ibu"]);
+            $stmt->bindParam(":nama_ayah", $data["nama_ayah"]);
+            $stmt->bindParam(":alamat", $data["alamat"]);
+            $stmt->bindParam(":nik_ibu", $data["nik_ibu"]);
+            $stmt->bindParam(":nik_ayah", $data["nik_ayah"]);
+            $stmt->bindParam(":nomor_telepon", $data["nomor_telepon"]);
+            $stmt->bindParam(":id_posyandu", $data["id_posyandu"]);
 
-        return $stmt->execute();
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
     public function registerOrangTua(array $data): bool
@@ -194,6 +203,37 @@ class OrangTuaModel
         $stmt->bindParam(":id_orang_tua", $idOrangTua);
 
         return $stmt->execute();
+    }
+
+    public function cekOrangTua($email)
+    {
+        $sql = "SELECT * FROM orang_tua WHERE email = :email";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":email", $email);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function cekStatusOrangTua($email)
+    {
+        $sql = "SELECT * FROM orang_tua WHERE email = :email AND status_aktivasi = :status_aktivasi";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":email", $email);
+        $stmt->bindValue(":status_aktivasi", "Aktif");
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // PAGINATION

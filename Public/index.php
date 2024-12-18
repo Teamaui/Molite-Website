@@ -16,7 +16,6 @@ use App\Controller\OrangTuaController;
 use App\Controller\PenjadwalanController;
 use App\Controller\PertumbuhanController;
 use App\Controller\ReportController;
-use Controller\SeederController;
 use Routes\Route;
 
 // ------ ADD REQUIRE 
@@ -52,7 +51,6 @@ require_once __DIR__ . "/../App/Model/OtpModel.php";
 require_once __DIR__ . "/../App/Controller/AuthController.php";
 require_once __DIR__ . "/../App/Controller/DashboardSuperController.php";
 require_once __DIR__ . "/../App/Controller/DashboardController.php";
-require_once __DIR__ . "/../App/Controller/SeederController.php";
 require_once __DIR__ . "/../App/Controller/AnakController.php";
 require_once __DIR__ . "/../App/Controller/OrangTuaController.php";
 require_once __DIR__ . "/../App/Controller/BerandaController.php";
@@ -149,6 +147,7 @@ Route::add("GET", "/pertumbuhan/create", PertumbuhanController::class, "create")
 Route::add("POST", "/pertumbuhan/store", PertumbuhanController::class, "store");
 Route::add("GET", "/pertumbuhan/edit/([0-9a-zA-Z]*)", PertumbuhanController::class, "edit");
 Route::add("POST", "/pertumbuhan/update", PertumbuhanController::class, "update");
+Route::add("GET", "/pertumbuhan/delete/([0-9a-zA-Z]*)", PertumbuhanController::class, "destroy");
 
 // Penjadwalan
 Route::add("GET", "/penjadwalan", PenjadwalanController::class, "index");
@@ -165,7 +164,7 @@ Route::add("POST", "/penjadwalan/posyandu/update", PenjadwalanController::class,
 Route::add("GET", "/penjadwalan/posyandu/delete/([0-9a-zA-Z]*)", PenjadwalanController::class, "destroyPosyandu");
 Route::add("GET", "/penjadwalan/delete/([0-9a-zA-Z]*)", PenjadwalanController::class, "destroy");
 Route::add("POST", "/penjadwalan/posyandu/view/store", PenjadwalanController::class, "storeJadwalPosyandu");
-Route::add("GET", "/penjadwalan/posyandu/view/delete/([0-9a-zA-Z]*)", PenjadwalanController::class, "destroyJadwalPosyandu");
+Route::add("GET", "/penjadwalan/posyandu/view/delete/([0-9a-zA-Z]*)/([0-9a-zA-Z]*)", PenjadwalanController::class, "destroyJadwalPosyandu");
 Route::add("GET", "/penjadwalan/posyandu/view/edit/([0-9a-zA-Z]*)", PenjadwalanController::class, "editJadwalPosyandu");
 Route::add("POST", "/penjadwalan/posyandu/view/update", PenjadwalanController::class, "updateJadwalPosyandu");
 
@@ -196,11 +195,6 @@ Route::add("POST", "/edit-profile/update", EditProfilController::class, "update"
 // Edit Profil Super Admin
 Route::add("GET", "/edit-profile-super-admin", EditProfileSuperAdminController::class, "index");
 Route::add("POST", "/edit-profile-super-admin/update", EditProfileSuperAdminController::class, "update");
-
-// Seeder
-Route::add("GET", "/seeder/run", SeederController::class, "run");
-Route::add("GET", "/seeder/rollback", SeederController::class, "rollback");
-Route::add("GET", "/seeder/rerun", SeederController::class, "rerun");
 
 // Api Molita
 Route::add("GET", "/molita-api/get-orang-tua", ApiController::class, "getOrangTua");

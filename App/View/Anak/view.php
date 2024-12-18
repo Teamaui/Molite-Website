@@ -22,11 +22,11 @@
                 </div>
                 <div class="list-item">
                     <h3>Nama Ayah</h3>
-                    <p><?= isset($a["nama_ayah"]) ? $a["nama_ayah"] : "-" ?></p>
+                    <p><?= isset($anak["nama_ayah"]) ? $anak["nama_ayah"] : "-" ?></p>
                 </div>
                 <div class="list-item">
                     <h3>Nama Ibu</h3>
-                    <p><?= isset($a["nama_ibu"]) ? $a["nama_ibu"] : "-" ?></p>
+                    <p><?= isset($anak["nama_ibu"]) ? $anak["nama_ibu"] : "-" ?></p>
                 </div>
             </div>
         </div>

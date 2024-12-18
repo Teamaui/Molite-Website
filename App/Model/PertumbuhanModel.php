@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Helper\DatabaseHelper;
 use PDO;
+use PDOException;
 
 class PertumbuhanModel
 {
@@ -59,41 +60,53 @@ class PertumbuhanModel
 
     public function insertData(array $data): bool
     {
-        $idPertumbuhan = $this->generateAutoIncrementID();
-        $sql = "INSERT INTO pertumbuhan (id_pertumbuhan, id_anak, tanggal_pencatatan, berat_badan, tinggi_badan, lingkar_kepala) VALUES (:id_pertumbuhan, :id_anak, :tanggal_pencatatan, :berat_badan, :tinggi_badan, :lingkar_kepala)";
+        try {
+            $idPertumbuhan = $this->generateAutoIncrementID();
+            $sql = "INSERT INTO pertumbuhan (id_pertumbuhan, id_anak, tanggal_pencatatan, berat_badan, tinggi_badan, lingkar_kepala) VALUES (:id_pertumbuhan, :id_anak, :tanggal_pencatatan, :berat_badan, :tinggi_badan, :lingkar_kepala)";
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(":id_pertumbuhan", $idPertumbuhan);
-        $stmt->bindParam(":id_anak", $data["id_anak"]);
-        $stmt->bindParam(":tanggal_pencatatan", $data["tanggal_catat"]);
-        $stmt->bindParam(":berat_badan", $data["berat_badan"]);
-        $stmt->bindParam(":tinggi_badan", $data["tinggi_badan"]);
-        $stmt->bindParam(":lingkar_kepala", $data["lingkar_kepala"]);
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":id_pertumbuhan", $idPertumbuhan);
+            $stmt->bindParam(":id_anak", $data["id_anak"]);
+            $stmt->bindParam(":tanggal_pencatatan", $data["tanggal_catat"]);
+            $stmt->bindParam(":berat_badan", $data["berat_badan"]);
+            $stmt->bindParam(":tinggi_badan", $data["tinggi_badan"]);
+            $stmt->bindParam(":lingkar_kepala", $data["lingkar_kepala"]);
 
-        return $stmt->execute();
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            // Log error jika diperlukan
+            // error_log($e->getMessage());
+            return false;
+        }
     }
 
     public function updateData(array $data): bool
     {
-        $sql = "UPDATE pertumbuhan SET id_anak = :id_anak, tanggal_pencatatan = :tanggal_pencatatan, berat_badan = :berat_badan, tinggi_badan = :tinggi_badan, lingkar_kepala = :lingkar_kepala WHERE id_pertumbuhan = :id_pertumbuhan";
+        try {
+            $sql = "UPDATE pertumbuhan SET id_anak = :id_anak, tanggal_pencatatan = :tanggal_pencatatan, berat_badan = :berat_badan, tinggi_badan = :tinggi_badan, lingkar_kepala = :lingkar_kepala WHERE id_pertumbuhan = :id_pertumbuhan";
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(":id_pertumbuhan", $data["id_pertumbuhan"]);
-        $stmt->bindParam(":id_anak", $data["id_anak"]);
-        $stmt->bindParam(":tanggal_pencatatan", $data["tanggal_catat"]);
-        $stmt->bindParam(":berat_badan", $data["berat_badan"]);
-        $stmt->bindParam(":tinggi_badan", $data["tinggi_badan"]);
-        $stmt->bindParam(":lingkar_kepala", $data["lingkar_kepala"]);
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":id_pertumbuhan", $data["id_pertumbuhan"]);
+            $stmt->bindParam(":id_anak", $data["id_anak"]);
+            $stmt->bindParam(":tanggal_pencatatan", $data["tanggal_catat"]);
+            $stmt->bindParam(":berat_badan", $data["berat_badan"]);
+            $stmt->bindParam(":tinggi_badan", $data["tinggi_badan"]);
+            $stmt->bindParam(":lingkar_kepala", $data["lingkar_kepala"]);
 
-        return $stmt->execute();
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            // Log error jika diperlukan
+            // error_log($e->getMessage());
+            return false;
+        }
     }
 
-    public function deleteDataById(string $idOrangTua)
+    public function deleteDataById(string $idPertumbuhan)
     {
-        $sql = "DELETE FROM orang_tua WHERE id_orang_tua = :id_orang_tua";
+        $sql = "DELETE FROM pertumbuhan WHERE id_pertumbuhan = :id_pertumbuhan";
 
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(":id_orang_tua", $idOrangTua);
+        $stmt->bindParam(":id_pertumbuhan", $idPertumbuhan);
 
         return $stmt->execute();
     }
@@ -112,7 +125,7 @@ class PertumbuhanModel
 
     public function getAllPertumbuhanForMouthById($idAnak)
     {
-        $query = "SELECT DATE_FORMAT(tanggal_pencatatan, '%M') AS bulan_pencatatan, AVG(berat_badan) AS berat_badan, AVG(tinggi_badan) AS tinggi_badan, AVG(lingkar_kepala) AS lingkar_kepala FROM pertumbuhan WHERE pertumbuhan.id_anak = :id_anak GROUP BY bulan_pencatatan ORDER BY tanggal_pencatatan;
+        $query = "SELECT DATE_FORMAT(tanggal_pencatatan, '%b') AS bulan_pencatatan, AVG(berat_badan) AS berat_badan, AVG(tinggi_badan) AS tinggi_badan, AVG(lingkar_kepala) AS lingkar_kepala FROM pertumbuhan WHERE pertumbuhan.id_anak = :id_anak GROUP BY bulan_pencatatan ORDER BY tanggal_pencatatan;
         ";
 
         $this->db->exec("SET lc_time_names = 'id_ID'");

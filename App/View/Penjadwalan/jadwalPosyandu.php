@@ -50,7 +50,7 @@
                                 <td><?= TimeHelper::formatWaktuIndonesia($psy["jam_mulai"]) ?> - <?= TimeHelper::formatWaktuIndonesia($psy["jam_selesai"])  ?></td>
                                 <td>
                                     <a class="edit" href="<?= UrlHelper::route("penjadwalan/posyandu/view/edit/" . $psy["id_jadwal_posyandu"]) ?>"><i class="bi bi-pencil-fill"></i></a>
-                                    <a class="hapus" href="<?= UrlHelper::route("penjadwalan/posyandu/view/delete/" . $psy["id_jadwal_posyandu"]) ?>"><i class="bi bi-trash"></i></a>
+                                    <a class="hapus" href="<?= UrlHelper::route("penjadwalan/posyandu/view/delete/" . $pagination["id_posyandu"] . "/" . $psy["id_jadwal_posyandu"]) ?>"><i class="bi bi-trash"></i></a>
                                 </td>
                             </tr>
                         <?php endforeach;

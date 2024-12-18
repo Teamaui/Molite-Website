@@ -139,7 +139,7 @@ body {
 .main-content {
   background-image: url(../img/bg_main.png);
   background-size: cover;
-  min-height: calc(100dvh - 120px);
+  min-height: calc(100dvh - 110px);
   width: 100%;
   margin-left: 250px;
   margin-top: 70px;

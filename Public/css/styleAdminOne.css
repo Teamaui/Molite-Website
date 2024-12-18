@@ -124,7 +124,6 @@ tbody td {
   color: #098db3;
   vertical-align: middle;
 }
-
 table td a {
   text-decoration: none;
   color: white;
@@ -195,6 +194,14 @@ textarea,
   font-size: 1rem;
   color: #098db3;
   letter-spacing: 0.1rem;
+}
+
+.table-button .laporan #rows {
+  height: 2.2rem;
+  margin-bottom: 1rem;
+  border: 1px solid #098db3;
+  color: #098db3;
+  margin-right: .5rem;
 }
 
 .form-container .form-left label {

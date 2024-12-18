@@ -6,21 +6,18 @@ $selectedJenisEdukasi = isset($_GET["jenisEdukasi"]) ? $_GET["jenisEdukasi"] : "
 
 ?>
 
-
-
-
-
 <main>
-    <img src="<?= UrlHelper::img("assets/bg-corner.png") ?>" alt="" class="top">
     <div class="main-left">
         <div class="left">
             <h1>UNDUH APLIKASI MONITORING BALITA!</h1>
             <p>Ayo unduh aplikasi monitoring balita untuk memantau tumbuh kembang si kecil dengan mudah! Dapatkan fitur lengkap untuk mendukung perkembangan balita secara optimal.</p>
-            <a href=""><i class="bi bi-arrow-right-circle-fill"></i> Unduh Sekarang, Pantau Lebih Mudah!</a>
+            <a href="https://drive.google.com/uc?export=download&id=1KORc8uV5_4-Jn3ZzhB6ZcjS2EmetX-Ce" download>
+                <i class="bi bi-arrow-right-circle-fill"></i> Unduh Sekarang, Pantau Lebih Mudah!
+            </a>
         </div>
     </div>
     <div class="main-right">
-        <img class="shake" src="<?= UrlHelper::img("lg1.png") ?>" alt="">
+        <img class="shake" src="<?= UrlHelper::img("laptopdanmobile.png") ?>" alt="">
     </div>
 </main>
 
@@ -31,15 +28,15 @@ $selectedJenisEdukasi = isset($_GET["jenisEdukasi"]) ? $_GET["jenisEdukasi"] : "
             <div class="top">
                 <i class="bi bi-bar-chart-line"></i>
                 <div class="container-teks">
-                    <h3>Pantau Tumbuh Kembang dengan Lebih Detail</h3>
-                    <p>Aplikasi ini membantu mencatat dan memantau perkembangan berat badan, tinggi badan, serta indikator kesehatan lain agar orang tua dapat memastikan tumbuh kembang anak sesuai standar.</p>
+                    <h3>Pantau Tumbuh Kembang Anak dengan Mudah</h3>
+                    <p>Molita memudahkan orang tua untuk memantau perkembangan berat badan, tinggi badan, serta indikator kesehatan lainnya, sehingga orang tua dapat memastikan tumbuh kembang anak sesuai dengan standar kesehatan.</p>
                 </div>
             </div>
             <div class="bottom">
                 <i class="bi bi-calendar-check"></i>
                 <div class="container-teks">
                     <h3>Imunisasi Anak Lebih Terjadwal</h3>
-                    <p>Dapatkan pengingat otomatis untuk semua jadwal imunisasi, sehingga Anda tidak akan melewatkan langkah penting dalam melindungi anak dari penyakit berbahaya.</p>
+                    <p>Dapatkan pengingat otomatis untuk jadwal imunisasi anak, sehingga Anda tidak akan melewatkan langkah penting dalam melindungi anak dari penyakit berbahaya.</p>
                 </div>
             </div>
         </div>
@@ -47,15 +44,15 @@ $selectedJenisEdukasi = isset($_GET["jenisEdukasi"]) ? $_GET["jenisEdukasi"] : "
             <div class="top">
                 <i class="bi bi-shield-lock"></i>
                 <div class="container-teks">
-                    <h3>Catatan Kesehatan Anak Tersimpan Aman</h3>
-                    <p>Semua data kesehatan anak, mulai dari riwayat imunisasi hingga hasil pemeriksaan posyandu, tersimpan secara digital dan mudah diakses kapan saja.</p>
+                    <h3>Keamanan Data Kesehatan Anak Terjamin</h3>
+                    <p>Semua data kesehatan anak, mulai dari riwayat imunisasi hingga hasil pemeriksaan posyandu, tersimpan dengan aman dalam sistem dan dapat diakses kapan saja.</p>
                 </div>
             </div>
             <div class="bottom">
-                <i class="bi bi-chat-dots"></i>
+                <i class="bi bi-arrow-clockwise"></i>
                 <div class="container-teks">
-                    <h3>Kemudahan Berkomunikasi dengan Posyandu</h3>
-                    <p>Terhubung langsung dengan posyandu untuk mendapatkan informasi terkini, jadwal layanan, hingga konsultasi terkait kesehatan dan perkembangan anak.</p>
+                    <h3>Fitur Pembaruan Kesehatan Berkala</h3>
+                    <p>Molita memberikan informasi kesehatan terbaru melalui pembaruan berkala, memastikan orang tua selalu mendapatkan data terbaru mengenai kesehatan anak.</p>
                 </div>
             </div>
         </div>
@@ -108,7 +105,7 @@ $selectedJenisEdukasi = isset($_GET["jenisEdukasi"]) ? $_GET["jenisEdukasi"] : "
     <div class="container">
         <h1>Edukasi Terkini</h1>
 
-        <form action="" method="GET" class="filter-artikel">
+        <form action="#edukasi" method="GET" class="filter-artikel">
             <button type="submit" name="jenisEdukasi" value="" class="<?= $selectedJenisEdukasi == "" ? "active" : "" ?>">Semua</button>
             <?php foreach ($jenisEdukasi as $jd) : ?>
                 <button type="submit" name="jenisEdukasi" class="<?= $selectedJenisEdukasi == $jd["slug"] ? "active" : "" ?>" value="<?= $jd["slug"] ?>"><?= $jd["nama_edukasi"] ?></button>
@@ -172,21 +169,21 @@ $selectedJenisEdukasi = isset($_GET["jenisEdukasi"]) ? $_GET["jenisEdukasi"] : "
                     <i class="bi bi-person-heart"></i>
                 </div>
                 <h3>Data Orang Tua</h3>
-                <h1>10</h1>
+                <h1><?= $totalData[0] ?></h1>
             </div>
             <div class="sub-container">
                 <div class="img img-2">
                     <i class="bi bi-heart-pulse-fill"></i>
                 </div>
                 <h3>Data Anak</h3>
-                <h1>24</h1>
+                <h1><?= $totalData[1] ?></h1>
             </div>
             <div class="sub-container">
                 <div class="img">
                     <i class="bi bi-mortarboard-fill"></i>
                 </div>
                 <h3>Jumlah Edukasi</h3>
-                <h1>42</h1>
+                <h1><?= $totalData[3] ?></h1>
             </div>
         </div>
     </div>

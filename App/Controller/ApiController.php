@@ -55,17 +55,33 @@ class ApiController
             "token" => generateCodeHelper::generateToken(),
         ];
 
-        if ($this->orangTuaModel->registerOrangTua($dataOrangTua)) {
-            $this->respon = [
-                "code" => "200",
-                "success" => true,
-                "message" => "Berhasil Register Data Orang Tua",
-            ];
+        if ($this->orangTuaModel->cekOrangTua($email)) {
+            if (!$this->orangTuaModel->cekStatusOrangTua($email)) {
+                if ($this->orangTuaModel->registerOrangTua($dataOrangTua)) {
+                    $this->respon = [
+                        "code" => "200",
+                        "success" => true,
+                        "message" => "Berhasil Register Data Orang Tua",
+                    ];
+                } else {
+                    $this->respon = [
+                        "code" => "401",
+                        "success" => false,
+                        "message" => "Gagal Register Data Orang Tua",
+                    ];
+                }
+            } else {
+                $this->respon = [
+                    "code" => "401",
+                    "success" => false,
+                    "message" => "Akun sudah aktif",
+                ];
+            }
         } else {
             $this->respon = [
                 "code" => "401",
                 "success" => false,
-                "message" => "Gagal Register Data Orang Tua",
+                "message" => "Akun tidak terdaftar",
             ];
         }
 
@@ -581,20 +597,28 @@ class ApiController
             "email" => $_POST["email"],
             "subject" => "Reset Kata Sandi Anda - Kode OTP Anda di Sini"
         ];
-
-        if ($this->otpModel->sendEmailOrangTua($data)) {
-            $this->respon = [
-                "code" => "200",
-                "success" => true,
-                "message" => "Berhasil kirim Kode OTP",
-            ];
+        if ($this->orangTuaModel->cekStatusOrangTua($data["email"])) {
+            if ($this->otpModel->sendEmailOrangTua($data)) {
+                $this->respon = [
+                    "code" => "200",
+                    "success" => true,
+                    "message" => "Berhasil kirim Kode OTP",
+                ];
+            } else {
+                $this->respon = [
+                    "code" => "401",
+                    "success" => false,
+                    "message" => "Gagal kirim kode OTP",
+                ];
+            }
         } else {
             $this->respon = [
                 "code" => "401",
                 "success" => false,
-                "message" => "Username atau Email Tidak Terdaftar",
+                "message" => "Email Tidak Terdaftar",
             ];
         }
+
 
         print json_encode($this->respon);
         exit;

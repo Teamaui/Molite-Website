@@ -3,16 +3,19 @@
 namespace App\Controller;
 
 use App\Helper\ViewReader;
+use App\Model\DashboardModel;
 use App\Model\EdukasiModel;
 
 class BerandaController
 {
 
     private EdukasiModel $edukasiModel;
+    private DashboardModel $dashboardModel;
 
     public function __construct()
     {
         $this->edukasiModel = new EdukasiModel();
+        $this->dashboardModel = new DashboardModel();
     }
 
     public function index()
@@ -29,10 +32,11 @@ class BerandaController
         }
 
         $jenisEdukasi = $this->edukasiModel->findAllJenisEdukasi();
+        $totalData = $this->dashboardModel->getAllRowsData();
 
         ViewReader::view("/Templates/BerandaTemplate/header", ["title" => $title, "styleCss" => $styleCss]);
         ViewReader::view("/Templates/BerandaTemplate/topbar");
-        ViewReader::view("/Beranda/index", ["jenisEdukasi" => $jenisEdukasi, "edukasi" => $edukasi]);
+        ViewReader::view("/Beranda/index", ["jenisEdukasi" => $jenisEdukasi, "edukasi" => $edukasi, "totalData" => $totalData]);
         ViewReader::view("/Templates/BerandaTemplate/footer");
     }
 

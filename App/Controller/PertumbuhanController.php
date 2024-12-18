@@ -93,11 +93,11 @@ class PertumbuhanController
         ];
 
         if ($this->pertumbuhanModel->insertData($data)) {
-            FlashMessageHelper::set("pesan_sukses", "Berhasil menambahkan data Orang Tua!");
+            FlashMessageHelper::set("pesan_sukses", "Berhasil menambahkan data Pertumbuhan!");
             header("Location: " . UrlHelper::route("/pertumbuhan"));
             exit;
         } else {
-            FlashMessageHelper::set("pesan_gagal", "Gagal menambahkan Orang Tua!");
+            FlashMessageHelper::set("pesan_gagal", "Gagal menambahkan Pertumbuhan!");
             header("Location: " . UrlHelper::route("/pertumbuhan"));
             exit;
         }
@@ -117,7 +117,7 @@ class PertumbuhanController
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/pertumbuhan/edit", ["pertumbuhan" => $pertumbuhan, "anak" => $anak]);
+        ViewReader::view("/Pertumbuhan/edit", ["pertumbuhan" => $pertumbuhan, "anak" => $anak]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 
@@ -138,22 +138,22 @@ class PertumbuhanController
             header("Location: " . UrlHelper::route("/pertumbuhan"));
             exit;
         } else {
-            FlashMessageHelper::set("pesan_gagal", "Gagal update Orang Tua!");
+            FlashMessageHelper::set("pesan_gagal", "Gagal update Pertumbuhan!");
             header("Location: " . UrlHelper::route("/pertumbuhan"));
             exit;
         }
     }
 
-    // public function destroy(string $idOrangTua)
-    // {
-    //     if ($this->pertumbuhanModel->deleteDataById($idOrangTua)) {
-    //         FlashMessageHelper::set("pesan_sukses", "Berhasil menghapus data Orang Tua!");
-    //         header("Location: " . UrlHelper::route("/orang-tua"));
-    //         exit;
-    //     } else {
-    //         FlashMessageHelper::set("pesan_gagal", "Gagal menghapus data Orang Tua!");
-    //         header("Location: " . UrlHelper::route("/orang-tua"));
-    //         exit;
-    //     }
-    // }
+    public function destroy(string $idPertumbuhan)
+    {
+        if ($this->pertumbuhanModel->deleteDataById($idPertumbuhan)) {
+            FlashMessageHelper::set("pesan_sukses", "Berhasil menghapus data Pertumbuhan!");
+            header("Location: " . UrlHelper::route("/orang-tua"));
+            exit;
+        } else {
+            FlashMessageHelper::set("pesan_gagal", "Gagal menghapus data Pertumbuhan!");
+            header("Location: " . UrlHelper::route("/orang-tua"));
+            exit;
+        }
+    }
 }

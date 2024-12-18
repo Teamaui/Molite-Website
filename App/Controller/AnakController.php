@@ -124,7 +124,7 @@ class AnakController
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/anak/edit", ["anak" => $anak, "orangTua" => $orangTuaModel]);
+        ViewReader::view("/Anak/edit", ["anak" => $anak, "orangTua" => $orangTuaModel]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 

@@ -61,7 +61,7 @@
                     ?>
                         <tr>
                             <td><?= $startNumber++ ?></td>
-                            <td><?= $pjl["nama_anak"] ?></td>
+                            <td><?= isset($pjl["nama_anak"]) ? $pjl["nama_anak"] : "-" ?></td>
                             <td><?= isset($pjl["nama_imunisasi"]) ? $pjl["nama_imunisasi"] : "-" ?></td>
                             <td><?= $pjl["tanggal_imunisasi"] ?></td>
                             <td>

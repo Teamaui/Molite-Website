@@ -24,14 +24,14 @@ class ReportController
 
         // Pagination
         $page = isset($_GET["page"]) ? $_GET["page"] : 1;
-        $limit = 5;
+        $limit = isset($_GET["rows"]) ? $_GET["rows"] : 5;
         $offset = ($page - 1) * $limit;
         $data = [
             "page" => $page,
             "limit" => $limit,
             "offset" => $offset,
         ];
-        if (isset($_GET["start_date"]) && isset($_GET["end_date"])) {
+        if (isset($_GET["start_date"]) && isset($_GET["end_date"]) && !empty($_GET["start_date"]) && !empty($_GET["end_date"])) {
             $data["start_date"] = $_GET["start_date"];
             $data["end_date"] = $_GET["end_date"];
             $pertumbuhan = $this->pertumbuhanModel->getPaginationByDate($data);

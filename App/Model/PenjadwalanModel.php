@@ -6,6 +6,7 @@ use App\Helper\DatabaseHelper;
 use Exception;
 use FlashMessageHelper;
 use PDO;
+use PDOException;
 
 class PenjadwalanModel
 {
@@ -101,86 +102,111 @@ class PenjadwalanModel
             return true;
         } catch (Exception $e) {
             $this->db->rollBack();
-            echo $e->getMessage();
-            die;
             return false;
         }
     }
 
-    public function updateJadwalImunisasi($data)
+    public function updateJadwalImunisasi($data): bool
     {
-        $query = "UPDATE jadwal_imunisasi SET id_jenis_imunisasi = :id_jenis_imunisasi, tanggal_imunisasi = :tanggal_imunisasi, nama_bidan = :nama_bidan, usia_pemberian = :usia_pemberian, tempat_imunisasi = :tempat_imunisasi, status_imunisasi = :status_imunisasi WHERE id_jadwal_imunisasi = :id_jadwal_imunisasi";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(":id_jadwal_imunisasi", $data["id_jadwal_imunisasi"]);
-        $stmt->bindParam(":id_jenis_imunisasi", $data["id_jenis_imunisasi"]);
-        $stmt->bindParam(":tanggal_imunisasi", $data["tanggal_imunisasi"]);
-        $stmt->bindParam(":nama_bidan", $data["nama_bidan"]);
-        $stmt->bindParam(":usia_pemberian", $data["usia_pemberian"]);
-        $stmt->bindParam(":tempat_imunisasi", $data["tempat_imunisasi"]);
-        $stmt->bindParam(":status_imunisasi", $data["status_imunisasi"]);
-        return $stmt->execute();
-    }
+        try {
 
-    public function insertDataPosyandu($data)
-    {
-        if ($this->cekPosyanduByPos($data["nama_pos"])) {
-            FlashMessageHelper::set("pesan_gagal", "Nama Posyandu sudah digunakan, silakan coba yang lain.");
-            return false;
-        } else {
-            $idPosyandu = $this->generateAutoIncrementIDPosyandu();
+            $this->db->beginTransaction();
 
-            $query = "INSERT INTO jenis_posyandu (id_posyandu, pos) VALUES (:id_posyandu, :pos)";
+            $query = "UPDATE daftar_imunisasi SET id_anak = :id_anak WHERE id_jadwal_imunisasi = :id_jadwal_imunisasi";
             $stmt = $this->db->prepare($query);
-            $stmt->bindParam(":id_posyandu", $idPosyandu);
-            $stmt->bindParam(":pos", $data["nama_pos"]);
+            $stmt->bindParam(":id_jadwal_imunisasi", $data["id_jadwal_imunisasi"]);
+            $stmt->bindParam(":id_anak", $data["id_anak"]);
+            $stmt->execute();
 
-            return $stmt->execute();
+            $query = "UPDATE jadwal_imunisasi SET id_jenis_imunisasi = :id_jenis_imunisasi, tanggal_imunisasi = :tanggal_imunisasi, nama_bidan = :nama_bidan, usia_pemberian = :usia_pemberian, tempat_imunisasi = :tempat_imunisasi, status_imunisasi = :status_imunisasi WHERE id_jadwal_imunisasi = :id_jadwal_imunisasi";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_jadwal_imunisasi", $data["id_jadwal_imunisasi"]);
+            $stmt->bindParam(":id_jenis_imunisasi", $data["id_jenis_imunisasi"]);
+            $stmt->bindParam(":tanggal_imunisasi", $data["tanggal_imunisasi"]);
+            $stmt->bindParam(":nama_bidan", $data["nama_bidan"]);
+            $stmt->bindParam(":usia_pemberian", $data["usia_pemberian"]);
+            $stmt->bindParam(":tempat_imunisasi", $data["tempat_imunisasi"]);
+            $stmt->bindParam(":status_imunisasi", $data["status_imunisasi"]);
+            $stmt->execute();
+
+            $this->db->commit();
+            return true;
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+
+            return false;
         }
     }
 
-    public function insertDataJadwalPosyandu($data)
+    public function insertDataPosyandu($data): bool
     {
-        $idJadwalPosyandu = $this->generateAutoIncrementIDJadwalPosyandu();
-
-        $query = "INSERT INTO jadwal_posyandu (id_jadwal_posyandu, id_posyandu, tanggal, jam_mulai, jam_selesai) VALUES (:id_jadwal_posyandu, :id_posyandu, :tanggal, :jam_mulai, :jam_selesai)";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(":id_jadwal_posyandu", $idJadwalPosyandu);
-        $stmt->bindParam(":id_posyandu", $data["id_posyandu"]);
-        $stmt->bindParam(":tanggal", $data["tanggal"]);
-        $stmt->bindParam(":jam_mulai", $data["jam_mulai"]);
-        $stmt->bindParam(":jam_selesai", $data["jam_selesai"]);
-
-        return $stmt->execute();
+        try {
+            if ($this->cekPosyanduByPos($data["nama_pos"])) {
+                FlashMessageHelper::set("pesan_gagal", "Nama Posyandu sudah digunakan, silakan coba yang lain.");
+                return false;
+            } else {
+                $idPosyandu = $this->generateAutoIncrementIDPosyandu();
+                $query = "INSERT INTO jenis_posyandu (id_posyandu, pos) VALUES (:id_posyandu, :pos)";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindParam(":id_posyandu", $idPosyandu);
+                $stmt->bindParam(":pos", $data["nama_pos"]);
+                return $stmt->execute();
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
-    public function updateDataJadwalPosyandu($data)
+    public function insertDataJadwalPosyandu($data): bool
     {
-        $query = "UPDATE jadwal_posyandu SET tanggal = :tanggal, jam_mulai = :jam_mulai, jam_selesai = :jam_selesai WHERE id_jadwal_posyandu = :id_jadwal_posyandu";
-
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(":id_jadwal_posyandu", $data["id_jadwal_posyandu"]);
-        $stmt->bindParam(":tanggal", $data["tanggal"]);
-        $stmt->bindParam(":jam_mulai", $data["jam_mulai"]);
-        $stmt->bindParam(":jam_selesai", $data["jam_selesai"]);
-
-        return $stmt->execute();
+        try {
+            $idJadwalPosyandu = $this->generateAutoIncrementIDJadwalPosyandu();
+            $query = "INSERT INTO jadwal_posyandu (id_jadwal_posyandu, id_posyandu, tanggal, jam_mulai, jam_selesai) VALUES (:id_jadwal_posyandu, :id_posyandu, :tanggal, :jam_mulai, :jam_selesai)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_jadwal_posyandu", $idJadwalPosyandu);
+            $stmt->bindParam(":id_posyandu", $data["id_posyandu"]);
+            $stmt->bindParam(":tanggal", $data["tanggal"]);
+            $stmt->bindParam(":jam_mulai", $data["jam_mulai"]);
+            $stmt->bindParam(":jam_selesai", $data["jam_selesai"]);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
-    public function updateDataPosyandu($data)
+    public function updateDataJadwalPosyandu($data): bool
     {
-        $query = "UPDATE jenis_posyandu SET pos = :pos WHERE id_posyandu = :id_posyandu";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(":id_posyandu", $data["id_posyandu"]);
-        $stmt->bindParam(":pos", $data["pos"]);
+        try {
+            $query = "UPDATE jadwal_posyandu SET tanggal = :tanggal, jam_mulai = :jam_mulai, jam_selesai = :jam_selesai WHERE id_jadwal_posyandu = :id_jadwal_posyandu";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_jadwal_posyandu", $data["id_jadwal_posyandu"]);
+            $stmt->bindParam(":tanggal", $data["tanggal"]);
+            $stmt->bindParam(":jam_mulai", $data["jam_mulai"]);
+            $stmt->bindParam(":jam_selesai", $data["jam_selesai"]);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 
-        return $stmt->execute();
+    public function updateDataPosyandu($data): bool
+    {
+        try {
+            $query = "UPDATE jenis_posyandu SET pos = :pos WHERE id_posyandu = :id_posyandu";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_posyandu", $data["id_posyandu"]);
+            $stmt->bindParam(":pos", $data["pos"]);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
     public function deletePosyandu($id)
     {
-        $query = "DELETE FROM jadwal_posyandu WHERE id_jadwal_posyandu = :id_jadwal_posyandu";
+        $query = "DELETE FROM jenis_posyandu WHERE id_posyandu = :id_posyandu";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(":id_jadwal_posyandu", $id);
+        $stmt->bindParam(":id_posyandu", $id);
 
         return $stmt->execute();
     }
@@ -606,7 +632,7 @@ class PenjadwalanModel
         $stmt->bindParam(":id_orang_tua", $id);
         $stmt->execute();
 
-        if($stmt->rowCount() > 1) {
+        if ($stmt->rowCount() > 1) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {
             return [$stmt->fetchAll(PDO::FETCH_ASSOC)];

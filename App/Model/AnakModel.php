@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Helper\DatabaseHelper;
 use PDO;
+use PDOException;
 
 class AnakModel
 {
@@ -53,22 +54,23 @@ class AnakModel
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    
-    public function findByIdOrangTua($id){
+
+    public function findByIdOrangTua($id)
+    {
         $query = "SELECT anak.* FROM anak JOIN orang_tua ON orang_tua.id_orang_tua = anak.id_orang_tua WHERE orang_tua.id_orang_tua = :id_orang_tua";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":id_orang_tua", $id);
         $stmt->execute();
 
-        if($stmt->rowCount() < 1) {
+        if ($stmt->rowCount() < 1) {
             return [$stmt->fetchAll(PDO::FETCH_ASSOC)];
         } else {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-
     }
 
-    public function findAllDataByIdOrangTua($id){
+    public function findAllDataByIdOrangTua($id)
+    {
         $query = "SELECT 
                     anak.id_anak,
                     anak.nama_anak AS nama_anak,
@@ -107,43 +109,50 @@ class AnakModel
         $stmt->bindParam(":id_orang_tua", $id);
         $stmt->execute();
 
-        if($stmt->rowCount() < 1) {
+        if ($stmt->rowCount() < 1) {
             return [$stmt->fetchAll(PDO::FETCH_ASSOC)];
         } else {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-
     }
 
     public function insertData(array $data): bool
     {
-        $idAnak = $this->generateAutoIncrementID();
-        $sql = "INSERT INTO anak (id_anak, nama_anak, tanggal_lahir, tempat_lahir, jenis_kelamin, id_orang_tua) VALUES (:id_anak, :nama_anak, :tanggal_lahir, :tempat_lahir, :jenis_kelamin, :id_orang_tua)";
+        try {
+            $idAnak = $this->generateAutoIncrementID();
+            $sql = "INSERT INTO anak (id_anak, nama_anak, tanggal_lahir, tempat_lahir, jenis_kelamin, id_orang_tua) VALUES (:id_anak, :nama_anak, :tanggal_lahir, :tempat_lahir, :jenis_kelamin, :id_orang_tua)";
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(":id_anak", $idAnak);
-        $stmt->bindParam(":nama_anak", $data["nama_anak"]);
-        $stmt->bindParam(":tanggal_lahir", $data["tanggal_lahir"]);
-        $stmt->bindParam(":tempat_lahir", $data["tempat_lahir"]);
-        $stmt->bindParam(":jenis_kelamin", $data["jenis_kelamin"]);
-        $stmt->bindParam(":id_orang_tua", $data["id_orang_tua"]);
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":id_anak", $idAnak);
+            $stmt->bindParam(":nama_anak", $data["nama_anak"]);
+            $stmt->bindParam(":tanggal_lahir", $data["tanggal_lahir"]);
+            $stmt->bindParam(":tempat_lahir", $data["tempat_lahir"]);
+            $stmt->bindParam(":jenis_kelamin", $data["jenis_kelamin"]);
+            $stmt->bindParam(":id_orang_tua", $data["id_orang_tua"]);
 
-        return $stmt->execute();
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
     public function updateData(array $data): bool
     {
-        $sql = "UPDATE anak SET nama_anak = :nama_anak, tanggal_lahir = :tanggal_lahir, tempat_lahir = :tempat_lahir, jenis_kelamin = :jenis_kelamin, id_orang_tua = :id_orang_tua WHERE id_anak = :id_anak";
+        try {
+            $sql = "UPDATE anak SET nama_anak = :nama_anak, tanggal_lahir = :tanggal_lahir, tempat_lahir = :tempat_lahir, jenis_kelamin = :jenis_kelamin, id_orang_tua = :id_orang_tua WHERE id_anak = :id_anak";
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(":id_anak", $data["id_anak"]);
-        $stmt->bindParam(":nama_anak", $data["nama_anak"]);
-        $stmt->bindParam(":tanggal_lahir", $data["tanggal_lahir"]);
-        $stmt->bindParam(":tempat_lahir", $data["tempat_lahir"]);
-        $stmt->bindParam(":jenis_kelamin", $data["jenis_kelamin"]);
-        $stmt->bindParam(":id_orang_tua", $data["id_orang_tua"]);
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":id_anak", $data["id_anak"]);
+            $stmt->bindParam(":nama_anak", $data["nama_anak"]);
+            $stmt->bindParam(":tanggal_lahir", $data["tanggal_lahir"]);
+            $stmt->bindParam(":tempat_lahir", $data["tempat_lahir"]);
+            $stmt->bindParam(":jenis_kelamin", $data["jenis_kelamin"]);
+            $stmt->bindParam(":id_orang_tua", $data["id_orang_tua"]);
 
-        return $stmt->execute();
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
     public function deleteDataById(string $idAnak)

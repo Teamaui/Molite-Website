@@ -127,7 +127,7 @@ class PenjadwalanController
         ViewReader::view("/Templates/DashboardTemplate/header", ["title" => $title, "styleCss" => $styleCss, "styleCss2" => $styleCss2, "styleCss4" => $styleCss4]);
         ViewReader::view("/Templates/DashboardTemplate/topbar", ["admin" => $admin]);
         ViewReader::view("/Templates/DashboardTemplate/sidebar", ["title" => $title]);
-        ViewReader::view("/penjadwalan/edit", ["penjadwalan" => $penjadwalan, "anak" => $anak, "imunisasi" => $imunisasi]);
+        ViewReader::view("/Penjadwalan/edit", ["penjadwalan" => $penjadwalan, "anak" => $anak, "imunisasi" => $imunisasi]);
         ViewReader::view("/Templates/DashboardTemplate/footer");
     }
 
@@ -135,6 +135,7 @@ class PenjadwalanController
     {
         $data = [
             "id_jadwal_imunisasi" => $_POST["id_jadwal_imunisasi"],
+            "id_anak" => $_POST["nama_anak"],
             "id_jenis_imunisasi" => $_POST["nama_imunisasi"],
             "tanggal_imunisasi" => $_POST["tanggal_imunisasi"],
             "usia_pemberian" => $_POST["usia_pemberian"],
@@ -385,15 +386,15 @@ class PenjadwalanController
         }
     }
 
-    public function destroyJadwalPosyandu(string $idJadwal)
+    public function destroyJadwalPosyandu(string $idPosyandu, String $idJadwal)
     {
         if ($this->penjadwalanModel->deleteJadwalPosyandu($idJadwal)) {
             FlashMessageHelper::set("pesan_sukses", "Berhasil menghapus data Jadwal Posyandu!");
-            header("Location: " . UrlHelper::route("/penjadwalan/posyandu/view"));
+            header("Location: " . UrlHelper::route("/penjadwalan/posyandu/view/" . $idPosyandu));
             exit;
         } else {
             FlashMessageHelper::set("pesan_gagal", "Gagal menghapus data Jadwal Posyandu!");
-            header("Location: " . UrlHelper::route("/penjadwalan/posyandu/view"));
+            header("Location: " . UrlHelper::route("/penjadwalan/posyandu/view/" . $idPosyandu));
             exit;
         }
     }

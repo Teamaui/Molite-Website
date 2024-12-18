@@ -10,11 +10,11 @@
                 <a href=""><span class="mo">Mo</span><span class="lita">lita</span></a>
             </div>
             <ul class="nav-links">
-                <li><a href="#home" class="nav-link home">Home</a></li>
-                <li><a href="#layanan" class="nav-link about">Layanan</a></li>
-                <li><a href="#informasi" class="nav-link service">Informasi</a></li>
-                <li><a href="#edukasi" class="nav-link contact">Edukasi</a></li>
-                <li><a href="#data" class="nav-link contact">Data</a></li>
+                <li><a href="<?= UrlHelper::route("/#home") ?>" class="nav-link home">Home</a></li>
+                <li><a href="<?= UrlHelper::route("/#layanan") ?>" class="nav-link about">Layanan</a></li>
+                <li><a href="<?= UrlHelper::route("/#informasi") ?>" class="nav-link service">Informasi</a></li>
+                <li><a href="<?= UrlHelper::route("/#edukasi") ?>" class="nav-link contact">Edukasi</a></li>
+                <li><a href="<?= UrlHelper::route("/#data") ?>" class="nav-link contact">Data</a></li>
             </ul>
         </div>
         <div class="login-btn">
